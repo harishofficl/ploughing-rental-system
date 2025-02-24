@@ -45,6 +45,24 @@ public class EquipmentDao {
         return mongoTemplate.find(query, Equipment.class);
     }
 
+    //Update Equipment by ID
+    public Equipment updateById(String id, Equipment equipment) {
+        logger.info("Updating equipment by ID: {}", id);
+        equipment.setId(id);
+        return mongoTemplate.save(equipment);
+    }
+
+    //Update price of Equipment
+    public Equipment updatePrice(String id, int price) {
+        logger.info("Updating price of equipment by ID: {}", id);
+        Equipment equipment = mongoTemplate.findById(id, Equipment.class);
+        if(equipment != null) {
+            equipment.setPrice(price);
+            return mongoTemplate.save(equipment);
+        }
+        return null;
+    }
+
     // Delete Equipment by ID
     public void deleteById(String id) {
         logger.info("Deleting equipment by ID: {}", id);

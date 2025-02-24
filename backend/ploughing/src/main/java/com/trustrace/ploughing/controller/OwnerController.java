@@ -56,6 +56,18 @@ public class OwnerController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Owner retrieved successfully", owner.get()));
     }
 
+    // Update Owner
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<Owner>> updateOwner(@PathVariable String id, @RequestBody Owner owner) {
+        Optional<Owner> existingOwner = ownerService.getOwnerById(id);
+        if (existingOwner.isEmpty()) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Owner not found", null));
+        }
+
+        Owner updatedOwner = ownerService.updateOwner(id, owner);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Owner updated successfully", updatedOwner));
+    }
+
     // Delete Owner
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteOwner(@PathVariable String id) {

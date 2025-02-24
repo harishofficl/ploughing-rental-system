@@ -56,6 +56,18 @@ public class AdminController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Admin retrieved successfully", admin.get()));
     }
 
+    // Update Admin
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<Admin>> updateAdmin(@PathVariable String id, @RequestBody Admin admin) {
+        Optional<Admin> existingAdmin = adminService.getAdminById(id);
+        if (existingAdmin.isEmpty()) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Admin not found", null));
+        }
+
+        Admin updatedAdmin = adminService.updateAdmin(id, admin);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Admin updated successfully", updatedAdmin));
+    }
+
     // Delete Admin
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteAdmin(@PathVariable String id) {

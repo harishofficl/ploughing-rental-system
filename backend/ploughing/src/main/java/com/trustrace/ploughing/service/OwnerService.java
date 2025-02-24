@@ -34,6 +34,10 @@ public class OwnerService {
         return ownerDao.findByEmail(email);
     }
 
+    // Update an owner by ID
+    public Owner updateOwner(String id, Owner owner) {
+        return ownerDao.updateById(id, owner);
+    }
     // Delete an owner by ID
     public boolean deleteOwner(String id) {
         Optional<Owner> existingOwner = ownerDao.findById(id);

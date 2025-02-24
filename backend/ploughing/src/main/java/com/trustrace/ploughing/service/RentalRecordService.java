@@ -33,6 +33,9 @@ public class RentalRecordService {
     public List<RentalRecord> getRentalRecordsByDriverId(String driverId) {
         return rentalRecordDao.findByDriverId(driverId);
     }
+    public RentalRecord updateRentalRecord(String id, RentalRecord rentalRecord) {
+        return rentalRecordDao.updateById(id, rentalRecord);
+    }
 
     public boolean deleteRentalRecord(String id) {
         Optional<RentalRecord> existingRecord = rentalRecordDao.findById(id);

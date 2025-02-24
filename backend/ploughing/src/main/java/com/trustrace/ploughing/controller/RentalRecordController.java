@@ -56,6 +56,17 @@ public class RentalRecordController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Rental records retrieved successfully", rentalRecords));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<RentalRecord>> updateRentalRecord(@PathVariable String id, @RequestBody RentalRecord rentalRecord) {
+        Optional<RentalRecord> existingRecord = rentalRecordService.getRentalRecordById(id);
+        if (existingRecord.isEmpty()) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Rental record not found", null));
+        }
+
+        RentalRecord updatedRecord = rentalRecordService.updateRentalRecord(id, rentalRecord);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Rental record updated successfully", updatedRecord));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteRentalRecord(@PathVariable String id) {
         boolean isDeleted = rentalRecordService.deleteRentalRecord(id);

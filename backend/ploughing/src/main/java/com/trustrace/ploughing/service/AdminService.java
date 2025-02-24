@@ -34,6 +34,11 @@ public class AdminService {
         return adminDao.findByEmail(email);
     }
 
+    // Update an admin by ID
+    public Admin updateAdmin(String id, Admin admin) {
+        return adminDao.updateById(id, admin);
+    }
+
     // Delete an admin by ID
     public boolean deleteAdmin(String id) {
         Optional<Admin> existingAdmin = adminDao.findById(id);

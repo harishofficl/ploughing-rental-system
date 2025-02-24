@@ -34,7 +34,17 @@ public class EquipmentService {
         return equipmentDao.findByOwnerId(ownerId);
     }
 
-    // Delete an equipment by ID
+    // Update equipment by ID
+    public Equipment updateEquipment(String id, Equipment equipment) {
+        return equipmentDao.updateById(id, equipment);
+    }
+
+    // Update price of equipment
+    public Equipment updatePrice(String id, int price) {
+        return equipmentDao.updatePrice(id, price);
+    }
+
+    // Delete equipment by ID
     public boolean deleteEquipment(String id) {
         Optional<Equipment> existingEquipment = equipmentDao.findById(id);
         if (existingEquipment.isPresent()) {

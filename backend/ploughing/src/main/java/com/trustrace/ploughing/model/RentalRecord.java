@@ -24,5 +24,6 @@ public class RentalRecord {
     private double ratePerHour;
     private double totalCost;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private boolean isPaid;
 }

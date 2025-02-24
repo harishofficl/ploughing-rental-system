@@ -18,10 +18,11 @@ public class Owner {
     @Id
     private String id;
     private String name;
-    private String phNo;
+    private String phoneNumber;
     private String email;
     private String password;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private List<String> roles;
     private boolean active;
     private List<String> vehicleIds;

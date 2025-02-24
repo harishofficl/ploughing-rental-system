@@ -17,8 +17,9 @@ public class Driver {
     @Id
     private String id;
     private String name;
-    private String phNo;
+    private String phoneNumber;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private List<String> roles;
     private boolean active;
     private String ownerId;

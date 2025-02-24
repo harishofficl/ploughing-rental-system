@@ -34,6 +34,11 @@ public class DriverService {
         return driverDao.findByOwnerId(ownerId);
     }
 
+    // Update a driver by ID
+    public Driver updateDriver(String id, Driver driver) {
+        return driverDao.updateById(id, driver);
+    }
+
     // Delete a driver by ID
     public boolean deleteDriver(String id) {
         Optional<Driver> existingDriver = driverDao.findById(id);

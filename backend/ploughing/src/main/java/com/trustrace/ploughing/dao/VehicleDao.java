@@ -41,6 +41,17 @@ public class VehicleDao {
         return mongoTemplate.find(query, Vehicle.class);
     }
 
+    // update fuel level
+    public Vehicle updateFuelLevel(String id, float fuelLevel) {
+        logger.info("Updating Fuel Level for Vehicle ID: {}", id);
+        Vehicle vehicle = mongoTemplate.findById(id, Vehicle.class);
+        if (vehicle != null) {
+            vehicle.setCurrFuelLevel(fuelLevel);
+            return mongoTemplate.save(vehicle);
+        }
+        return null;
+    }
+
     public void deleteById(String id) {
         logger.info("Deleting Vehicle by ID: {}", id);
         Query query = new Query(Criteria.where("id").is(id));

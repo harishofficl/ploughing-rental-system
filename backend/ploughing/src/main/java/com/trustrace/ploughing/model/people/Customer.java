@@ -16,9 +16,10 @@ import java.util.List;
 public class Customer {
     @Id private String id;
     private String name;
-    private String phNo;
+    private String phoneNumber;
     private String email;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private List<String> roles;
     private boolean active;
 }

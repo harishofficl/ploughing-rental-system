@@ -56,6 +56,18 @@ public class CustomerController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Customer retrieved successfully", customer.get()));
     }
 
+    // Update Customer
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<Customer>> updateCustomer(@PathVariable String id, @RequestBody Customer customer) {
+        Optional<Customer> existingCustomer = customerService.getCustomerById(id);
+        if (existingCustomer.isEmpty()) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Customer not found", null));
+        }
+
+        Customer updatedCustomer = customerService.updateCustomer(id, customer);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Customer updated successfully", updatedCustomer));
+    }
+
     // Delete Customer
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteCustomer(@PathVariable String id) {

@@ -51,6 +51,15 @@ public class OwnerDao {
         return Optional.ofNullable(mongoTemplate.findOne(query, Owner.class));
     }
 
+    // Update Owner by ID
+    public Owner updateById(String id, Owner owner) {
+        logger.info("Updating owner by ID: {}", id);
+        owner.setId(id);
+        owner.setCreatedAt(findById(id).isPresent() ? findById(id).get().getCreatedAt() : LocalDateTime.now());
+        owner.setUpdatedAt(LocalDateTime.now());
+        return mongoTemplate.save(owner);
+    }
+
     // Delete Owner by ID
     public void deleteById(String id) {
         logger.info("Deleting owner by ID: {}", id);

@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +47,16 @@ public class RentalRecordDao {
         Query query = new Query(Criteria.where("driverId").is(driverId));
         return mongoTemplate.find(query, RentalRecord.class);
     }
+
+    // Update RentalRecord by ID
+    public RentalRecord updateById(String id, RentalRecord rentalRecord) {
+        logger.info("Updating RentalRecord by ID: {}", id);
+        rentalRecord.setId(id);
+        rentalRecord.setCreatedAt(findById(id).isPresent() ? findById(id).get().getCreatedAt() : LocalDateTime.now());
+        rentalRecord.setUpdatedAt(LocalDateTime.now());
+        return mongoTemplate.save(rentalRecord);
+    }
+
 
     public void deleteById(String id) {
         logger.info("Deleting RentalRecord by ID: {}", id);

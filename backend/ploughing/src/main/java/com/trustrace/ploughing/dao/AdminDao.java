@@ -51,6 +51,15 @@ public class AdminDao {
         return Optional.ofNullable(mongoTemplate.findOne(query, Admin.class));
     }
 
+    // Update Admin by ID
+    public Admin updateById(String id, Admin admin) {
+        logger.info("Updating admin by ID: {}", id);
+        admin.setId(id);
+        admin.setCreatedAt(findById(id).isPresent() ? findById(id).get().getCreatedAt() : LocalDateTime.now());
+        admin.setUpdatedAt(LocalDateTime.now());
+        return mongoTemplate.save(admin);
+    }
+
     // Delete Admin by ID
     public void deleteById(String id) {
         logger.info("Deleting admin by ID: {}", id);

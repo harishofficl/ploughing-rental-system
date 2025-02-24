@@ -51,6 +51,17 @@ public class DriverController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Drivers retrieved successfully", drivers));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<Driver>> updateDriver(@PathVariable String id, @RequestBody Driver driver) {
+        Optional<Driver> existingDriver = driverService.getDriverById(id);
+        if (existingDriver.isEmpty()) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Driver not found", null));
+        }
+
+        Driver updatedDriver = driverService.updateDriver(id, driver);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Driver updated successfully", updatedDriver));
+    }
+
     // Delete Driver
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteDriver(@PathVariable String id) {

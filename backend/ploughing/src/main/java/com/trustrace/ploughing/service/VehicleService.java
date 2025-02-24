@@ -30,6 +30,11 @@ public class VehicleService {
         return vehicleDao.findByOwnerId(ownerId);
     }
 
+    //update fuel level
+    public Vehicle updateFuelLevel(String id, float fuelLevel) {
+        return vehicleDao.updateFuelLevel(id, fuelLevel);
+    }
+
     public boolean deleteVehicle(String id) {
         Optional<Vehicle> existingVehicle = vehicleDao.findById(id);
         if (existingVehicle.isPresent()) {

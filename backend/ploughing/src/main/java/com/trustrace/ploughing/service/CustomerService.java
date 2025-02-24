@@ -34,6 +34,11 @@ public class CustomerService {
         return customerDao.findByEmail(email);
     }
 
+    // Update a customer by ID
+    public Customer updateCustomer(String id, Customer customer) {
+        return customerDao.updateById(id, customer);
+    }
+
     // Delete a customer by ID
     public boolean deleteCustomer(String id) {
         Optional<Customer> existingCustomer = customerDao.findById(id);

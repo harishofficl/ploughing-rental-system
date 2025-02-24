@@ -51,6 +51,15 @@ public class CustomerDao {
         return Optional.ofNullable(mongoTemplate.findOne(query, Customer.class));
     }
 
+    // Update Customer by ID
+    public Customer updateById(String id, Customer customer) {
+        logger.info("Updating customer by ID: {}", id);
+        customer.setId(id);
+        customer.setCreatedAt(findById(id).isPresent() ? findById(id).get().getCreatedAt() : LocalDateTime.now());
+        customer.setUpdatedAt(LocalDateTime.now());
+        return mongoTemplate.save(customer);
+    }
+
     // Delete Customer by ID
     public void deleteById(String id) {
         logger.info("Deleting customer by ID: {}", id);
