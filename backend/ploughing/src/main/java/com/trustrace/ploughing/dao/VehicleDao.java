@@ -25,6 +25,7 @@ public class VehicleDao {
 
     public Vehicle save(Vehicle vehicle) {
         logger.info("Saving Vehicle: {}", vehicle);
+        vehicle.setCurrFuelLevel(0);
         Vehicle createdVehicle = mongoTemplate.save(vehicle);
         ownerDao.addVehicleId(createdVehicle.getOwnerId(), createdVehicle.getId());
         return createdVehicle;
@@ -47,19 +48,25 @@ public class VehicleDao {
     }
 
     // update fuel level
-    public Vehicle updateFuelLevel(String id, float fuelLevel) {
+    public Vehicle updateFuelLevel(String id, float fuelLevel, boolean add) {
         logger.info("Updating Fuel Level for Vehicle ID: {}", id);
         Vehicle vehicle = mongoTemplate.findById(id, Vehicle.class);
-        if (vehicle != null) {
-            vehicle.setCurrFuelLevel(fuelLevel);
-            return mongoTemplate.save(vehicle);
+        if (vehicle == null) {
+            logger.info("Vehicle ID: {} not found", id);
+            return null;
         }
-        return null;
+        if (add) {
+            vehicle.setCurrFuelLevel(vehicle.getCurrFuelLevel() + fuelLevel);
+        } else {
+            vehicle.setCurrFuelLevel(fuelLevel);
+        }
+        return mongoTemplate.save(vehicle);
     }
+
 
     public void deleteById(String id) {
         logger.info("Deleting Vehicle by ID: {}", id);
-        if(findById(id).isEmpty()) {
+        if (findById(id).isEmpty()) {
             logger.info("Vehicle with ID: {} not found", id);
             return;
         }

@@ -47,14 +47,24 @@ public class VehicleController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Vehicles retrieved successfully", vehicles));
     }
 
-    @PatchMapping("/{id}/fuel")
-    public ResponseEntity<ApiResponse<Vehicle>> updateFuelLevel(@PathVariable String id, @RequestParam float fuelLevel) {
-        Vehicle updatedVehicle = vehicleService.updateFuelLevel(id, fuelLevel);
+    @PutMapping("/{id}/update-fuel")
+    public ResponseEntity<ApiResponse<Vehicle>> updateFuelLevel(@PathVariable String id, @RequestParam float updateFuel) {
+        Vehicle updatedVehicle = vehicleService.updateFuelLevel(id, updateFuel, false);
         if (updatedVehicle == null) {
             return ResponseEntity.status(404).body(new ApiResponse<>(false, "Vehicle not found", null));
         }
         return ResponseEntity.ok(new ApiResponse<>(true, "Fuel level updated successfully", updatedVehicle));
     }
+
+    @PutMapping("/{id}/add-fuel")
+    public ResponseEntity<ApiResponse<Vehicle>> addFuelLevel(@PathVariable String id, @RequestParam float addFuel) {
+        Vehicle updatedVehicle = vehicleService.updateFuelLevel(id, addFuel, true);
+        if (updatedVehicle == null) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Vehicle not found", null));
+        }
+        return ResponseEntity.ok(new ApiResponse<>(true, "Fuel level updated successfully", updatedVehicle));
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteVehicle(@PathVariable String id) {

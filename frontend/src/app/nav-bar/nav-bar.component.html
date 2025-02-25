@@ -1,0 +1,30 @@
+<header class="nav-bar-container">
+  <div class="nav-bar">
+    <div class="nav-bar-title-container">
+      <a class="nav-bar-title" [routerLink]="['/']">
+        <p>PLOUGHING RENTAL SYSTEM</p>
+      </a>
+    </div>
+    <div class="nav-bar-menu-container">
+      <div class="nav-bar-search-container flex"></div>
+      <div class="nav-bar-right-container" (focusin)="showLogout = true" (focusout)="showLogout = false" tabindex="0">
+        <button type="button" class="nav-bar-profile-button clear-button-style">
+          <div class="nav-bar-profile-container flex cursor-pointer">
+            <div class="nav-bar-profile flex">
+              <img src="user-icon.png" alt="profile" />
+            </div>
+            <span class="nav-bar-profile-name font-bold">
+              <span>HARISH S</span>
+            </span>
+            <span class="nav-bar-profile-arrow">
+              <span><img src="arrow-down.png" alt="arrow" /></span>
+            </span>
+          </div>
+        </button>
+        <div *ngIf="showLogout" class="logout-button-container">
+          <button type="button" class="logout-button" (click)="logout()">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

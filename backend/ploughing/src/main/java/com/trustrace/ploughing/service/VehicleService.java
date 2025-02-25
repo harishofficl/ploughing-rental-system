@@ -31,8 +31,8 @@ public class VehicleService {
     }
 
     //update fuel level
-    public Vehicle updateFuelLevel(String id, float fuelLevel) {
-        return vehicleDao.updateFuelLevel(id, fuelLevel);
+    public Vehicle updateFuelLevel(String id, float fuelLevel, boolean add) {
+        return vehicleDao.updateFuelLevel(id, fuelLevel, add);
     }
 
     public boolean deleteVehicle(String id) {
