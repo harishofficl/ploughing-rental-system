@@ -20,9 +20,13 @@ public class EquipmentDao {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    // Save or Update Equipment
+    @Autowired
+    private OwnerDao ownerDao;
+
+    // Save Equipment
     public Equipment save(Equipment equipment) {
         logger.info("Saving equipment with name: {}", equipment.getName());
+        ownerDao.addEquipmentId(equipment.getOwnerId(), equipment.getId());
         return mongoTemplate.save(equipment);
     }
 
@@ -66,7 +70,12 @@ public class EquipmentDao {
     // Delete Equipment by ID
     public void deleteById(String id) {
         logger.info("Deleting equipment by ID: {}", id);
+        if(findById(id).isEmpty()) {
+            logger.info("Equipment with ID: {} not found", id);
+            return;
+        }
         Query query = new Query(Criteria.where("id").is(id));
+        ownerDao.removeEquipmentId(findById(id).get().getOwnerId(), id);
         mongoTemplate.remove(query, Equipment.class);
     }
 }

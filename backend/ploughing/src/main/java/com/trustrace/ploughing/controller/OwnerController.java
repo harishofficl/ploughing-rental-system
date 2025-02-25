@@ -77,4 +77,64 @@ public class OwnerController {
         }
         return ResponseEntity.ok(new ApiResponse<>(true, "Owner deleted successfully", null));
     }
+
+    // Add Vehicle to Owner
+    @PutMapping("/{ownerId}/vehicles/{vehicleId}")
+    public ResponseEntity<ApiResponse<Owner>> addVehicle(@PathVariable String ownerId, @PathVariable String vehicleId) {
+        Owner owner = ownerService.addVehicle(ownerId, vehicleId);
+        if (owner == null) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Owner not found", null));
+        }
+        return ResponseEntity.ok(new ApiResponse<>(true, "Vehicle added to owner successfully", owner));
+    }
+
+    // Remove Vehicle from Owner
+    @DeleteMapping("/{ownerId}/vehicles/{vehicleId}")
+    public ResponseEntity<ApiResponse<Owner>> removeVehicle(@PathVariable String ownerId, @PathVariable String vehicleId) {
+        Owner owner = ownerService.removeVehicle(ownerId, vehicleId);
+        if (owner == null) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Owner not found", null));
+        }
+        return ResponseEntity.ok(new ApiResponse<>(true, "Vehicle removed from owner successfully", owner));
+    }
+
+    // Add Driver to Owner
+    @PutMapping("/{ownerId}/drivers/{driverId}")
+    public ResponseEntity<ApiResponse<Owner>> addDriver(@PathVariable String ownerId, @PathVariable String driverId) {
+        Owner owner = ownerService.addDriver(ownerId, driverId);
+        if (owner == null) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Owner not found", null));
+        }
+        return ResponseEntity.ok(new ApiResponse<>(true, "Driver added to owner successfully", owner));
+    }
+
+    // Remove Driver from Owner
+    @DeleteMapping("/{ownerId}/drivers/{driverId}")
+    public ResponseEntity<ApiResponse<Owner>> removeDriver(@PathVariable String ownerId, @PathVariable String driverId) {
+        Owner owner = ownerService.removeDriver(ownerId, driverId);
+        if (owner == null) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Owner not found", null));
+        }
+        return ResponseEntity.ok(new ApiResponse<>(true, "Driver removed from owner successfully", owner));
+    }
+
+    // Add Equipment to Owner
+    @PutMapping("/{ownerId}/equipment/{equipmentId}")
+    public ResponseEntity<ApiResponse<Owner>> addEquipment(@PathVariable String ownerId, @PathVariable String equipmentId) {
+        Owner owner = ownerService.addEquipment(ownerId, equipmentId);
+        if (owner == null) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Owner not found", null));
+        }
+        return ResponseEntity.ok(new ApiResponse<>(true, "Equipment added to owner successfully", owner));
+    }
+
+    // Remove Equipment from Owner
+    @DeleteMapping("/{ownerId}/equipment/{equipmentId}")
+    public ResponseEntity<ApiResponse<Owner>> removeEquipment(@PathVariable String ownerId, @PathVariable String equipmentId) {
+        Owner owner = ownerService.removeEquipment(ownerId, equipmentId);
+        if (owner == null) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Owner not found", null));
+        }
+        return ResponseEntity.ok(new ApiResponse<>(true, "Equipment removed from owner successfully", owner));
+    }
 }

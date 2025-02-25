@@ -21,6 +21,9 @@ public class DriverDao {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    @Autowired
+    private OwnerDao ownerDao;
+
     // Save Driver
     public Driver save(Driver driver) {
         logger.info("Saving driver with name: {}", driver.getName());
@@ -28,6 +31,7 @@ public class DriverDao {
         if (driver.getRoles() == null || driver.getRoles().isEmpty()) {
             driver.setRoles(List.of("ROLE_DRIVER"));
         }
+        ownerDao.addDriverId(driver.getOwnerId(), driver.getId());
         driver.setActive(true);
         return mongoTemplate.save(driver);
     }
@@ -63,7 +67,12 @@ public class DriverDao {
     // Delete Driver by ID
     public void deleteById(String id) {
         logger.info("Deleting driver by ID: {}", id);
+        if (findById(id).isEmpty()) {
+            logger.info("Driver with ID: {} not found", id);
+            return;
+        }
         Query query = new Query(Criteria.where("id").is(id));
+        ownerDao.removeDriverId(findById(id).get().getOwnerId(), id);
         mongoTemplate.remove(query, Driver.class);
     }
 }

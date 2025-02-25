@@ -20,8 +20,12 @@ public class VehicleDao {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    @Autowired
+    private OwnerDao ownerDao;
+
     public Vehicle save(Vehicle vehicle) {
         logger.info("Saving Vehicle: {}", vehicle);
+        ownerDao.addVehicleId(vehicle.getOwnerId(), vehicle.getId());
         return mongoTemplate.save(vehicle);
     }
 
@@ -54,7 +58,12 @@ public class VehicleDao {
 
     public void deleteById(String id) {
         logger.info("Deleting Vehicle by ID: {}", id);
+        if(findById(id).isEmpty()) {
+            logger.info("Vehicle with ID: {} not found", id);
+            return;
+        }
         Query query = new Query(Criteria.where("id").is(id));
+        ownerDao.removeVehicleId(findById(id).get().getOwnerId(), id);
         mongoTemplate.remove(query, Vehicle.class);
     }
 }

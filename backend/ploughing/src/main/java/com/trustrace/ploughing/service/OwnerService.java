@@ -47,4 +47,35 @@ public class OwnerService {
         }
         return false;
     }
+
+    // Add a vehicle to an owner
+    public Owner addVehicle(String ownerId, String vehicleId) {
+        return ownerDao.addVehicleId(ownerId, vehicleId);
+    }
+
+    // Remove a vehicle from an owner
+    public Owner removeVehicle(String ownerId, String vehicleId) {
+        return ownerDao.removeVehicleId(ownerId, vehicleId);
+    }
+
+    // Add a driver to an owner
+    public Owner addDriver(String ownerId, String driverId) {
+        return ownerDao.addDriverId(ownerId, driverId);
+    }
+
+    // Remove a driver from an owner
+    public Owner removeDriver(String ownerId, String driverId) {
+        return ownerDao.removeDriverId(ownerId, driverId);
+    }
+
+    // Add equipment to an owner
+    public Owner addEquipment(String ownerId, String equipmentId) {
+        return ownerDao.addEquipmentId(ownerId, equipmentId);
+    }
+
+    // Remove equipment from an owner
+    public Owner removeEquipment(String ownerId, String equipmentId) {
+        return ownerDao.removeEquipmentId(ownerId, equipmentId);
+    }
+
 }
