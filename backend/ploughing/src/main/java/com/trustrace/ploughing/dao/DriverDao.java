@@ -31,9 +31,10 @@ public class DriverDao {
         if (driver.getRoles() == null || driver.getRoles().isEmpty()) {
             driver.setRoles(List.of("ROLE_DRIVER"));
         }
-        ownerDao.addDriverId(driver.getOwnerId(), driver.getId());
         driver.setActive(true);
-        return mongoTemplate.save(driver);
+        Driver createdDriver = mongoTemplate.save(driver);
+        ownerDao.addDriverId(createdDriver.getOwnerId(), createdDriver.getId());
+        return createdDriver;
     }
 
     // Find All Drivers

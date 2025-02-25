@@ -26,8 +26,9 @@ public class EquipmentDao {
     // Save Equipment
     public Equipment save(Equipment equipment) {
         logger.info("Saving equipment with name: {}", equipment.getName());
-        ownerDao.addEquipmentId(equipment.getOwnerId(), equipment.getId());
-        return mongoTemplate.save(equipment);
+        Equipment createdEquipment = mongoTemplate.save(equipment);
+        ownerDao.addEquipmentId(createdEquipment.getOwnerId(), createdEquipment.getId());
+        return createdEquipment;
     }
 
     // Find All Equipments

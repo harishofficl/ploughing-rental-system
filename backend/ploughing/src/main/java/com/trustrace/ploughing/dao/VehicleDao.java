@@ -25,8 +25,9 @@ public class VehicleDao {
 
     public Vehicle save(Vehicle vehicle) {
         logger.info("Saving Vehicle: {}", vehicle);
-        ownerDao.addVehicleId(vehicle.getOwnerId(), vehicle.getId());
-        return mongoTemplate.save(vehicle);
+        Vehicle createdVehicle = mongoTemplate.save(vehicle);
+        ownerDao.addVehicleId(createdVehicle.getOwnerId(), createdVehicle.getId());
+        return createdVehicle;
     }
 
     public List<Vehicle> findAll() {
