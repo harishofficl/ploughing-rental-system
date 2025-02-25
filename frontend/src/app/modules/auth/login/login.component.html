@@ -1,19 +1,41 @@
+<app-nav-bar></app-nav-bar>
+
 <!-- <div class="login-container">
   <div class="login-form-container">
     <div class="login-form">
-      <h1 class="login-title poppins-normal">Login</h1>
+      <h1 class="login-title">Login</h1>
       <div class="login-input-container">
-        <label class="login-label poppins-normal" for="email">Email</label>
-        <input class="login-input poppins-normal" type="email" id="email" [(ngModel)]="username"/>
+        <label class="login-label" for="email">Email</label>
+        <input class="login-input" type="email" id="email" [(ngModel)]="username"/>
       </div>
       <div class="login-input-container">
-        <label class="login-label poppins-normal" for="password">Password</label>
-        <input class="login-input poppins-normal" type="password" id="password" [(ngModel)]="password"/>
+        <label class="login-label" for="password">Password</label>
+        <input class="login-input" type="password" id="password" [(ngModel)]="password"/>
       </div>
-      <button type="submit" class="login-button poppins-normal" (click)="login()">Login</button>
+      <button type="submit" class="login-button" (click)="login()">Login</button>
     </div>
   </div>
-</div> 
--->
+</div>  -->
 
-<app-nav-bar></app-nav-bar>
+<div class="button-container theme-bg">
+  <button class="theme-button" routerLink="/admin">Admin</button>
+  <button class="theme-button" routerLink="/owner">Owner</button>
+  <button class="theme-button" routerLink="/driver">Driver</button>
+</div>
+
+<style>
+  .button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+  }
+
+  .theme-button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+</style>

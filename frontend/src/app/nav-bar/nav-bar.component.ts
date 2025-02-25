@@ -12,6 +12,8 @@ import { RouterLink, RouterModule } from '@angular/router';
 export class NavBarComponent {
   showLogout: boolean = false;
 
+  constructor() {}
+
   logout() {
     this.showLogout = false;
     console.log('Logout clicked');

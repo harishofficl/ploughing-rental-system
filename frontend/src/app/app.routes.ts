@@ -10,4 +10,12 @@ export const routes: Routes = [
         path: 'admin',
         loadChildren: () => import('./modules/admin/admin.module').then((m) => m.AdminModule),
       },
+      {
+        path: 'driver',
+        loadChildren: () => import('./modules/driver/driver.module').then((m) => m.DriverModule),
+      },
+      {
+        path: 'owner',
+        loadChildren: () => import('./modules/owner/owner.module').then((m) => m.OwnerModule),
+      },
 ];

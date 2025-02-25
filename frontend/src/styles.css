@@ -282,7 +282,7 @@ li {
   list-style-type: none;
 }
 
-.bg-grey-100 {
+.theme-bg {
   background-color: rgba(var(--colors-gray-100));
 }
 
