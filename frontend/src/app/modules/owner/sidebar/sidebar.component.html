@@ -1,0 +1,178 @@
+<div class="sidebar-container theme-bg">
+  <div class="sidebar">
+    <div class="sidebar-body">
+      <div class="sidebar-content-container">
+        <!-- Dashboard -->
+        <div class="sidebar-content sidebar-dashboard-container flex">
+          <button class="sidebar-button sidebar-content-button flex" [routerLink]="['./']">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              width="24"
+              height="24"
+              class=""
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+              ></path>
+            </svg>
+            <h3 class="sidebar-content-heading sidebar-dashboard-heading">
+              Dashboard
+            </h3>
+          </button>
+        </div>
+
+        <!-- Rental record -->
+        <div class="sidebar-content sidebar-equipment-container">
+          <button
+            class="sidebar-button sidebar-content-button flex"
+            (click)="toggleRental()"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              width="24"
+              height="24"
+              class=""
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              ></path>
+            </svg>
+            <h3 class="sidebar-content-heading">Rental Records</h3>
+            <svg
+              class="sidebar-content-arrow"
+              xmlns="http://www.w3.org/2000/svg"
+              width="10"
+              height="6"
+              viewBox="0 0 10 6"
+              to=""
+            >
+              <path
+                class="fill-current"
+                d="M8.292893.292893c.390525-.390524 1.023689-.390524 1.414214 0 .390524.390525.390524 1.023689 0 1.414214l-4 4c-.390525.390524-1.023689.390524-1.414214 0l-4-4c-.390524-.390525-.390524-1.023689 0-1.414214.390525-.390524 1.023689-.390524 1.414214 0L5 3.585786 8.292893.292893z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="sidebar-inner-content flex" *ngIf="isRentalOpen">
+          <button class="sidebar-button sidebar-inner-content-button" [routerLink]="['./create-rental-records']">
+            <p class="sidebar-inner-content-heading">Add Rental Record</p>
+          </button>
+          <button class="sidebar-button sidebar-inner-content-button" [routerLink]="['./manage-rental-records']">
+            <p class="sidebar-inner-content-heading">Manage Rental Record</p>
+          </button>
+        </div>
+
+        <!-- Driver -->
+        <div class="sidebar-content sidebar-driver-container">
+          <button
+            class="sidebar-button sidebar-content-button flex"
+            (click)="toggleDriver()"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              width="24"
+              height="24"
+              class=""
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+              ></path>
+            </svg>
+            <h3 class="sidebar-content-heading">Drivers</h3>
+            <svg
+              class="sidebar-content-arrow"
+              xmlns="http://www.w3.org/2000/svg"
+              width="10"
+              height="6"
+              viewBox="0 0 10 6"
+              to=""
+            >
+              <path
+                class="fill-current"
+                d="M8.292893.292893c.390525-.390524 1.023689-.390524 1.414214 0 .390524.390525.390524 1.023689 0 1.414214l-4 4c-.390525.390524-1.023689.390524-1.414214 0l-4-4c-.390524-.390525-.390524-1.023689 0-1.414214.390525-.390524 1.023689-.390524 1.414214 0L5 3.585786 8.292893.292893z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="sidebar-inner-content flex" *ngIf="isDriverOpen">
+          <button class="sidebar-button sidebar-inner-content-button" [routerLink]="['create-driver']">
+            <p class="sidebar-inner-content-heading">Create Driver</p>
+          </button>
+          <button class="sidebar-button sidebar-inner-content-button" [routerLink]="['manage-drivers']">
+            <p class="sidebar-inner-content-heading">Manage Drivers</p>
+          </button>
+        </div>
+
+        <!-- Equipment -->
+        <div class="sidebar-content sidebar-equipment-container">
+          <button
+            class="sidebar-button sidebar-content-button flex"
+            (click)="toggleEquipment()"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              width="24"
+              height="24"
+              class=""
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+              ></path>
+            </svg>
+            <h3 class="sidebar-content-heading">Equipments</h3>
+            <svg
+              class="sidebar-content-arrow"
+              xmlns="http://www.w3.org/2000/svg"
+              width="10"
+              height="6"
+              viewBox="0 0 10 6"
+              to=""
+            >
+              <path
+                class="fill-current"
+                d="M8.292893.292893c.390525-.390524 1.023689-.390524 1.414214 0 .390524.390525.390524 1.023689 0 1.414214l-4 4c-.390525.390524-1.023689.390524-1.414214 0l-4-4c-.390524-.390525-.390524-1.023689 0-1.414214.390525-.390524 1.023689-.390524 1.414214 0L5 3.585786 8.292893.292893z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="sidebar-inner-content flex" *ngIf="isEquipmentOpen">
+          <button class="sidebar-button sidebar-inner-content-button" [routerLink]="['./add-equipment']">
+            <p class="sidebar-inner-content-heading">Add Equipment</p>
+          </button>
+          <button class="sidebar-button sidebar-inner-content-button" [routerLink]="['./manage-equipments']">
+            <p class="sidebar-inner-content-heading">Manage Equipment</p>
+          </button>
+        </div>
+
+        
+      </div>
+    </div>
+  </div>
+</div>
