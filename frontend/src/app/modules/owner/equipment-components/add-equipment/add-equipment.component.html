@@ -1,1 +1,17 @@
-<p>add-equipment works!</p>
+<div class="main-header">
+    <h1 class="main-heading">Add Equipment</h1>
+  </div>
+  
+  <form [formGroup]="equipmentForm" (ngSubmit)="onSubmit()" class="add-equipment-form">
+    <div class="form-group">
+      <label for="name" class="form-label">Equipment Name <span class="required-asterisk">*</span></label>
+      <input id="name" formControlName="name" type="text" class="form-control" placeholder="Enter equipment name">
+    </div>
+  
+    <div class="form-group">
+      <label for="price" class="form-label">Price <span class="required-asterisk">*</span></label>
+      <input id="price" formControlName="price" type="number" class="form-control" placeholder="Enter price">
+    </div>
+  
+    <button type="submit" class="submit-button" [disabled]="equipmentForm.invalid">Add Equipment</button>
+  </form>

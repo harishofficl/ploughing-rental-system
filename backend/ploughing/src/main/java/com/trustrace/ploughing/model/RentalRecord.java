@@ -18,6 +18,7 @@ public class RentalRecord {
     @Id private String id;
     private String ownerId;
     private String driverId;
+    private String customerId;
     private String equipment;
     private Date date;
     private double hoursUsed;
@@ -25,5 +26,5 @@ public class RentalRecord {
     private double totalCost;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private boolean isPaid;
+    private boolean isPaid = false;
 }

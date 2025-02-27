@@ -6,54 +6,49 @@ import Swal from 'sweetalert2';
   providedIn: 'root',
 })
 export class AuthService {
-  admin = { id: 'admin-1', name: 'Admin', username: 'a', password: 'a' };
-  user = { id: 'user-1', name: 'User', username: 'u', password: 'u' };
+  admin = { id: '67bd4a6b4eb4a03303ce1624', name: 'Super Admin'};
+  owner = { id: '67bd4a974eb4a03303ce1625', name: 'Sangeetha S'};
+  driver = { id: '67bd4c104eb4a03303ce1628', name: 'Rajan'};
+
   currentUser;
   isAuthenticated: boolean = false;
 
   constructor(private router: Router) {
-    this.currentUser = { id: '', name: '', username: '', password: '' };
-  }
-
-  login(username: string, password: string) {
-    if (this.admin.username === username && this.admin.password === password) {
-      this.currentUser = this.admin;
-
-      Swal.fire({
-        icon: 'success',
-        title: 'Welcome Admin!',
-        text: 'You have successfully logged in!',
-      }).then(() => {
-        this.isAuthenticated = true;
-        this.router.navigate(['admin']);
-      });
-    } else if (
-      this.user.username === username &&
-      this.user.password === password
-    ) {
-      this.currentUser = this.user;
-      Swal.fire({
-        icon: 'success',
-        title: 'Welcome User!',
-        text: 'You have successfully logged in!',
-      }).then(() => {
-        this.isAuthenticated = true;
-        this.router.navigate(['user']);
-      });
+    const user = localStorage.getItem('currentUser');
+    if (user) {
+      this.currentUser = JSON.parse(user);
+      this.isAuthenticated = true;
     } else {
-      this.currentUser = { id: '', name: '', username: '', password: '' };
-      this.isAuthenticated = false;
-      Swal.fire({
-        icon: 'error',
-        title: 'Login Failed!',
-        text: 'Invalid username or password!',
-      });
+      this.currentUser = { id: '', name: ''};
     }
   }
 
+  adminLogin() {
+    localStorage.setItem('currentUser', JSON.stringify(this.admin));
+    this.currentUser = this.admin;
+    this.isAuthenticated = true;
+    this.router.navigate(['./admin']);
+  }
+
+  ownerLogin() {
+    localStorage.setItem('currentUser', JSON.stringify(this.owner));
+    this.currentUser = this.owner;
+    this.isAuthenticated = true;
+    this.router.navigate(['./owner']);
+  }
+
+  driverLogin() {
+    localStorage.setItem('currentUser', JSON.stringify(this.driver));
+    this.currentUser = this.driver;
+    this.isAuthenticated = true;
+    this.router.navigate(['./driver']);
+  }
+
   logout() {
-    this.currentUser = { id: '', name: '', username: '', password: '' };
+    localStorage.removeItem('currentUser');
+    this.currentUser = { id: '', name: ''};
     this.isAuthenticated = false;
+    this.router.navigate(['./']);
   }
 
   get currentUserId() {

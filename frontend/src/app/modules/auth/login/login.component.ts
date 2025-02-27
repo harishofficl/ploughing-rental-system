@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-// import { AuthService } from '../../../services/auth/auth.service';
+import { AuthService } from '../../../services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,20 +9,21 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
 
-  // username: string;
-  // password: string;
+  constructor(private auth: AuthService, private router: Router) {}
 
-  // constructor(private auth: AuthService) {
-  //   this.username = '';
-  //   this.password = '';
-  // }
+  ngOnInit() {
+    this.auth.logout();
+  }
 
-  // ngOnInit() {
-  //   this.auth.logout();
-  // }
-
-  // login() {
-  //   this.auth.login(this.username, this.password);
-  // }
+  adminLogin() {
+    this.auth.adminLogin();
+  }
   
+  ownerLogin() {
+    this.auth.ownerLogin();
+  }
+
+  driverLogin() {
+    this.auth.driverLogin();
+  }
 }

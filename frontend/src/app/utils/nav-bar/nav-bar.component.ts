@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -12,10 +13,9 @@ import { RouterLink, RouterModule } from '@angular/router';
 export class NavBarComponent {
   showLogout: boolean = false;
 
-  constructor() {}
+  constructor(public auth: AuthService) {}
 
   logout() {
-    this.showLogout = false;
-    console.log('Logout clicked');
+    this.auth.logout();
   }
 }

@@ -23,6 +23,7 @@ public class RentalRecordDao {
 
     public RentalRecord save(RentalRecord rentalRecord) {
         logger.info("Saving RentalRecord: {}", rentalRecord);
+        rentalRecord.setCreatedAt(LocalDateTime.now());
         return mongoTemplate.save(rentalRecord);
     }
 

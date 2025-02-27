@@ -28,10 +28,12 @@
 }
 
 .form-control {
-  width: 80%;
+  width: 60%;
   padding: 0.5rem;
   border: 2px solid rgb(var(--colors-gray-300));
   border-radius: 0.25rem;
+  font-weight: 700;
+  color: rgb(var(--colors-gray-600));
 }
 
 .form-control:focus {

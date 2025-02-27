@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../../../services/auth/auth.service';
+import { ApiService } from '../../../../services/api/api.service';
 
 @Component({
   selector: 'app-create-driver',
@@ -9,20 +11,18 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class CreateDriverComponent {
   driverForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private auth: AuthService, private api: ApiService) {
     this.driverForm = this.formBuilder.group({
       name: ['', Validators.required],
       phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-      ownerId: [''],
+      ownerId: [this.auth.currentUserId],
     });
   }
-
-  ngOnInit() {}
 
   onSubmit() {
     if (this.driverForm.valid) {
       const driverData = this.driverForm.value;
-      console.log('Driver Created:', driverData);
+      this.api.postDriver(driverData);
     }
   }
 }
