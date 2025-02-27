@@ -1,5 +1,8 @@
 package com.trustrace.ploughing.dao;
 
+import com.trustrace.ploughing.model.Equipment;
+import com.trustrace.ploughing.model.Vehicle;
+import com.trustrace.ploughing.model.people.Driver;
 import com.trustrace.ploughing.model.people.Owner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -146,6 +149,27 @@ public class OwnerDao {
             return mongoTemplate.save(owner);
         }
         return null;
+    }
+
+    // get all equipments by their ids
+    public List<Equipment> getEquipmentsByIds(List<String> equipmentIds) {
+        logger.info("Fetching equipments by IDs: {}", equipmentIds);
+        Query query = new Query(Criteria.where("id").in(equipmentIds));
+        return mongoTemplate.find(query, Equipment.class);
+    }
+
+    // get all drivers by their ids
+    public List<Driver> getDriversByIds(List<String> driverIds) {
+        logger.info("Fetching drivers by IDs: {}", driverIds);
+        Query query = new Query(Criteria.where("id").in(driverIds));
+        return mongoTemplate.find(query, Driver.class);
+    }
+
+    // get all vehicles by their ids
+    public List<Vehicle> getVehiclesByIds(List<String> vehicleIds) {
+        logger.info("Fetching vehicles by IDs: {}", vehicleIds);
+        Query query = new Query(Criteria.where("id").in(vehicleIds));
+        return mongoTemplate.find(query, Vehicle.class);
     }
 
 }

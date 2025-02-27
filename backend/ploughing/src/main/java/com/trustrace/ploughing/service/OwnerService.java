@@ -1,6 +1,9 @@
 package com.trustrace.ploughing.service;
 
 import com.trustrace.ploughing.dao.OwnerDao;
+import com.trustrace.ploughing.model.Equipment;
+import com.trustrace.ploughing.model.Vehicle;
+import com.trustrace.ploughing.model.people.Driver;
 import com.trustrace.ploughing.model.people.Owner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -78,4 +81,18 @@ public class OwnerService {
         return ownerDao.removeEquipmentId(ownerId, equipmentId);
     }
 
+    // get all equipments by their ids
+    public List<Equipment> getEquipmentsByIds(List<String> equipmentIds) {
+        return ownerDao.getEquipmentsByIds(equipmentIds);
+    }
+
+    // get all vehicles by their ids
+    public List<Vehicle> getVehiclesByIds(List<String> vehicleIds) {
+        return ownerDao.getVehiclesByIds(vehicleIds);
+    }
+
+    // get all drivers by their ids
+    public List<Driver> getDriversByIds(List<String> driverIds) {
+        return ownerDao.getDriversByIds(driverIds);
+    }
 }

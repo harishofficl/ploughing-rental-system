@@ -22,4 +22,5 @@ public class Customer {
     private LocalDateTime updatedAt;
     private List<String> roles;
     private boolean active;
+    private String ownerId;
 }

@@ -66,4 +66,11 @@ public class CustomerDao {
         Query query = new Query(Criteria.where("id").is(id));
         mongoTemplate.remove(query, Customer.class);
     }
+
+    // find by owner id and name that contains term
+    public List<Customer> findByOwnerIdAndContainsName(String ownerId, String term) {
+        logger.info("Fetching customers for Owner ID: {} and Name contains: {}", ownerId, term);
+        Query query = new Query(Criteria.where("ownerId").is(ownerId).and("name").regex(term, "i"));
+        return mongoTemplate.find(query, Customer.class);
+    }
 }

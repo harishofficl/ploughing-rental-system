@@ -1,5 +1,8 @@
 package com.trustrace.ploughing.controller;
 
+import com.trustrace.ploughing.model.Equipment;
+import com.trustrace.ploughing.model.Vehicle;
+import com.trustrace.ploughing.model.people.Driver;
 import com.trustrace.ploughing.model.people.Owner;
 import com.trustrace.ploughing.service.OwnerService;
 import com.trustrace.ploughing.dto.ApiResponse;
@@ -136,5 +139,38 @@ public class OwnerController {
             return ResponseEntity.status(404).body(new ApiResponse<>(false, "Owner not found", null));
         }
         return ResponseEntity.ok(new ApiResponse<>(true, "Equipment removed from owner successfully", owner));
+    }
+
+    // Get all equipments by their ids
+    @GetMapping("/{ownerId}/equipments")
+    public ResponseEntity<ApiResponse<List<Equipment>>> getEquipmentsByOwnerId(@PathVariable String ownerId) {
+        Optional<Owner> owner = ownerService.getOwnerById(ownerId);
+        if (owner.isEmpty()) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Owner not found", null));
+        }
+        List<Equipment> equipments = ownerService.getEquipmentsByIds(owner.get().getEquipmentIds());
+        return ResponseEntity.ok(new ApiResponse<>(true, "Equipments retrieved successfully", equipments));
+    }
+
+    // Get all vehicles by their ids
+    @GetMapping("/{ownerId}/vehicles")
+    public ResponseEntity<ApiResponse<List<Vehicle>>> getVehiclesByOwnerId(@PathVariable String ownerId) {
+        Optional<Owner> owner = ownerService.getOwnerById(ownerId);
+        if (owner.isEmpty()) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Owner not found", null));
+        }
+        List<Vehicle> vehicles = ownerService.getVehiclesByIds(owner.get().getVehicleIds());
+        return ResponseEntity.ok(new ApiResponse<>(true, "Vehicles retrieved successfully", vehicles));
+    }
+
+    // Get all drivers by their ids
+    @GetMapping("/{ownerId}/drivers")
+    public ResponseEntity<ApiResponse<List<Driver>>> getDriversByOwnerId(@PathVariable String ownerId) {
+        Optional<Owner> owner = ownerService.getOwnerById(ownerId);
+        if (owner.isEmpty()) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Owner not found", null));
+        }
+        List<Driver> drivers = ownerService.getDriversByIds(owner.get().getDriverIds());
+        return ResponseEntity.ok(new ApiResponse<>(true, "Drivers retrieved successfully", drivers));
     }
 }

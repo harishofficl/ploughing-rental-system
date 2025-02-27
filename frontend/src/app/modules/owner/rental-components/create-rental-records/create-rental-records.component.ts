@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { ApiService } from '../../../../services/api/api.service';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-create-rental-records',
@@ -13,6 +15,8 @@ export class CreateRentalRecordsComponent implements OnInit {
   ownerId!: string;
   drivers: any[] = [];
   equipment: any[] = [];
+  customers: any[] = [];
+  private searchTerms = new Subject<string>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -22,6 +26,7 @@ export class CreateRentalRecordsComponent implements OnInit {
     this.ownerId = this.auth.currentUserId;
     const today = new Date().toISOString().split('T')[0];
     this.rentalForm = this.formBuilder.group({
+      customerId: ['', Validators.required],
       ownerId: [this.auth.currentUserId],
       driverId: ['', Validators.required],
       equipment: ['', Validators.required],
@@ -39,6 +44,14 @@ export class CreateRentalRecordsComponent implements OnInit {
     });
     this.api.getEquipmentsByOwnerId(this.ownerId).subscribe((equipment) => {
       this.equipment = equipment.data;
+    });
+
+    this.searchTerms.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(term => this.api.searchCustomersByOwnerId(this.ownerId, term))
+    ).subscribe((customers) => {
+      this.customers = customers.data;
     });
   }
 
@@ -64,5 +77,10 @@ export class CreateRentalRecordsComponent implements OnInit {
       const rentalData = this.rentalForm.getRawValue();
       this.api.postRentalRecord(rentalData);
     }
+  }
+
+  searchCustomers(event: Event): void {
+    const term = (event.target as HTMLInputElement).value;
+    this.searchTerms.next(term);
   }
 }

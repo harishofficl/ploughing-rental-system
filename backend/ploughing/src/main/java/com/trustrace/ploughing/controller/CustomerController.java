@@ -77,4 +77,14 @@ public class CustomerController {
         }
         return ResponseEntity.ok(new ApiResponse<>(true, "Customer deleted successfully", null));
     }
+
+    // findByOwnerIdAndContainsName -> /api/customers/owner/{ownerId}?search=${term}
+    @GetMapping("/owner/{ownerId}")
+    public ResponseEntity<ApiResponse<List<Customer>>> getCustomersByOwnerIdContainsName(@PathVariable String ownerId, @RequestParam String search) {
+        List<Customer> customers = customerService.getCustomersByOwnerIdContainsName(ownerId, search==null?"":search);
+        if(customers.isEmpty()) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "No customers found", null));
+        }
+        return ResponseEntity.ok(new ApiResponse<>(true, "Customers retrieved successfully", customers));
+    }
 }

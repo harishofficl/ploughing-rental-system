@@ -74,7 +74,7 @@ export class ApiService {
 
   // GET /api/drivers
   getDriversByOwnerId(ownerId: string): Observable<any> {
-    const url = `${this.url}/api/drivers/owner/${ownerId}`;
+    const url = `${this.url}/api/owners/${ownerId}/drivers`;
     return this.http.get(url).pipe(
       catchError((error) => {
         console.error('Error occurred while fetching drivers:', error);
@@ -86,11 +86,11 @@ export class ApiService {
 
   // GET /api/equipment/owner/{ownerId}
   getEquipmentsByOwnerId(ownerId: string): Observable<any> {
-    const url = `${this.url}/api/equipments/owner/${ownerId}`;
+    const url = `${this.url}/api/owners/${ownerId}/equipments`;
     return this.http.get(url).pipe(
       catchError((error) => {
-        console.error('Error occurred while fetching equipment:', error);
-        this.showErrorMessage('Failed to fetch equipment. Please try again.');
+        console.error('Error occurred while fetching equipments:', error);
+        this.showErrorMessage('Failed to fetch equipments. Please try again.');
         throw error;
       })
     );
@@ -101,9 +101,9 @@ export class ApiService {
     const url = `${this.url}/api/equipments/${equipmentId}`;
     return this.http.get(url).pipe(
       catchError((error) => {
-        console.error('Error occurred while fetching rate per hour:', error);
+        console.error('Error occurred while fetching equipment rate:', error);
         this.showErrorMessage(
-          'Failed to fetch rate per hour. Please try again.'
+          'Failed to fetch equipment rate. Please try again.'
         );
         throw error;
       })
@@ -132,5 +132,17 @@ export class ApiService {
       .subscribe(() => {
         this.showSuccessMessage('Rental record submitted successfully!');
       });
+  }
+
+  // GET /api/customers
+  searchCustomersByOwnerId(ownerId: string, term: string): Observable<any> {
+    const url = `${this.url}/api/customers/owner/${ownerId}?search=${term}`;
+    return this.http.get(url).pipe(
+      catchError((error) => {
+        console.error('Error occurred while searching customers:', error);
+        this.showErrorMessage('Failed to search customers. Please try again.');
+        throw error;
+      })
+    );
   }
 }
