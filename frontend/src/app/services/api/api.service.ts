@@ -142,7 +142,7 @@ export class ApiService {
         console.error('Error occurred while searching customers:', error);
         this.showErrorMessage('Failed to search customers. Please try again.');
         throw error;
-      })
+      })  
     );
   }
 }

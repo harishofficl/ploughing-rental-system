@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { ApiService } from '../../../../services/api/api.service';
@@ -82,5 +82,23 @@ export class CreateRentalRecordsComponent implements OnInit {
   searchCustomers(event: Event): void {
     const term = (event.target as HTMLInputElement).value;
     this.searchTerms.next(term);
+  }
+
+  selectCustomer(customer: any): void {
+    this.rentalForm.patchValue({ customerId: customer.id });
+    (document.getElementById('customer') as HTMLInputElement).value = customer.name;
+    this.customers = [];
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.search-customer-input') && !target.closest('.suggestions')) {
+      if (!this.rentalForm.get('customerId')?.value) {
+        this.rentalForm.patchValue({ customerId: '' });
+        (document.getElementById('customer') as HTMLInputElement).value = '';
+      }
+      this.customers = [];
+    }
   }
 }

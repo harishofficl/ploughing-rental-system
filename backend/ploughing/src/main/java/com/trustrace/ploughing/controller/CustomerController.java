@@ -81,10 +81,13 @@ public class CustomerController {
     // findByOwnerIdAndContainsName -> /api/customers/owner/{ownerId}?search=${term}
     @GetMapping("/owner/{ownerId}")
     public ResponseEntity<ApiResponse<List<Customer>>> getCustomersByOwnerIdContainsName(@PathVariable String ownerId, @RequestParam String search) {
-        List<Customer> customers = customerService.getCustomersByOwnerIdContainsName(ownerId, search==null?"":search);
-        if(customers.isEmpty()) {
-            return ResponseEntity.status(404).body(new ApiResponse<>(false, "No customers found", null));
+        if(ownerId == null || ownerId.isEmpty() ) {
+            return ResponseEntity.status(400).body(new ApiResponse<>(false, "Owner ID is required", null));
         }
+        if( search == null || search.isEmpty() ) {
+            return ResponseEntity.status(200).body(new ApiResponse<>(true, "At least 1 char required to search", List.of()));
+        }
+        List<Customer> customers = customerService.getCustomersByOwnerIdContainsName(ownerId, search);
         return ResponseEntity.ok(new ApiResponse<>(true, "Customers retrieved successfully", customers));
     }
 }

@@ -12,6 +12,7 @@
 }
 
 .form-group {
+  position: relative;
   display: flex;
   align-items: center;
   margin-bottom: 1.5rem;
@@ -31,6 +32,11 @@ select:hover {
   cursor: pointer;
 }
 
+.customer-search {
+  position: relative;
+  width: 60%;
+}
+
 .form-control {
   width: 60%;
   padding: 0.5rem;
@@ -38,6 +44,20 @@ select:hover {
   border-radius: 0.25rem;
   font-weight: 700;
   color: rgb(var(--colors-gray-600));
+}
+
+select.form-control, .search-customer-input {
+  appearance: none;
+  background: url('../../../../../../public/arrow-down.png') no-repeat right 0.75rem center;
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-color: white;
+  padding-right: 2rem;
+  background-size: 0.75rem;
+}
+
+.search-customer-input {
+  width: 100%;
 }
 
 .form-control:focus {
@@ -64,6 +84,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -71,13 +95,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border-radius: 0.25rem;
   max-height: 150px;
   overflow-y: auto;
+  background-color: white;
+  z-index: 1000;
 }
 
 .suggestions li {
   padding: 0.5rem;
   cursor: pointer;
+  border-bottom: 1px solid rgb(var(--colors-gray-300));
 }
 
 .suggestions li:hover {
-  background-color: rgb(var(--colors-gray-200));
+  background-color: rgb(var(--colors-blue-200));
 }
