@@ -36,4 +36,4 @@ build/
 logs/*
 *.log
 
-secret-keys.properties
+src/main/resources/secret-keys.properties
