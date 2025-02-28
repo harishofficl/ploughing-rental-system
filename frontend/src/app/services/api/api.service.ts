@@ -73,6 +73,27 @@ export class ApiService {
       });
   }
 
+  // POST /api/gps
+  postGpsLocation(gpsObject: any) {
+    const url = `${this.url}/api/gps`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    this.http
+      .post(url, gpsObject, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error occurred while submitting GPS location:', error);
+          this.showErrorMessage(
+            'Failed to submit the GPS location. Please try again.'
+          );
+          throw error;
+        })
+      )
+      .subscribe(() => {
+        console.log('GPS location submitted successfully!');
+      });
+  }
+
   // GET /api/drivers
   getDriversByOwnerId(ownerId: string): Observable<any> {
     const url = `${this.url}/api/owners/${ownerId}/drivers`;
@@ -135,6 +156,26 @@ export class ApiService {
       });
   }
 
+  // PUT /api/vehicles/{vehicleId}/add-fuel?addFuel={fuelAmount}
+  addFuel(fuelData: any) {
+    const url = `${this.url}/api/vehicles/${fuelData.vehicleId}/add-fuel?addFuel=${fuelData.fuelAmount}`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    this.http
+      .put(url, null, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error occurred while adding fuel:', error);
+          this.showErrorMessage('Failed to add fuel. Please try again.');
+          throw error;
+        })
+      )
+      .subscribe(() => {
+        this.showSuccessMessage('Fuel added successfully!');
+      });
+  }
+
+
   // GET /api/customers
   searchCustomersByOwnerId(ownerId: string, term: string): Observable<any> {
     const url = `${this.url}/api/customers/owner/${ownerId}?search=${term}`;
@@ -144,6 +185,30 @@ export class ApiService {
         this.showErrorMessage('Failed to search customers. Please try again.');
         throw error;
       })  
+    );
+  }
+
+  // GET /api/driver/{driverId}
+  getDriverById(driverId: string): Observable<any> {
+    const url = `${this.url}/api/drivers/${driverId}`;
+    return this.http.get(url).pipe(
+      catchError((error) => {
+        console.error('Error occurred while fetching driver:', error);
+        this.showErrorMessage('Failed to fetch driver. Please try again.');
+        throw error;
+      })
+    );
+  }
+
+  // GET /api/vehicles/owner/{ownerId}
+  getVehiclesByOwnerId(ownerId: string): Observable<any> {
+    const url = `${this.url}/api/vehicles/owner/${ownerId}`;
+    return this.http.get(url).pipe(
+      catchError((error) => {
+        console.error('Error occurred while fetching vehicles:', error);
+        this.showErrorMessage('Failed to fetch vehicles. Please try again.');
+        throw error;
+      })
     );
   }
 }

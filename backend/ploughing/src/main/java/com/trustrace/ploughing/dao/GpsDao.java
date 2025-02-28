@@ -41,12 +41,6 @@ public class GpsDao {
         return mongoTemplate.find(query, Gps.class);
     }
 
-    public List<Gps> findByVehicleId(String vehicleId) {
-        logger.info("Fetching GPS data for vehicle ID: {}", vehicleId);
-        Query query = new Query(Criteria.where("vehicleId").is(vehicleId));
-        return mongoTemplate.find(query, Gps.class);
-    }
-
     public void deleteById(String id) {
         logger.info("Deleting GPS record by ID: {}", id);
         Query query = new Query(Criteria.where("id").is(id));

@@ -47,15 +47,6 @@ public class GpsController {
         return ResponseEntity.ok(new ApiResponse<>(true, "GPS data retrieved successfully", gpsData));
     }
 
-    @GetMapping("/vehicle/{vehicleId}")
-    public ResponseEntity<ApiResponse<List<Gps>>> getGpsDataByVehicleId(@PathVariable String vehicleId) {
-        List<Gps> gpsData = gpsService.getGpsDataByVehicleId(vehicleId);
-        if (gpsData.isEmpty()) {
-            return ResponseEntity.status(404).body(new ApiResponse<>(false, "No GPS data found for this vehicle", null));
-        }
-        return ResponseEntity.ok(new ApiResponse<>(true, "GPS data retrieved successfully", gpsData));
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteGpsData(@PathVariable String id) {
         boolean isDeleted = gpsService.deleteGpsData(id);

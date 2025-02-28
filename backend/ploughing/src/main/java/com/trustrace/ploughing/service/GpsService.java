@@ -30,10 +30,6 @@ public class GpsService {
         return gpsDao.findByDriverId(driverId);
     }
 
-    public List<Gps> getGpsDataByVehicleId(String vehicleId) {
-        return gpsDao.findByVehicleId(vehicleId);
-    }
-
     public boolean deleteGpsData(String id) {
         Optional<Gps> existingGps = gpsDao.findById(id);
         if (existingGps.isPresent()) {

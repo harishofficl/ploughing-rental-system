@@ -4,10 +4,7 @@
       <div class="sidebar-content-container">
         <!-- Dashboard -->
         <div class="sidebar-content sidebar-dashboard-container flex">
-          <button
-            class="sidebar-button sidebar-content-button flex"
-            [routerLink]="['./']"
-          >
+          <button class="sidebar-button sidebar-content-button flex" [routerLink]="['./']">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -52,9 +49,10 @@
                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
               ></path>
             </svg>
-            <h3 class="sidebar-content-heading">Rental Records</h3>
+            <h3 class="sidebar-content-heading">Vehicle</h3>
             <svg
               class="sidebar-content-arrow"
+              [class]="isRentalOpen ? '' : 'rotate-90'"
               xmlns="http://www.w3.org/2000/svg"
               width="10"
               height="6"
@@ -70,17 +68,8 @@
         </div>
 
         <div class="sidebar-inner-content flex" *ngIf="isRentalOpen">
-          <button
-            class="sidebar-button sidebar-inner-content-button"
-            [routerLink]="['./create-rental-records']"
-          >
-            <p class="sidebar-inner-content-heading">Add Rental Record</p>
-          </button>
-          <button
-            class="sidebar-button sidebar-inner-content-button"
-            [routerLink]="['./manage-rental-records']"
-          >
-            <p class="sidebar-inner-content-heading">Manage Rental Record</p>
+          <button class="sidebar-button sidebar-inner-content-button" [routerLink]="['./add-fuel']">
+            <p class="sidebar-inner-content-heading">Add Fuel</p>
           </button>
         </div>
 
@@ -109,6 +98,7 @@
             <h3 class="sidebar-content-heading">Drivers</h3>
             <svg
               class="sidebar-content-arrow"
+              [class]="isDriverOpen ? '' : 'rotate-90'"
               xmlns="http://www.w3.org/2000/svg"
               width="10"
               height="6"
@@ -124,16 +114,10 @@
         </div>
 
         <div class="sidebar-inner-content flex" *ngIf="isDriverOpen">
-          <button
-            class="sidebar-button sidebar-inner-content-button"
-            [routerLink]="['create-driver']"
-          >
+          <button class="sidebar-button sidebar-inner-content-button" [routerLink]="['create-driver']">
             <p class="sidebar-inner-content-heading">Create Driver</p>
           </button>
-          <button
-            class="sidebar-button sidebar-inner-content-button"
-            [routerLink]="['manage-drivers']"
-          >
+          <button class="sidebar-button sidebar-inner-content-button" [routerLink]="['manage-drivers']">
             <p class="sidebar-inner-content-heading">Manage Drivers</p>
           </button>
         </div>
@@ -163,6 +147,7 @@
             <h3 class="sidebar-content-heading">Equipments</h3>
             <svg
               class="sidebar-content-arrow"
+              [class]="isEquipmentOpen ? '' : 'rotate-90'"
               xmlns="http://www.w3.org/2000/svg"
               width="10"
               height="6"
@@ -178,16 +163,10 @@
         </div>
 
         <div class="sidebar-inner-content flex" *ngIf="isEquipmentOpen">
-          <button
-            class="sidebar-button sidebar-inner-content-button"
-            [routerLink]="['./add-equipment']"
-          >
+          <button class="sidebar-button sidebar-inner-content-button" [routerLink]="['./add-equipment']">
             <p class="sidebar-inner-content-heading">Add Equipment</p>
           </button>
-          <button
-            class="sidebar-button sidebar-inner-content-button"
-            [routerLink]="['./manage-equipments']"
-          >
+          <button class="sidebar-button sidebar-inner-content-button" [routerLink]="['./manage-equipments']">
             <p class="sidebar-inner-content-heading">Manage Equipment</p>
           </button>
         </div>

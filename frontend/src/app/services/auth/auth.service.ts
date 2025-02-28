@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 export class AuthService {
   admin = { id: '67bd4a6b4eb4a03303ce1624', name: 'Super Admin'};
   owner = { id: '67bd4a974eb4a03303ce1625', name: 'Sangeetha S'};
-  driver = { id: '67bd4c104eb4a03303ce1628', name: 'Rajan'};
+  driver = { id: '67bd53c04874837ebcce0a36', name: 'Kumar'};
 
   currentUser;
   isAuthenticated: boolean = false;

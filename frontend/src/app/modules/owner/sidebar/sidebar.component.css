@@ -64,6 +64,10 @@
   height: 0.75rem;
 }
 
+.rotate-90 {
+  transform: rotate(-90deg);
+}
+
 .sidebar-inner-content {
   margin-left: 2.2rem;
   margin-top: 0.5rem;

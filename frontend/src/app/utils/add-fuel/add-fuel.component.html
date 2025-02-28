@@ -1,0 +1,20 @@
+<div class="main-header">
+    <h1 class="main-heading">Add Fuel</h1>
+  </div>
+  
+  <form [formGroup]="fuelForm" (ngSubmit)="onSubmit()" class="create-driver-form">
+    <div class="form-group">
+      <label for="vehicleId" class="form-label">Select Vehicle <span class="required-asterisk">*</span></label>
+      <select id="vehicleId" formControlName="vehicleId" class="form-control">
+        <option value="" disabled>Select a vehicle</option>
+        <option *ngFor="let vehicle of vehicles" [value]="vehicle.id">{{ vehicle.name }}</option>
+      </select>
+    </div>
+  
+    <div class="form-group">
+      <label for="fuelAmount" class="form-label">Fuel Amount (litres) <span class="required-asterisk">*</span></label>
+      <input id="fuelAmount" formControlName="fuelAmount" type="number" class="form-control" placeholder="Enter fuel amount in litres">
+    </div>
+  
+    <button type="submit" class="submit-button" [disabled]="fuelForm.invalid">Add Fuel</button>
+  </form>

@@ -11,7 +11,7 @@ export class GpsService {
     const options = {
       enableHighAccuracy: true,
       timeout: 5000,
-      maximumAge: 0,
+      maximumAge: 60000,
     };
 
     return new Promise((resolve, reject) => {

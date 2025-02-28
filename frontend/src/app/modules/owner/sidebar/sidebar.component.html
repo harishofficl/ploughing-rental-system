@@ -52,6 +52,7 @@
             <h3 class="sidebar-content-heading">Rental Records</h3>
             <svg
               class="sidebar-content-arrow"
+              [class]="isRentalOpen ? '' : 'rotate-90'"
               xmlns="http://www.w3.org/2000/svg"
               width="10"
               height="6"
@@ -100,6 +101,7 @@
             <h3 class="sidebar-content-heading">Drivers</h3>
             <svg
               class="sidebar-content-arrow"
+              [class]="isDriverOpen ? '' : 'rotate-90'"
               xmlns="http://www.w3.org/2000/svg"
               width="10"
               height="6"
@@ -148,6 +150,7 @@
             <h3 class="sidebar-content-heading">Equipments</h3>
             <svg
               class="sidebar-content-arrow"
+              [class]="isEquipmentOpen ? '' : 'rotate-90'"
               xmlns="http://www.w3.org/2000/svg"
               width="10"
               height="6"
@@ -170,8 +173,6 @@
             <p class="sidebar-inner-content-heading">Manage Equipment</p>
           </button>
         </div>
-
-        
       </div>
     </div>
   </div>
