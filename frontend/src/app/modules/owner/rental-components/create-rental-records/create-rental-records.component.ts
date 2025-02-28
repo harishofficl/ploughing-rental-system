@@ -76,13 +76,13 @@ export class CreateRentalRecordsComponent implements OnInit {
   }
 
   onSubmit() {
-    this.changeCustomerDisplay = false;
-    const customerInput = document.getElementById('customer') as HTMLInputElement;
-    customerInput.disabled = false;
-
-    if (this.rentalForm.valid) {
+      if (this.rentalForm.valid) {
       const rentalData = this.rentalForm.getRawValue();
       this.api.postRentalRecord(rentalData);
+
+      this.changeCustomerDisplay = false;
+      const customerInput = document.getElementById('customer') as HTMLInputElement;
+      customerInput.disabled = false;
 
       // Reset form
       this.rentalForm.reset();
