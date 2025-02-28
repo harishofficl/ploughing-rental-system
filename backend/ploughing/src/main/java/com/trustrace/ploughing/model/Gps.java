@@ -15,8 +15,7 @@ import java.time.LocalDateTime;
 public class Gps {
     @Id private String id;
     private String driverId;
-    private String vehicleId;
     private String latitude;
     private String longitude;
-    private LocalDateTime timeStamp;
+    private String timeStamp;
 }

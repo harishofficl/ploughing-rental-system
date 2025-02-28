@@ -6,6 +6,7 @@ import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { NavBarComponent } from "../../utils/nav-bar/nav-bar.component";
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     CommonModule,
     DriverRoutingModule,
     FormsModule,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+    NavBarComponent
+]
 })
 export class DriverModule { }
