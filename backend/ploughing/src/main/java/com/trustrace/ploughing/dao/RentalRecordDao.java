@@ -21,9 +21,13 @@ public class RentalRecordDao {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    @Autowired
+    private EquipmentDao equipmentDao;
+
     public RentalRecord save(RentalRecord rentalRecord) {
         logger.info("Saving RentalRecord: {}", rentalRecord);
         rentalRecord.setCreatedAt(LocalDateTime.now());
+        rentalRecord.setEquipment(equipmentDao.findById(rentalRecord.getEquipment()).get().getName());
         return mongoTemplate.save(rentalRecord);
     }
 

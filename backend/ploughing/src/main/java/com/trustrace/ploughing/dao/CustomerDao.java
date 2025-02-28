@@ -72,6 +72,11 @@ public class CustomerDao {
     public List<Customer> findByOwnerIdAndContainsName(String ownerId, String term) {
         logger.info("Fetching customers for Owner ID: {} and Name contains: {}", ownerId, term);
         Query query = new Query(Criteria.where("ownerId").is(ownerId).and("name").regex(term, "i"));
-        return mongoTemplate.find(query, Customer.class);
+        List<Customer> customers = mongoTemplate.find(query, Customer.class);
+        if(customers.isEmpty()) {
+            logger.info("No customers found for Owner ID: {} and Name contains: {}", ownerId, term);
+            return List.of();
+        }
+        return customers;
     }
 }

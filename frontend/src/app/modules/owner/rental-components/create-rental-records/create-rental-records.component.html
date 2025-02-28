@@ -3,13 +3,17 @@
 </div>
 
 <form [formGroup]="rentalForm" (ngSubmit)="onSubmit()" class="create-rental-form">
-  <div class="form-group">
+  <div class="form-group search-customer-container">
     <label for="customer" class="form-label">Customer <span class="required-asterisk">*</span></label>
     <div class="customer-search">
       <input id="customer" formControlName="customerId" type="text" class="form-control search-customer-input" (input)="searchCustomers($event)" placeholder="Search Customer">
         <ul *ngIf="customers.length > 0" class="suggestions">
           <li *ngFor="let customer of customers" (click)="selectCustomer(customer)">{{ customer.name }}</li>
         </ul>
+        <div class="customer-clear-button-container flex">
+          <button class="clear-button" *ngIf="changeCustomerDisplay" (click)="changeCustomer()">Change Customer</button>
+        </div>
+        <p class="no-customer-text" *ngIf="noCustomerDisplay && customers.length === 0 && (searchTerms | async) !== null">No customers found</p>
     </div>
   </div>
 
@@ -51,7 +55,7 @@
 
   <div class="form-group">
     <label for="isPaid" class="form-label">Paid</label>
-    <select id="isPaid" formControlName="isPaid" class="form-control">
+    <select id="isPaid" formControlName="paid" class="form-control">
       <option [value]="true">Paid</option>
       <option [value]="false" [selected]="true">Unpaid</option>
     </select>

@@ -26,5 +26,5 @@ public class RentalRecord {
     private double totalCost;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private boolean isPaid = false;
+    private boolean paid = false;
 }

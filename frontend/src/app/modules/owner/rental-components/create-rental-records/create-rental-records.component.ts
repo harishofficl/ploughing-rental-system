@@ -16,7 +16,9 @@ export class CreateRentalRecordsComponent implements OnInit {
   drivers: any[] = [];
   equipment: any[] = [];
   customers: any[] = [];
-  private searchTerms = new Subject<string>();
+  noCustomerDisplay: boolean = false;
+  changeCustomerDisplay: boolean = false;
+  public searchTerms = new Subject<string>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -34,7 +36,7 @@ export class CreateRentalRecordsComponent implements OnInit {
       hoursUsed: ['', [Validators.required, Validators.min(0)]],
       ratePerHour: [{ value: '', disabled: true }],
       totalCost: [{ value: '', disabled: true }],
-      isPaid: [false, Validators.required],
+      paid: [false, Validators.required],
     });
   }
 
@@ -52,6 +54,7 @@ export class CreateRentalRecordsComponent implements OnInit {
       switchMap(term => this.api.searchCustomersByOwnerId(this.ownerId, term))
     ).subscribe((customers) => {
       this.customers = customers.data;
+      this.noCustomerDisplay = customers.data.length === 0;
     });
   }
 
@@ -73,9 +76,19 @@ export class CreateRentalRecordsComponent implements OnInit {
   }
 
   onSubmit() {
+    this.changeCustomerDisplay = false;
+    const customerInput = document.getElementById('customer') as HTMLInputElement;
+    customerInput.disabled = false;
+
     if (this.rentalForm.valid) {
       const rentalData = this.rentalForm.getRawValue();
       this.api.postRentalRecord(rentalData);
+
+      // Reset form
+      this.rentalForm.reset();
+      this.rentalForm.patchValue({ ownerId: this.auth.currentUserId });
+      this.rentalForm.patchValue({ date: new Date().toISOString().split('T')[0] });
+      this.rentalForm.patchValue({ paid: false });
     }
   }
 
@@ -86,19 +99,18 @@ export class CreateRentalRecordsComponent implements OnInit {
 
   selectCustomer(customer: any): void {
     this.rentalForm.patchValue({ customerId: customer.id });
-    (document.getElementById('customer') as HTMLInputElement).value = customer.name;
+    const customerInput = document.getElementById('customer') as HTMLInputElement;
+    customerInput.value = customer.name;
+    customerInput.disabled = true;
+    this.changeCustomerDisplay = true;
     this.customers = [];
   }
 
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event: Event) {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.search-customer-input') && !target.closest('.suggestions')) {
-      if (!this.rentalForm.get('customerId')?.value) {
-        this.rentalForm.patchValue({ customerId: '' });
-        (document.getElementById('customer') as HTMLInputElement).value = '';
-      }
-      this.customers = [];
-    }
+  changeCustomer(): void {
+    this.rentalForm.patchValue({ customerId: '' });
+    const customerInput = document.getElementById('customer') as HTMLInputElement;
+    customerInput.disabled = false;
+    customerInput.focus();
+    this.changeCustomerDisplay = false;
   }
 }

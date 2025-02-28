@@ -88,6 +88,9 @@ public class CustomerController {
             return ResponseEntity.status(200).body(new ApiResponse<>(true, "At least 1 char required to search", List.of()));
         }
         List<Customer> customers = customerService.getCustomersByOwnerIdContainsName(ownerId, search);
+        if(customers.isEmpty()) {
+            return ResponseEntity.status(200).body(new ApiResponse<>(true, "No customers found", List.of()));
+        }
         return ResponseEntity.ok(new ApiResponse<>(true, "Customers retrieved successfully", customers));
     }
 }
