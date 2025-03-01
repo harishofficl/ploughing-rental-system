@@ -93,4 +93,14 @@ public class CustomerController {
         }
         return ResponseEntity.ok(new ApiResponse<>(true, "Customers retrieved successfully", customers));
     }
+
+    // countByOwnerId -> /api/customers/owner/{ownerId}/customers-count
+    @GetMapping("/owner/{ownerId}/customers-count")
+    public ResponseEntity<ApiResponse<Long>> getCustomerCountByOwnerId(@PathVariable String ownerId) {
+        if(ownerId == null || ownerId.isEmpty() ) {
+            return ResponseEntity.status(400).body(new ApiResponse<>(false, "Owner ID is required", null));
+        }
+        long count = customerService.getCustomerCountByOwnerId(ownerId);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Customers count retrieved successfully", count));
+    }
 }

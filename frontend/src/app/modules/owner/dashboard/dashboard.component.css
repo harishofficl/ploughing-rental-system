@@ -2,17 +2,13 @@
   margin-bottom: 1.5rem;
 }
 
-.welcome-card {
-  background-color: white;
-  color: var(--colors-gray-800);
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
-  padding: 1rem 1.5rem;
-  min-height: 10rem;
-  width: 30%;
+.body-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
 }
 
-.welcome-card {
+.dashboard-card {
   background-color: white;
   color: var(--colors-gray-800);
   border-radius: 0.5rem;
@@ -40,4 +36,121 @@
 .welcome-name {
   font-size: 1.5rem;
   font-weight: 700;
+}
+
+.total-outstanding-bill-text-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+}
+
+.total-outstanding-bill-text {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.total-outstanding-bill-amount {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.total-customers-text-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+}
+
+.total-customers-text {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.total-customers-count {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.add-rental-record-container {
+  margin-left: 0.5rem;
+}
+
+.add-rental-record-text-container {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.add-rental-record-text-container > svg {
+  margin-right: 0.5rem;
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.add-rental-record-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.add-rental-record-button-container {
+  display: flex;
+}
+
+.add-rental-record-button {
+  background-color: rgb(14 165 233);
+  color: white;
+  border: none;
+  width: 10rem;
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-rental-record-button:hover {
+  background-color: rgb(10 120 180);
+}
+
+.bill-customer-card {
+  display: flex;
+  align-items: center;
+  min-height: 10rem;
+  width: 30%;
+}
+
+.bill-customer-container {
+  margin-left: 0.5rem;
+}
+
+.bill-customer-text-container {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.bill-customer-text-container > svg {
+  margin-right: 0.5rem;
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.bill-customer-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.bill-customer-button {
+  background-color: rgb(14 165 233);
+  color: white;
+  border: none;
+  width: 10rem;
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.bill-customer-button:hover {
+  background-color: rgb(10 120 180);
 }

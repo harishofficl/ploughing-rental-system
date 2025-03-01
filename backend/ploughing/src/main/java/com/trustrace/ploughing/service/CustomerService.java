@@ -48,8 +48,14 @@ public class CustomerService {
         }
         return false;
     }
+
     // Get customers by ownerId and contains name
     public List<Customer> getCustomersByOwnerIdContainsName(String ownerId, String term) {
         return customerDao.findByOwnerIdAndContainsName(ownerId, term);
+    }
+
+    // get customer count by ownerId
+    public long getCustomerCountByOwnerId(String ownerId) {
+        return customerDao.countByOwnerId(ownerId);
     }
 }

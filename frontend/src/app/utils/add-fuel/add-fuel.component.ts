@@ -37,9 +37,7 @@ export class AddFuelComponent {
     if (this.fuelForm.valid) {
       const fuelData = this.fuelForm.value;
       this.api.addFuel(fuelData);
-
-      this.fuelForm.patchValue({ vehicleId: "" });
-      this.fuelForm.get('fuelAmount')?.reset();
+      this.fuelForm.patchValue({ vehicleId: "", fuelAmount: "" });
     }
   }
 }

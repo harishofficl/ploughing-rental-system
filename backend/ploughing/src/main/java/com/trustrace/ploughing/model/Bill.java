@@ -8,24 +8,18 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "rental_records")
-public class RentalRecord {
+@Document(collection = "bills")
+public class Bill {
     @Id private String id;
     private String ownerId;
-    private String driverId;
     private String customerId;
-    private String equipment;
-    private Date date;
-    private double hoursUsed;
-    private double ratePerHour;
-    private double totalCost;
+    private double totalAmount;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private boolean paid = false;
-    private boolean billed = false;
+    private List<String> rentalRecordIds;
+    private boolean paid;
 }

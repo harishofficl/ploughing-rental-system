@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 })
 export class AuthService {
   admin = { id: '67bd4a6b4eb4a03303ce1624', name: 'Super Admin'};
-  owner = { id: '67bd4a974eb4a03303ce1625', name: 'Sangeetha S'};
+  owner = { id: '67bd4a974eb4a03303ce1625', name: 'Seenivasan R'};
   driver = { id: '67bd53c04874837ebcce0a36', name: 'Kumar'};
 
   currentUser;

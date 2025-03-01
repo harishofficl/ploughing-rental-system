@@ -31,6 +31,15 @@ export class ApiService {
     });
   }
 
+  // Warning alert
+  private showWarningMessage(message: string) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Warning',
+      text: message,
+    });
+  }
+
   // POST /api/drivers
   postDriver(driverJson: any) {
     const url = `${this.url}/api/drivers`;
@@ -73,6 +82,27 @@ export class ApiService {
       });
   }
 
+  // POST api/vehicles
+  postVehicle(vehicleJson: any) {
+    const url = `${this.url}/api/vehicles`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    this.http
+      .post(url, vehicleJson, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error occurred while submitting vehicle:', error);
+          this.showErrorMessage(
+            'Failed to submit the vehicle. Please try again.'
+          );
+          throw error;
+        })
+      )
+      .subscribe(() => {
+        this.showSuccessMessage('Vehicle submitted successfully!');
+      });
+  }
+
   // POST /api/gps
   postGpsLocation(gpsObject: any) {
     const url = `${this.url}/api/gps`;
@@ -91,6 +121,24 @@ export class ApiService {
       )
       .subscribe(() => {
         console.log('GPS location submitted successfully!');
+      });
+  }
+
+  // POST /api/bills
+  postBill(billData: any){
+    const url = `${this.url}/api/bills`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    this.http
+      .post(url, billData, { headers })
+      .pipe(
+        catchError((error) => {
+          this.showErrorMessage('Failed to submit the bill record. Please try again.');
+          throw error;
+        })
+      )
+      .subscribe((response: any) => {
+        this.showSuccessMessage(response.message);
       });
   }
 
@@ -175,7 +223,6 @@ export class ApiService {
       });
   }
 
-
   // GET /api/customers
   searchCustomersByOwnerId(ownerId: string, term: string): Observable<any> {
     const url = `${this.url}/api/customers/owner/${ownerId}?search=${term}`;
@@ -184,7 +231,7 @@ export class ApiService {
         console.error('Error occurred while searching customers:', error);
         this.showErrorMessage('Failed to search customers. Please try again.');
         throw error;
-      })  
+      })
     );
   }
 
@@ -210,5 +257,50 @@ export class ApiService {
         throw error;
       })
     );
+  }
+
+  // GET /api/rental-records/owner/{ownerId}/total-outstanding-amount
+  getOutstandingBillAmount(ownerId: string): Observable<any> {
+    const url = `${this.url}/api/rental-records/owner/${ownerId}/total-outstanding-amount`;
+    return this.http.get(url).pipe(
+      catchError((error) => {
+        console.error(
+          'Error occurred while fetching outstanding bill amount:',
+          error
+        );
+        this.showErrorMessage(
+          'Failed to fetch outstanding bill amount. Please try again.'
+        );
+        throw error;
+      })
+    );
+  }
+
+  // GET /api/rental-records/owner/{ownerId}/customers-count
+  getCustomersCount(ownerId: string): Observable<any> {
+    const url = `${this.url}/api/customers/owner/${ownerId}/customers-count`;
+    return this.http.get(url).pipe(
+      catchError((error) => {
+        console.error('Error occurred while fetching customers count:', error);
+        this.showErrorMessage(
+          'Failed to fetch customers count. Please try again.'
+        );
+        throw error;
+      })
+    );
+  }
+
+  // getUnpaidRecordsByCustomerId -> GET /api/rental-records/customer/{customerId}/unpaid-records
+  getUnpaidRecordsByCustomerId(customerId: string): Observable<any>{
+    const url = `${this.url}/api/rental-records/customer/${customerId}/unpaid-records`;
+    const response = this.http.get(url);
+    response.subscribe((data: any) => {
+      if(data.success === false){
+        this.showWarningMessage(data.message);
+        return null;
+      }
+      return response;
+    });
+    return response;
   }
 }

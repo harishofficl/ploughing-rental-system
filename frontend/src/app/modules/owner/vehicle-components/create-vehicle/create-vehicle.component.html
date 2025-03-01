@@ -1,0 +1,12 @@
+<div class="main-header">
+    <h1 class="main-heading">Create Vehicle</h1>
+</div>
+  
+<form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()" class="create-vehicle-form">
+    <div class="form-group">
+      <label for="name" class="form-label">Vehicle Name <span class="required-asterisk">*</span></label>
+      <input id="name" formControlName="name" type="text" class="form-control" placeholder="Enter vehicle's name">
+    </div>
+  
+    <button type="submit" class="submit-button" [disabled]="vehicleForm.invalid">Create Vehicle</button>
+</form>

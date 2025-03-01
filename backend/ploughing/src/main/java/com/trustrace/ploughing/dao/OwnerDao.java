@@ -7,6 +7,8 @@ import com.trustrace.ploughing.model.people.Owner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -172,4 +174,8 @@ public class OwnerDao {
         return mongoTemplate.find(query, Vehicle.class);
     }
 
+    // pagination
+    // get all equipments by their ids
+    // get all drivers by their ids
+    // get all vehicles by their ids
 }

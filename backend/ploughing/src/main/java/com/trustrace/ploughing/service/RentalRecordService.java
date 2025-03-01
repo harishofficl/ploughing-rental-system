@@ -33,6 +33,11 @@ public class RentalRecordService {
     public List<RentalRecord> getRentalRecordsByDriverId(String driverId) {
         return rentalRecordDao.findByDriverId(driverId);
     }
+
+    public List<RentalRecord> getRentalRecordsByCustomerId(String customerId) {
+        return rentalRecordDao.findByCustomerId(customerId);
+    }
+
     public RentalRecord updateRentalRecord(String id, RentalRecord rentalRecord) {
         return rentalRecordDao.updateById(id, rentalRecord);
     }
@@ -44,5 +49,13 @@ public class RentalRecordService {
             return true;
         }
         return false;
+    }
+
+    public double getTotalRentalAmountByOwnerId(String ownerId) {
+        return rentalRecordDao.getTotalRentalAmountByOwnerId(ownerId);
+    }
+
+    public List<RentalRecord> getUnpaidRentalRecordsByCustomerId(String customerId) {
+        return rentalRecordDao.getUnpaidRentalRecordsByCustomerId(customerId);
     }
 }

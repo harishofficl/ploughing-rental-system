@@ -53,6 +53,12 @@ public class RentalRecordDao {
         return mongoTemplate.find(query, RentalRecord.class);
     }
 
+    public List<RentalRecord> findByCustomerId(String customerId) {
+        logger.info("Fetching RentalRecords for Customer ID: {}", customerId);
+        Query query = new Query(Criteria.where("customerId").is(customerId));
+        return mongoTemplate.find(query, RentalRecord.class);
+    }
+
     // Update RentalRecord by ID
     public RentalRecord updateById(String id, RentalRecord rentalRecord) {
         logger.info("Updating RentalRecord by ID: {}", id);
@@ -62,10 +68,25 @@ public class RentalRecordDao {
         return mongoTemplate.save(rentalRecord);
     }
 
-
     public void deleteById(String id) {
         logger.info("Deleting RentalRecord by ID: {}", id);
         Query query = new Query(Criteria.where("id").is(id));
         mongoTemplate.remove(query, RentalRecord.class);
     }
+
+    // Get total rental amount for a given owner
+    public double getTotalRentalAmountByOwnerId(String ownerId) {
+        logger.info("Fetching total pending rental amount for Owner ID: {}", ownerId);
+        Query query = new Query(Criteria.where("ownerId").is(ownerId).and("paid").is(false));
+        List<RentalRecord> rentalRecords = mongoTemplate.find(query, RentalRecord.class);
+        return rentalRecords.stream().mapToDouble(RentalRecord::getTotalCost).sum();
+    }
+
+    // Get rental records for customer id that are unpaid and un-billed
+    public List<RentalRecord> getUnpaidRentalRecordsByCustomerId(String customerId) {
+        logger.info("Fetching total pending rental amount for Customer ID: {}", customerId);
+        Query query = new Query(Criteria.where("customerId").is(customerId).and("paid").is(false).and("billed").is(false));
+        return mongoTemplate.find(query, RentalRecord.class);
+    }
+
 }

@@ -79,4 +79,11 @@ public class CustomerDao {
         }
         return customers;
     }
+
+    // total customers count by owner id
+    public long countByOwnerId(String ownerId) {
+        logger.info("Fetching total customers count for Owner ID: {}", ownerId);
+        Query query = new Query(Criteria.where("ownerId").is(ownerId));
+        return mongoTemplate.count(query, Customer.class);
+    }
 }

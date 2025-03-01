@@ -56,6 +56,15 @@ public class RentalRecordController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Rental records retrieved successfully", rentalRecords));
     }
 
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<ApiResponse<List<RentalRecord>>> getRentalRecordsByCustomerId(@PathVariable String customerId) {
+        List<RentalRecord> rentalRecords = rentalRecordService.getRentalRecordsByCustomerId(customerId);
+        if (rentalRecords.isEmpty()) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "No rental records found for this customer", null));
+        }
+        return ResponseEntity.ok(new ApiResponse<>(true, "Rental records retrieved successfully", rentalRecords));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<RentalRecord>> updateRentalRecord(@PathVariable String id, @RequestBody RentalRecord rentalRecord) {
         Optional<RentalRecord> existingRecord = rentalRecordService.getRentalRecordById(id);
@@ -74,5 +83,20 @@ public class RentalRecordController {
             return ResponseEntity.status(404).body(new ApiResponse<>(false, "Rental record not found", null));
         }
         return ResponseEntity.ok(new ApiResponse<>(true, "Rental record deleted successfully", null));
+    }
+
+    @GetMapping("/owner/{ownerId}/total-outstanding-amount")
+    public ResponseEntity<ApiResponse<Double>> getTotalRentalAmountByOwnerId(@PathVariable String ownerId) {
+        double totalAmount = rentalRecordService.getTotalRentalAmountByOwnerId(ownerId);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Total rental amount retrieved successfully", totalAmount));
+    }
+
+    @GetMapping("/customer/{customerId}/unpaid-records")
+    public ResponseEntity<ApiResponse<List<RentalRecord>>> getUnpaidRentalRecordsByCustomerId(@PathVariable String customerId) {
+        List<RentalRecord> rentalRecords = rentalRecordService.getUnpaidRentalRecordsByCustomerId(customerId);
+        if (rentalRecords.isEmpty()) {
+            return ResponseEntity.ok(new ApiResponse<>(false, "No unpaid rental records found for this customer", List.of()));
+        }
+        return ResponseEntity.ok(new ApiResponse<>(true, "Unpaid rental records retrieved successfully", rentalRecords));
     }
 }

@@ -17,6 +17,9 @@ import { ManageRentalRecordsComponent } from './rental-components/manage-rental-
 import { AddEquipmentComponent } from './equipment-components/add-equipment/add-equipment.component';
 import { ManageEquipmentsComponent } from './equipment-components/manage-equipments/manage-equipments.component';
 import { LoadingService } from '../../services/loading/loading.service';
+import { CreateVehicleComponent } from '../owner/vehicle-components/create-vehicle/create-vehicle.component';
+import { ManageVehiclesComponent } from '../owner/vehicle-components/manage-vehicles/manage-vehicles.component';
+import { BillCustomerComponent } from './bill-customer/bill-customer.component';
 
 const routes: Routes = [
   {
@@ -36,7 +39,7 @@ const routes: Routes = [
         component: ManageDriversComponent,
       },
       {
-        path: 'create-rental-records',
+        path: 'create-rental-record',
         component: CreateRentalRecordsComponent,
       },
       {
@@ -50,6 +53,18 @@ const routes: Routes = [
       {
         path: 'manage-equipments',
         component: ManageEquipmentsComponent,
+      },
+      {
+        path: 'add-vehicle',
+        component: CreateVehicleComponent,
+      },
+      {
+        path: 'manage-vehicles',
+        component: ManageVehiclesComponent,
+      },
+      {
+        path: 'bill-customer',
+        component: BillCustomerComponent,
       },
     ],
   },

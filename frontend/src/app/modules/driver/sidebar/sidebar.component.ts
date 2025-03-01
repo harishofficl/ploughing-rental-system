@@ -6,19 +6,11 @@ import { Component } from '@angular/core';
   styleUrl: './sidebar.component.css',
 })
 export class SidebarComponent {
-  isDriverOpen: boolean = false;
-  isEquipmentOpen: boolean = false;
-  isRentalOpen: boolean = false;
+  isVehicleOpen: boolean = false;
 
-  toggleDriver() {
-    this.isDriverOpen = !this.isDriverOpen;
+
+  toggleVehicle() {
+    this.isVehicleOpen = !this.isVehicleOpen;
   }
 
-  toggleEquipment() {
-    this.isEquipmentOpen = !this.isEquipmentOpen;
-  }
-
-  toggleRental() {
-    this.isRentalOpen = !this.isRentalOpen;
-  }
 }
