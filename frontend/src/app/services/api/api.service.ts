@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { PaymentService } from '../payment/payment.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ import Swal from 'sweetalert2';
 export class ApiService {
   private url = 'http://localhost:8080/v1';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private paymentService: PaymentService) {}
 
   // Success alert
   private showSuccessMessage(message: string) {
@@ -125,7 +126,7 @@ export class ApiService {
   }
 
   // POST /api/bills
-  postBill(billData: any){
+  postBill(billData: any, selectedCustomer: any) {
     const url = `${this.url}/api/bills`;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
@@ -139,6 +140,11 @@ export class ApiService {
       )
       .subscribe((response: any) => {
         this.showSuccessMessage(response.message);
+        // Call payment service to create payment link
+        this.paymentService.createPaymentLink(selectedCustomer.email, billData.totalAmount).subscribe(() => {
+          console.log('Bill created ✔️');
+          console.log('Payment link created ✔️');
+        });
       });
   }
 

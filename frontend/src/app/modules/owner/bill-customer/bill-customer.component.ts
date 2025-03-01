@@ -4,6 +4,7 @@ import { ApiService } from '../../../services/api/api.service';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AuthService } from '../../../services/auth/auth.service';
+import { PaymentService } from '../../../services/payment/payment.service';
 
 @Component({
   selector: 'app-bill-customer',
@@ -14,6 +15,7 @@ export class BillCustomerComponent implements OnInit {
   billForm: FormGroup;
   ownerId!: string;
   customers: any[] = [];
+  selectedCustomer!: any;
   unpaidRecords: any[] = [];
   noCustomerDisplay: boolean = false;
   changeCustomerDisplay: boolean = false;
@@ -22,7 +24,8 @@ export class BillCustomerComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
-    private authService: AuthService
+    private authService: AuthService,
+    private paymentService: PaymentService
   ) {
     this.ownerId = this.authService.currentUserId;
     this.billForm = this.fb.group({
@@ -55,6 +58,7 @@ export class BillCustomerComponent implements OnInit {
   }
 
   selectCustomer(customer: any): void {
+    this.selectedCustomer = customer;
     this.billForm.patchValue({ customerId: customer.id });
     const customerInput = document.getElementById(
       'customer'
@@ -107,7 +111,11 @@ export class BillCustomerComponent implements OnInit {
   onSubmit() {
     if (this.billForm.valid) {
       const billData = this.billForm.getRawValue();
-      this.apiService.postBill(billData);
+      // this.apiService.postBill(billData, this.selectedCustomer);
+
+      this.paymentService.createPaymentLink(this.selectedCustomer.email, billData.totalAmount).subscribe(() => {
+        console.log('Payment link created ✔️');
+      });
 
       // Reset form
       this.changeCustomerDisplay = false;
@@ -117,6 +125,7 @@ export class BillCustomerComponent implements OnInit {
       customerInput.disabled = false;
       this.billForm.patchValue({ customerId: '' });
       this.billForm.patchValue({ totalAmount: '' });
+      this.billForm.patchValue({ ownerId: this.authService.currentUserId });
       this.billForm.patchValue({ paid: false });
     }
   }
