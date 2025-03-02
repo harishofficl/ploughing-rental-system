@@ -24,11 +24,18 @@ public class PaymentController {
         try {
             String email = (String) requestBody.get("email");
             double amount = Double.parseDouble(requestBody.get("amount").toString());
+            boolean allMethods = (boolean) requestBody.get("allMethods");
 
-            String paymentLink = razorpayService.createPaymentLink(email, amount);
+            System.out.println("Email: " + email);
+            System.out.println("Amount: " + amount);
+            System.out.println("All methods: " + allMethods);
+
+            String paymentLink = razorpayService.createPaymentLink(email, amount, allMethods);
             //emailService.sendPaymentLink(email, paymentLink);
 
-            return "Payment link sent successfully!";
+            System.out.println("Payment link: " + paymentLink);
+
+            return "Payment link created successfully: " + paymentLink;
         } catch (Exception e) {
             return "Error: " + e.getMessage();
         }

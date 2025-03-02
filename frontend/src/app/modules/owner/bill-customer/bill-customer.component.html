@@ -25,8 +25,16 @@
   <div class="form-group">
     <label for="isPaid" class="form-label">Paid</label>
     <select id="isPaid" formControlName="paid" class="form-control">
-      <option [value]="true">Paid</option>
-      <option [value]="false" [selected]="true">Unpaid</option>
+      <option [ngValue]="true">Paid</option>
+      <option [ngValue]="false">Unpaid</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="allMethods" class="form-label">Payment Method</label>
+    <select id="allMethods" formControlName="allMethods" class="form-control">
+      <option [ngValue]="true">All payment methods</option>
+      <option [ngValue]="false">UPI</option>
     </select>
   </div>
 

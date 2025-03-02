@@ -9,8 +9,8 @@ export class PaymentService {
 
   constructor(private http: HttpClient) {}
 
-  createPaymentLink(email: string, amount: number) {
-    const payload = { email, amount };
+  createPaymentLink(email: string, amount: number, allMethods: boolean) {
+    const payload = { email, amount, allMethods };
     return this.http.post(`${this.url}/api/payment/link`, payload, { responseType: 'text' });
   }
 }

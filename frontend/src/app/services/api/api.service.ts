@@ -126,7 +126,7 @@ export class ApiService {
   }
 
   // POST /api/bills
-  postBill(billData: any, selectedCustomer: any) {
+  postBill(billData: any, selectedCustomer: any, paid: boolean) {
     const url = `${this.url}/api/bills`;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
@@ -139,12 +139,15 @@ export class ApiService {
         })
       )
       .subscribe((response: any) => {
+        console.log('Bill created ✔️');
         this.showSuccessMessage(response.message);
         // Call payment service to create payment link
-        this.paymentService.createPaymentLink(selectedCustomer.email, billData.totalAmount).subscribe(() => {
-          console.log('Bill created ✔️');
-          console.log('Payment link created ✔️');
-        });
+        if(!paid){
+          this.paymentService.createPaymentLink(selectedCustomer.email, billData.totalAmount, billData.allMethods).subscribe(() => {
+            console.log(billData.allMethods);
+            console.log('Payment link created ✔️');
+          });
+        }
       });
   }
 

@@ -33,6 +33,7 @@ export class BillCustomerComponent implements OnInit {
       ownerId: [this.authService.currentUserId],
       totalAmount: [{ value: '', disabled: true }],
       paid: [false, Validators.required],
+      allMethods: [false],
       rentalRecordIds: this.fb.array([]),
     });
   }
@@ -111,9 +112,11 @@ export class BillCustomerComponent implements OnInit {
   onSubmit() {
     if (this.billForm.valid) {
       const billData = this.billForm.getRawValue();
-      // this.apiService.postBill(billData, this.selectedCustomer);
 
-      this.paymentService.createPaymentLink(this.selectedCustomer.email, billData.totalAmount).subscribe(() => {
+      console.log(billData);
+      // this.apiService.postBill(billData, this.selectedCustomer, billData.paid);
+
+      this.paymentService.createPaymentLink(this.selectedCustomer.email, billData.totalAmount, billData.allMethods).subscribe(() => {
         console.log('Payment link created ✔️');
       });
 
@@ -127,6 +130,7 @@ export class BillCustomerComponent implements OnInit {
       this.billForm.patchValue({ totalAmount: '' });
       this.billForm.patchValue({ ownerId: this.authService.currentUserId });
       this.billForm.patchValue({ paid: false });
+      this.billForm.patchValue({ allMethods: false });
     }
   }
 }

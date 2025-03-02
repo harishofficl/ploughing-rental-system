@@ -28,7 +28,7 @@ public class PaymentCallBackController {
             System.out.println("Payment ID: " + paymentId);
             System.out.println("Status: " + status);
 
-            // ✅ Update database, mark order as paid
+            // ✅ Update database, mark rental record as paid
         }
 
         return "Webhook received successfully!";
