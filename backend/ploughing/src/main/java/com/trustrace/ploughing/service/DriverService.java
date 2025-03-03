@@ -3,6 +3,7 @@ package com.trustrace.ploughing.service;
 import com.trustrace.ploughing.dao.DriverDao;
 import com.trustrace.ploughing.model.people.Driver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,5 +48,9 @@ public class DriverService {
             return true;
         }
         return false;
+    }
+
+    public Page<Driver> getDriversByOwnerIdPaginatedContainingName(String ownerId, int page, int size, String search) {
+        return driverDao.getDriversByOwnerIdPaginatedContainingName(ownerId, page, size, search);
     }
 }

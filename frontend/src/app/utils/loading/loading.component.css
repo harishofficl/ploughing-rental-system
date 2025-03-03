@@ -13,12 +13,12 @@
 
 .loading-dots {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .loading-dot {
-  width: 15px;
-  height: 15px;
+  width: 10px;
+  height: 10px;
   background-color: grey;
   border-radius: 50%;
   animation: pulse 0.6s infinite ease-in-out;

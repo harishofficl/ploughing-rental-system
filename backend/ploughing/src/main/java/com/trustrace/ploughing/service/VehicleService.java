@@ -3,6 +3,7 @@ package com.trustrace.ploughing.service;
 import com.trustrace.ploughing.dao.VehicleDao;
 import com.trustrace.ploughing.model.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,5 +43,9 @@ public class VehicleService {
             return true;
         }
         return false;
+    }
+
+    public Page<Vehicle> getVehiclesByOwnerIdPaginatedContainingName(String ownerId, int page, int size, String search) {
+        return vehicleDao.getVehiclesByOwnerIdPaginatedContainingName(ownerId, page, size, search);
     }
 }

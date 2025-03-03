@@ -1,11 +1,59 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../services/api/api.service';
+import { AuthService } from '../../../../services/auth/auth.service';
 
 @Component({
   selector: 'app-manage-equipments',
-  standalone: false,
   templateUrl: './manage-equipments.component.html',
-  styleUrl: './manage-equipments.component.css'
+  styleUrls: ['./manage-equipments.component.css']
 })
-export class ManageEquipmentsComponent {
+export class ManageEquipmentsComponent implements OnInit {
+  equipments: any[] = [];
+  searchTerm: string = '';
+  page: any = {
+    content: [],
+    totalElements: 0,
+    totalPages: 0,
+    size: 10,
+    number: 0,
+    first: true,
+    last: true
+  };
 
+  constructor(private api: ApiService, private auth: AuthService) {}
+
+  ngOnInit(): void {
+    this.fetchEquipments(this.auth.currentUserId);
+  }
+
+  fetchEquipments(ownerId: string, searchTerm: string = "", pageNumber: number = 0, size: number = 5): void {
+    this.api.getEquipmentsByOwnerIdPaginated(ownerId, pageNumber, size, searchTerm).subscribe((response: any) => {
+      this.page = response.data;
+      this.equipments = this.page.content;
+    });
+  }
+
+  searchEquipments() {
+    this.fetchEquipments(this.auth.currentUserId, this.searchTerm);
+  }
+
+  editEquipment(id: string) {
+    // Logic to edit an equipment
+  }
+
+  deleteEquipment(id: string) {
+    // Logic to delete an equipment
+  }
+
+  previousPage() {
+    if (!this.page.first) {
+      this.fetchEquipments(this.auth.currentUserId, this.searchTerm, this.page.number - 1);
+    }
+  }
+
+  nextPage() {
+    if (!this.page.last) {
+      this.fetchEquipments(this.auth.currentUserId, this.searchTerm, this.page.number + 1);
+    }
+  }
 }

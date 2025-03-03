@@ -20,6 +20,8 @@ import { BillCustomerComponent } from './bill-customer/bill-customer.component';
 import { AddCustomerComponent } from './customer-components/add-customer/add-customer.component';
 import { ManageCustomersComponent } from './customer-components/manage-customers/manage-customers.component';
 import { BusinessComponent } from './business/business/business.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 
 @NgModule({
   declarations: [
@@ -46,6 +48,7 @@ import { BusinessComponent } from './business/business/business.component';
     ReactiveFormsModule,
     NavBarComponent,
     LoadingComponent,
+    NgxPaginationModule,
   ],
 })
 export class OwnerModule {}

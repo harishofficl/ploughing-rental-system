@@ -65,7 +65,7 @@
 }
 
 .pricing-rules li {
-  background-color: rgb(var(--colors-gray-200));
+  background-color: white;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;

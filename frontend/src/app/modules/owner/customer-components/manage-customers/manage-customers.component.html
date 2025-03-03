@@ -1,1 +1,55 @@
-<p>manage-customers works!</p>
+<div class="main-header">
+    <h1 class="main-heading">Manage Customers</h1>
+  </div>
+  
+  <div class="header-actions">
+    <input
+      type="text"
+      placeholder="Search by Name..."
+      [(ngModel)]="searchTerm"
+      (input)="searchCustomers()"
+      class="search-bar"
+    />
+    <button class="create-button" [routerLink]="['../add-customer']">
+      Create Customer
+    </button>
+  </div>
+  
+  <div class="customers-container">
+    <table class="customers-table">
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="customers.length === 0">
+          <td colspan="5" class="no-records">No records found...</td>
+        </tr>
+        <tr *ngFor="let customer of customers; let i = index">
+          <td>{{ i + 1 + page.number * page.size }}</td>
+          <td>{{ customer.name }}</td>
+          <td>{{ customer.phoneNumber }}</td>
+          <td>{{ customer.email }}</td>
+          <td>
+            <button class="edit-button" (click)="editCustomer(customer.id)">
+              Edit
+            </button>
+            <button class="delete-button" (click)="deleteCustomer(customer.id)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <div class="pagination-controls" *ngIf="customers.length > 0">
+      <button (click)="previousPage()" [disabled]="page.first">Previous</button>
+      <span>Page {{ page.number + 1 }} of {{ page.totalPages }}</span>
+      <button (click)="nextPage()" [disabled]="page.last">Next</button>
+    </div>
+  </div>

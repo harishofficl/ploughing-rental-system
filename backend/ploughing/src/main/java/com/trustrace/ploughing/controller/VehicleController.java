@@ -4,6 +4,7 @@ import com.trustrace.ploughing.model.Vehicle;
 import com.trustrace.ploughing.service.VehicleService;
 import com.trustrace.ploughing.dto.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,5 +74,15 @@ public class VehicleController {
             return ResponseEntity.status(404).body(new ApiResponse<>(false, "Vehicle not found", null));
         }
         return ResponseEntity.ok(new ApiResponse<>(true, "Vehicle deleted successfully", null));
+    }
+
+    @GetMapping("/owner/{ownerId}/paginated")
+    public ResponseEntity<ApiResponse<Page<Vehicle>>> getVehiclesByOwnerIdPaginatedContainingName(
+            @PathVariable String ownerId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "") String search) {
+        Page<Vehicle> vehicles = vehicleService.getVehiclesByOwnerIdPaginatedContainingName(ownerId, page, size, search);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Vehicles retrieved successfully", vehicles));
     }
 }

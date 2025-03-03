@@ -4,6 +4,10 @@ import com.trustrace.ploughing.model.people.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -85,5 +89,23 @@ public class CustomerDao {
         logger.info("Fetching total customers count for Owner ID: {}", ownerId);
         Query query = new Query(Criteria.where("ownerId").is(ownerId));
         return mongoTemplate.count(query, Customer.class);
+    }
+
+    public List<Customer> findByNameContaining(String search) {
+        Query query = new Query(Criteria.where("name").regex(search, "i"));
+        return mongoTemplate.find(query, Customer.class);
+    }
+
+    public Page<Customer> getCustomersByOwnerIdPaginatedContainingName(String ownerId, int page, int size, String search) {
+        Query query = new Query(Criteria.where("ownerId").is(ownerId).and("name").regex(search, "i"));
+        Pageable pageable = PageRequest.of(page, size);
+        query.with(pageable);
+
+        List<Customer> customers = mongoTemplate.find(query, Customer.class);
+
+        Query countQuery = new Query(Criteria.where("ownerId").is(ownerId).and("name").regex(search, "i"));
+        long total = mongoTemplate.count(countQuery, Customer.class);
+
+        return new PageImpl<>(customers, pageable, total);
     }
 }

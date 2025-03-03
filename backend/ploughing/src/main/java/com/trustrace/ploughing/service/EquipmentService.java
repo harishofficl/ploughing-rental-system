@@ -3,6 +3,7 @@ package com.trustrace.ploughing.service;
 import com.trustrace.ploughing.dao.EquipmentDao;
 import com.trustrace.ploughing.model.Equipment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class EquipmentService {
         return equipmentDao.findAll();
     }
 
-    // Get an equipment by ID
+    // Get equipment by ID
     public Optional<Equipment> getEquipmentById(String id) {
         return equipmentDao.findById(id);
     }
@@ -52,5 +53,9 @@ public class EquipmentService {
             return true;
         }
         return false;
+    }
+
+    public Page<Equipment> getEquipmentsByOwnerIdPaginatedContainingName(String ownerId, int page, int size, String search) {
+        return equipmentDao.getEquipmentsByOwnerIdPaginatedContainingName(ownerId, page, size, search);
     }
 }

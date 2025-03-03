@@ -4,6 +4,10 @@ import com.trustrace.ploughing.model.Vehicle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -73,5 +77,18 @@ public class VehicleDao {
         Query query = new Query(Criteria.where("id").is(id));
         ownerDao.removeVehicleId(findById(id).get().getOwnerId(), id);
         mongoTemplate.remove(query, Vehicle.class);
+    }
+
+    public Page<Vehicle> getVehiclesByOwnerIdPaginatedContainingName(String ownerId, int page, int size, String search) {
+        Criteria criteria = Criteria.where("ownerId").is(ownerId);
+        if (search != null && !search.isEmpty()) {
+            criteria.and("name").regex(search, "i");
+        }
+        Query query = new Query(criteria);
+        long total = mongoTemplate.count(query, Vehicle.class);
+        Pageable pageable = PageRequest.of(page, size);
+        query.with(pageable);
+        List<Vehicle> vehicles = mongoTemplate.find(query, Vehicle.class);
+        return new PageImpl<>(vehicles, pageable, total);
     }
 }

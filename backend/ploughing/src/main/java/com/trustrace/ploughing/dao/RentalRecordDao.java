@@ -1,9 +1,11 @@
 package com.trustrace.ploughing.dao;
 
 import com.trustrace.ploughing.model.RentalRecord;
+import com.trustrace.ploughing.model.people.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class RentalRecordDao {
@@ -23,6 +26,9 @@ public class RentalRecordDao {
 
     @Autowired
     private EquipmentDao equipmentDao;
+
+    @Autowired
+    private CustomerDao customerDao;
 
     public RentalRecord save(RentalRecord rentalRecord) {
         logger.info("Saving RentalRecord: {}", rentalRecord);
@@ -89,4 +95,18 @@ public class RentalRecordDao {
         return mongoTemplate.find(query, RentalRecord.class);
     }
 
+    // Get rental records for owner id with pagination
+    public Page<RentalRecord> findByOwnerIdWithPagination(String ownerId, int page, int size, String search) {
+        logger.info("Fetching RentalRecords for Owner ID: {} with pagination and search: {}", ownerId, search);
+        Criteria criteria = Criteria.where("ownerId").is(ownerId);
+        if (search != null && !search.isEmpty()) {
+            criteria = criteria.and("customerId").in(customerDao.findByNameContaining(search).stream().map(Customer::getId).collect(Collectors.toList()));
+        }
+        Query query = new Query(criteria);
+        long total = mongoTemplate.count(query, RentalRecord.class);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        query.with(pageable);
+        List<RentalRecord> rentalRecords = mongoTemplate.find(query, RentalRecord.class);
+        return new PageImpl<>(rentalRecords, pageable, total);
+    }
 }

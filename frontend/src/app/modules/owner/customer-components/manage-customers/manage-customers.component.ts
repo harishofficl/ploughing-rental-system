@@ -1,10 +1,62 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../services/api/api.service';
+import { AuthService } from '../../../../services/auth/auth.service';
 
 @Component({
   selector: 'app-manage-customers',
   templateUrl: './manage-customers.component.html',
-  styleUrl: './manage-customers.component.css'
+  styleUrls: ['./manage-customers.component.css']
 })
-export class ManageCustomersComponent {
+export class ManageCustomersComponent implements OnInit {
+  customers: any[] = [];
+  searchTerm: string = '';
+  page: any = {
+    content: [],
+    totalElements: 0,
+    totalPages: 0,
+    size: 10,
+    number: 0,
+    first: true,
+    last: true
+  };
 
+  constructor(private api: ApiService, private auth: AuthService) {}
+
+  ngOnInit(): void {
+    this.fetchCustomers(this.auth.currentUserId);
+  }
+
+  fetchCustomers(ownerId: string, searchTerm: string = "", pageNumber: number = 0, size: number = 5): void {
+    this.api.getCustomersByOwnerIdPaginated(ownerId, pageNumber, size, searchTerm).subscribe((response: any) => {
+      this.page = response.data;
+      this.customers = this.page.content;
+      console.log(this.page);
+      console.log(this.customers);
+
+    });
+  }
+
+  searchCustomers() {
+    this.fetchCustomers(this.auth.currentUserId, this.searchTerm);
+  }
+
+  editCustomer(id: string) {
+    // Logic to edit a customer
+  }
+
+  deleteCustomer(id: string) {
+    // Logic to delete a customer
+  }
+
+  previousPage() {
+    if (!this.page.first) {
+      this.fetchCustomers(this.auth.currentUserId, this.searchTerm, this.page.number - 1);
+    }
+  }
+
+  nextPage() {
+    if (!this.page.last) {
+      this.fetchCustomers(this.auth.currentUserId, this.searchTerm, this.page.number + 1);
+    }
+  }
 }

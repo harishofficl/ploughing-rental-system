@@ -360,4 +360,69 @@ export class ApiService {
         })
       );
   }
+
+  // GET /api/rental-records/owner/{ownerId}/paginated?page={page}&size={size}&search={searchTerm}
+  getRentalRecordsByOwnerIdPaginated(ownerId: string, page: number, size: number, searchTerm: string): Observable<any> {
+    const url = `${this.url}/api/rental-records/owner/${ownerId}/paginated?page=${page}&size=${size}&search=${searchTerm}`;
+    return this.http.get(url)
+    .pipe(
+      catchError((error) => {
+        console.error('Error occurred while fetching rental records:', error);
+        this.showErrorMessage('Failed to fetch rental records. Please try again.');
+        throw error;
+      })
+    );
+  }
+
+  // GET /api/customers/owner/{ownerId}/paginated?page={page}&size={size}&search={searchTerm}
+  getCustomersByOwnerIdPaginated(ownerId: string, page: number, size: number, searchTerm: string): Observable<any> {
+    const url = `${this.url}/api/customers/owner/${ownerId}/paginated?page=${page}&size=${size}&search=${searchTerm}`;
+    return this.http.get(url)
+    .pipe(
+      catchError((error) => {
+        console.error('Error occurred while fetching customers:', error);
+        this.showErrorMessage('Failed to fetch customers. Please try again.');
+        throw error;
+      })
+    );
+  }
+
+  // GET /api/drivers/owner/{ownerId}/paginated?page={page}&size={size}&search={searchTerm}
+  getDriversByOwnerIdPaginated(ownerId: string, page: number, size: number, searchTerm: string): Observable<any> {
+    const url = `${this.url}/api/drivers/owner/${ownerId}/paginated?page=${page}&size=${size}&search=${searchTerm}`;
+    return this.http.get(url)
+    .pipe(
+      catchError((error) => {
+        console.error('Error occurred while fetching drivers:', error);
+        this.showErrorMessage('Failed to fetch drivers. Please try again.');
+        throw error;
+      })
+    );
+  }
+
+  // GET /api/equipments/owner/{ownerId}/paginated?page={page}&size={size}&search={searchTerm}
+  getEquipmentsByOwnerIdPaginated(ownerId: string, page: number, size: number, searchTerm: string): Observable<any> {
+    const url = `${this.url}/api/equipments/owner/${ownerId}/paginated?page=${page}&size=${size}&search=${searchTerm}`;
+    return this.http.get(url)
+    .pipe(
+      catchError((error) => {
+        console.error('Error occurred while fetching equipments:', error);
+        this.showErrorMessage('Failed to fetch equipments. Please try again.');
+        throw error;
+      })
+    );
+  }
+
+  // GET /api/vehicles/owner/{ownerId}/paginated?page={page}&size={size}&search={searchTerm}
+  getVehiclesByOwnerIdPaginated(ownerId: string, page: number, size: number, searchTerm: string): Observable<any> {
+    const url = `${this.url}/api/vehicles/owner/${ownerId}/paginated?page=${page}&size=${size}&search=${searchTerm}`;
+    return this.http.get(url)
+    .pipe(
+      catchError((error) => {
+        console.error('Error occurred while fetching vehicles:', error);
+        this.showErrorMessage('Failed to fetch vehicles. Please try again.');
+        throw error;
+      })
+    );
+  }
 }

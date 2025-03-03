@@ -4,6 +4,7 @@ import com.trustrace.ploughing.model.people.Driver;
 import com.trustrace.ploughing.service.DriverService;
 import com.trustrace.ploughing.dto.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,5 +71,15 @@ public class DriverController {
             return ResponseEntity.status(404).body(new ApiResponse<>(false, "Driver not found", null));
         }
         return ResponseEntity.ok(new ApiResponse<>(true, "Driver deleted successfully", null));
+    }
+
+    @GetMapping("/owner/{ownerId}/paginated")
+    public ResponseEntity<ApiResponse<Page<Driver>>> getDriversByOwnerIdPaginatedContainingName(
+            @PathVariable String ownerId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "") String search) {
+        Page<Driver> drivers = driverService.getDriversByOwnerIdPaginatedContainingName(ownerId, page, size, search);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Drivers retrieved successfully", drivers));
     }
 }

@@ -1,1 +1,61 @@
-<p>manage-rental-records works!</p>
+<div class="main-header">
+  <h1 class="main-heading">Manage Rental Records</h1>
+</div>
+
+<div class="header-actions">
+  <input
+    type="text"
+    placeholder="Search..."
+    [(ngModel)]="searchTerm"
+    (input)="searchRecords()"
+    class="search-bar"
+  />
+  <button class="create-button" [routerLink]="['../create-rental-record']">
+    Create Rental Record
+  </button>
+</div>
+
+<div class="rental-records-container">
+  <table class="rental-records-table">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Customer</th>
+        <th>Driver</th>
+        <th>Date</th>
+        <th>Equipment</th>
+        <th>Hours Used</th>
+        <th>Total Cost</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="rentalRecords.length === 0">
+        <td colspan="8" class="no-records">No records found...</td>
+      </tr>
+      <tr *ngFor="let record of rentalRecords; let i = index">
+        <td>{{ i + 1 + page.number * page.size }}</td>
+        <td>{{ record.customerName }}</td>
+        <td>{{ record.driverName }}</td>
+        <td>{{ record.date }}</td>
+        <td>{{ record.equipment }}</td>
+        <td>{{ record.hoursUsed }}</td>
+        <td>{{ record.totalCost | currency : "INR" }}</td>
+        <td>
+          <button class="edit-button" (click)="editRecord(record.id)">
+            Edit
+          </button>
+          <button class="delete-button" (click)="deleteRecord(record.id)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination-controls" *ngIf="rentalRecords.length > 0">
+    <button (click)="previousPage()" [disabled]="page.first">Previous</button>
+    <span>Page {{ page.number + 1 }} of {{ page.totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="page.last">Next</button>
+  </div>
+</div>

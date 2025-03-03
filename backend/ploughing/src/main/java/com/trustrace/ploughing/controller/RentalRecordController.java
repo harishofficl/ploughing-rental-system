@@ -3,7 +3,9 @@ package com.trustrace.ploughing.controller;
 import com.trustrace.ploughing.model.RentalRecord;
 import com.trustrace.ploughing.service.RentalRecordService;
 import com.trustrace.ploughing.dto.ApiResponse;
+import com.trustrace.ploughing.view.RentalRecordView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -98,5 +100,11 @@ public class RentalRecordController {
             return ResponseEntity.ok(new ApiResponse<>(false, "No unpaid rental records found for this customer", List.of()));
         }
         return ResponseEntity.ok(new ApiResponse<>(true, "Unpaid rental records retrieved successfully", rentalRecords));
+    }
+
+    @GetMapping("/owner/{ownerId}/paginated")
+    public ResponseEntity<ApiResponse<Page<RentalRecordView>>> getRentalRecordsByOwnerIdWithPagination(@PathVariable String ownerId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "") String search) {
+        Page<RentalRecordView> rentalRecords = rentalRecordService.getRentalRecordsByOwnerIdWithPagination(ownerId, page, size, search);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Rental records retrieved successfully", rentalRecords));
     }
 }

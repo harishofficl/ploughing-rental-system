@@ -1,1 +1,53 @@
-<p>manage-equipments works!</p>
+<div class="main-header">
+  <h1 class="main-heading">Manage Equipments</h1>
+</div>
+
+<div class="header-actions">
+  <input
+    type="text"
+    placeholder="Search by Name..."
+    [(ngModel)]="searchTerm"
+    (input)="searchEquipments()"
+    class="search-bar"
+  />
+  <button class="create-button" [routerLink]="['../add-equipment']">
+    Create Equipment
+  </button>
+</div>
+
+<div class="equipments-container">
+  <table class="equipments-table">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="equipments.length === 0">
+        <td colspan="4" class="no-records">No records found...</td>
+      </tr>
+      <tr *ngFor="let equipment of equipments; let i = index">
+        <td>{{ i + 1 + page.number * page.size }}</td>
+        <td>{{ equipment.name }}</td>
+        <td>{{ equipment.price | currency:"INR" }}</td>
+        <td>
+          <button class="edit-button" (click)="editEquipment(equipment.id)">
+            Edit
+          </button>
+          <button class="delete-button" (click)="deleteEquipment(equipment.id)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination-controls" *ngIf="equipments.length > 0">
+    <button (click)="previousPage()" [disabled]="page.first">Previous</button>
+    <span>Page {{ page.number + 1 }} of {{ page.totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="page.last">Next</button>
+  </div>
+</div>

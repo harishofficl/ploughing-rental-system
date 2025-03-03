@@ -4,9 +4,11 @@ import com.trustrace.ploughing.model.people.Customer;
 import com.trustrace.ploughing.service.CustomerService;
 import com.trustrace.ploughing.dto.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.crypto.dsig.keyinfo.PGPData;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,4 +105,19 @@ public class CustomerController {
         long count = customerService.getCustomerCountByOwnerId(ownerId);
         return ResponseEntity.ok(new ApiResponse<>(true, "Customers count retrieved successfully", count));
     }
+
+    // getCustomersByOwnerIdPaginatedContainingName -> /api/customers/owner/{ownerId}/paginated?page=${page}&size=${size}&search=${term}
+    @GetMapping("/owner/{ownerId}/paginated")
+    public ResponseEntity<ApiResponse<Page<Customer>>> getCustomersByOwnerIdPaginatedContainingName(@PathVariable String ownerId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "") String search) {
+        if(ownerId == null || ownerId.isEmpty() ) {
+            return ResponseEntity.status(400).body(new ApiResponse<>(false, "Owner ID is required", null));
+        }
+        List<Customer> customersContent = customerService.getCustomersByOwnerIdPaginatedContainingName(ownerId, page, size, search).getContent();
+        Page<Customer> customers = customerService.getCustomersByOwnerIdPaginatedContainingName(ownerId, page, size, search);
+        if(customersContent.isEmpty()) {
+            return ResponseEntity.status(200).body(new ApiResponse<>(true, "No customers found", customers));
+        }
+        return ResponseEntity.ok(new ApiResponse<>(true, "Customers retrieved successfully", customers));
+    }
+
 }

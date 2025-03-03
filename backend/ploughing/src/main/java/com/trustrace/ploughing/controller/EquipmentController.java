@@ -4,6 +4,7 @@ import com.trustrace.ploughing.model.Equipment;
 import com.trustrace.ploughing.service.EquipmentService;
 import com.trustrace.ploughing.dto.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -80,5 +81,15 @@ public class EquipmentController {
             return ResponseEntity.status(404).body(new ApiResponse<>(false, "Equipment not found", null));
         }
         return ResponseEntity.ok(new ApiResponse<>(true, "Equipment deleted successfully", null));
+    }
+
+    @GetMapping("/owner/{ownerId}/paginated")
+    public ResponseEntity<ApiResponse<Page<Equipment>>> getEquipmentsByOwnerIdPaginatedContainingName(
+            @PathVariable String ownerId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "") String search) {
+        Page<Equipment> equipments = equipmentService.getEquipmentsByOwnerIdPaginatedContainingName(ownerId, page, size, search);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Equipments retrieved successfully", equipments));
     }
 }

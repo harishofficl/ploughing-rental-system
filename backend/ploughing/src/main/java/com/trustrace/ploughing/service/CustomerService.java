@@ -3,6 +3,7 @@ package com.trustrace.ploughing.service;
 import com.trustrace.ploughing.dao.CustomerDao;
 import com.trustrace.ploughing.model.people.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,5 +58,9 @@ public class CustomerService {
     // get customer count by ownerId
     public long getCustomerCountByOwnerId(String ownerId) {
         return customerDao.countByOwnerId(ownerId);
+    }
+
+    public Page<Customer> getCustomersByOwnerIdPaginatedContainingName(String ownerId, int page, int size, String search) {
+        return customerDao.getCustomersByOwnerIdPaginatedContainingName(ownerId, page, size, search);
     }
 }
