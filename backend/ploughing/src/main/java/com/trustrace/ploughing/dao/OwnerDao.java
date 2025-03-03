@@ -37,6 +37,7 @@ public class OwnerDao {
         owner.setVehicleIds(List.of());
         owner.setDriverIds(List.of());
         owner.setEquipmentIds(List.of());
+        owner.setDistancePricingRules(List.of());
         return mongoTemplate.save(owner);
     }
 
@@ -172,6 +173,17 @@ public class OwnerDao {
         logger.info("Fetching vehicles by IDs: {}", vehicleIds);
         Query query = new Query(Criteria.where("id").in(vehicleIds));
         return mongoTemplate.find(query, Vehicle.class);
+    }
+
+    // update distance pricing rules
+    public List<Object> updateDistancePricingRules(String ownerId, List<Object> distancePricingRules) {
+        logger.info("Updating distance pricing rules for owner ID: {}", ownerId);
+        if (findById(ownerId).isPresent()) {
+            Owner owner = findById(ownerId).get();
+            owner.setDistancePricingRules(distancePricingRules);
+            return mongoTemplate.save(owner).getDistancePricingRules();
+        }
+        return null;
     }
 
     // pagination

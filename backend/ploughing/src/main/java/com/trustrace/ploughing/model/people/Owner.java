@@ -28,4 +28,5 @@ public class Owner {
     private List<String> vehicleIds;
     private List<String> driverIds;
     private List<String> equipmentIds;
+    private List<Object> distancePricingRules;
 }

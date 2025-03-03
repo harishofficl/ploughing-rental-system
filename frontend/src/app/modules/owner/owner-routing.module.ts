@@ -20,6 +20,10 @@ import { LoadingService } from '../../services/loading/loading.service';
 import { CreateVehicleComponent } from '../owner/vehicle-components/create-vehicle/create-vehicle.component';
 import { ManageVehiclesComponent } from '../owner/vehicle-components/manage-vehicles/manage-vehicles.component';
 import { BillCustomerComponent } from './bill-customer/bill-customer.component';
+import { AddCustomerComponent } from './customer-components/add-customer/add-customer.component';
+import { ManageCustomersComponent } from './customer-components/manage-customers/manage-customers.component';
+import { BusinessComponent } from './business/business/business.component';
+import { AddFuelComponent } from '../../utils/add-fuel/add-fuel.component';
 
 const routes: Routes = [
   {
@@ -63,9 +67,25 @@ const routes: Routes = [
         component: ManageVehiclesComponent,
       },
       {
+        path: 'add-fuel',
+        component: AddFuelComponent,
+      },
+      {
         path: 'bill-customer',
         component: BillCustomerComponent,
       },
+      {
+        path: 'add-customer',
+        component: AddCustomerComponent,
+      },
+      {
+        path: 'manage-customers',
+        component: ManageCustomersComponent,
+      },
+      {
+        path: 'business',
+        component: BusinessComponent,
+      }
     ],
   },
 ];

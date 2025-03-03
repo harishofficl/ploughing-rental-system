@@ -22,7 +22,10 @@ public class RentalRecord {
     private String equipment;
     private Date date;
     private double hoursUsed;
+    private double distance;
     private double ratePerHour;
+    private double rentalPrice;
+    private double distancePrice;
     private double totalCost;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

@@ -62,6 +62,27 @@ export class ApiService {
       });
   }
 
+  // POST /api/customers
+  postCustomer(customerJson: any) {
+    const url = `${this.url}/api/customers`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    this.http
+      .post(url, customerJson, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error occurred while submitting customer:', error);
+          this.showErrorMessage(
+            'Failed to submit the customer. Please try again.'
+          );
+          throw error;
+        })
+      )
+      .subscribe(() => {
+        this.showSuccessMessage('Customer submitted successfully!');
+      });
+  }
+
   // POST /api/equipment
   postEquipment(equipmentJson: any) {
     const url = `${this.url}/api/equipments`;
@@ -144,7 +165,6 @@ export class ApiService {
         // Call payment service to create payment link
         if(!paid){
           this.paymentService.createPaymentLink(selectedCustomer.email, billData.totalAmount, billData.allMethods).subscribe(() => {
-            console.log(billData.allMethods);
             console.log('Payment link created ✔️');
           });
         }
@@ -311,5 +331,33 @@ export class ApiService {
       return response;
     });
     return response;
+  }
+
+  // getPricingRules -> GET /api/owner/{ownerId}/distance-pricing-rules
+  getPricingRules(ownerId: string): Observable<any> {
+    const url = `${this.url}/api/owners/${ownerId}/distance-pricing-rules`;
+    return this.http.get(url).pipe(
+      catchError((error) => {
+        console.error('Error occurred while fetching pricing rules:', error);
+        this.showErrorMessage('Failed to fetch pricing rules. Please try again.');
+        throw error;
+      })
+    );
+  }
+
+  // setPricingRules -> PUT /api/owner/{ownerId)/distance-pricing-rules
+  setPricingRules(pricingRules: any[], ownerId: string): Observable<any> {
+    const url = `${this.url}/api/owners/${ownerId}/distance-pricing-rules`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.http
+      .put(url, pricingRules, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error occurred while setting pricing rules:', error);
+          this.showErrorMessage('Failed to set pricing rules. Please try again.');
+          throw error;
+        })
+      );
   }
 }

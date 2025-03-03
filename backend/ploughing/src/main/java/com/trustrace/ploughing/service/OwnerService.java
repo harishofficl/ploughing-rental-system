@@ -96,4 +96,9 @@ public class OwnerService {
     public List<Driver> getDriversByIds(List<String> driverIds) {
         return ownerDao.getDriversByIds(driverIds);
     }
+
+    // update distance pricing rules
+    public List<Object> updateDistancePricingRules(String ownerId, List<Object> distancePricingRules) {
+        return ownerDao.updateDistancePricingRules(ownerId, distancePricingRules);
+    }
 }

@@ -27,7 +27,7 @@ public class RazorpayService {
         customer.put("email", customerEmail);
         paymentLinkRequest.put("customer", customer);
         paymentLinkRequest.put("notify", new JSONObject().put("email", true));
-        paymentLinkRequest.put("callback_url", "https://7cc8-103-130-204-15.ngrok-free.app/v1/api/payment/webhook");
+        paymentLinkRequest.put("callback_url", "https://75d6-49-204-235-237.ngrok-free.app/v1/api/payment/webhook");
         paymentLinkRequest.put("callback_method", "get");
 
         if (!allMethods) {

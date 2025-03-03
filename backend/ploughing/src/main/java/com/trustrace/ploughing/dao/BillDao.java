@@ -32,6 +32,9 @@ public class BillDao {
             RentalRecord rentalRecord = mongoTemplate.findById(rentalRecordId, RentalRecord.class);
             assert rentalRecord != null;
             rentalRecord.setBilled(true);
+            if(bill.isPaid()) {
+                rentalRecord.setPaid(true);
+            }
             mongoTemplate.save(rentalRecord);
         });
         return mongoTemplate.save(bill);

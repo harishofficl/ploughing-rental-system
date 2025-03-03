@@ -11,6 +11,7 @@ export class SidebarComponent {
   isEquipmentOpen: boolean = false;
   isRentalOpen: boolean = false;
   isVehicleOpen: boolean = false;
+  isCustomerOpen: boolean = false;
 
   toggleDriver() {
     this.isDriverOpen = !this.isDriverOpen;
@@ -26,5 +27,9 @@ export class SidebarComponent {
 
   toggleVehicle() {
     this.isVehicleOpen = !this.isVehicleOpen;
+  }
+
+  toggleCustomer() {
+    this.isCustomerOpen = !this.isCustomerOpen;
   }
 }

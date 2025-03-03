@@ -6,9 +6,9 @@ import Swal from 'sweetalert2';
   providedIn: 'root',
 })
 export class AuthService {
-  admin = { id: '67bd4a6b4eb4a03303ce1624', name: 'Super Admin'};
-  owner = { id: '67bd4a974eb4a03303ce1625', name: 'Seenivasan R'};
-  driver = { id: '67bd53c04874837ebcce0a36', name: 'Kumar'};
+  admin = { id: '67bd4a6b4eb4a03303ce1624', name: 'Super Admin', role: 'admin' };
+  owner = { id: '67bd4a974eb4a03303ce1625', name: 'Seenivasan R', role: 'owner' };
+  driver = { id: '67bd53c04874837ebcce0a36', name: 'Kumar', role: 'driver' };
 
   currentUser;
   isAuthenticated: boolean = false;
@@ -19,7 +19,7 @@ export class AuthService {
       this.currentUser = JSON.parse(user);
       this.isAuthenticated = true;
     } else {
-      this.currentUser = { id: '', name: ''};
+      this.currentUser = { id: '', name: '', role: '' };
     }
   }
 
@@ -46,7 +46,7 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('currentUser');
-    this.currentUser = { id: '', name: ''};
+    this.currentUser = { id: '', name: '', role: '' };
     this.isAuthenticated = false;
     this.router.navigate(['./']);
   }
@@ -57,5 +57,9 @@ export class AuthService {
 
   get currentUserName() {
     return this.currentUser.name;
+  }
+
+  get currentUserRole() {
+    return this.currentUser.role;
   }
 }

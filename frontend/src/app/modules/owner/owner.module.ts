@@ -17,6 +17,9 @@ import { LoadingComponent } from '../../utils/loading/loading.component';
 import { CreateVehicleComponent } from '../owner/vehicle-components/create-vehicle/create-vehicle.component';
 import { ManageVehiclesComponent } from '../owner/vehicle-components/manage-vehicles/manage-vehicles.component';
 import { BillCustomerComponent } from './bill-customer/bill-customer.component';
+import { AddCustomerComponent } from './customer-components/add-customer/add-customer.component';
+import { ManageCustomersComponent } from './customer-components/manage-customers/manage-customers.component';
+import { BusinessComponent } from './business/business/business.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +35,9 @@ import { BillCustomerComponent } from './bill-customer/bill-customer.component';
     CreateRentalRecordsComponent,
     ManageRentalRecordsComponent,
     BillCustomerComponent,
+    AddCustomerComponent,
+    ManageCustomersComponent,
+    BusinessComponent,
   ],
   imports: [
     CommonModule,

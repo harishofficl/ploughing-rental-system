@@ -18,6 +18,7 @@ public class Bill {
     @Id private String id;
     private String ownerId;
     private String customerId;
+    private String customerName;
     private double totalAmount;
     private LocalDateTime createdAt;
     private List<String> rentalRecordIds;

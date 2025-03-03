@@ -173,4 +173,21 @@ public class OwnerController {
         List<Driver> drivers = ownerService.getDriversByIds(owner.get().getDriverIds());
         return ResponseEntity.ok(new ApiResponse<>(true, "Drivers retrieved successfully", drivers));
     }
+
+    // get distance pricing rules
+    @GetMapping("/{ownerId}/distance-pricing-rules")
+    public ResponseEntity<ApiResponse<List<Object>>> getDistancePricingRules(@PathVariable String ownerId) {
+        Optional<Owner> owner = ownerService.getOwnerById(ownerId);
+        if (owner.isEmpty()) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Owner not found", null));
+        }
+        return ResponseEntity.ok(new ApiResponse<>(true, "Distance pricing rules retrieved successfully", owner.get().getDistancePricingRules()));
+    }
+
+    // Update distance pricing rules
+    @PutMapping("/{ownerId}/distance-pricing-rules")
+    public ResponseEntity<ApiResponse<List<Object>>> updateDistancePricingRules(@PathVariable String ownerId, @RequestBody List<Object> distancePricingRules) {
+        List<Object> updatedDistancePricingRules = ownerService.updateDistancePricingRules(ownerId, distancePricingRules);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Distance pricing rules updated successfully", updatedDistancePricingRules));
+    }
 }

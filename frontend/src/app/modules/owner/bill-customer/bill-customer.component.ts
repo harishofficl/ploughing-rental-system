@@ -30,10 +30,11 @@ export class BillCustomerComponent implements OnInit {
     this.ownerId = this.authService.currentUserId;
     this.billForm = this.fb.group({
       customerId: ['', Validators.required],
+      customerName: [''],
       ownerId: [this.authService.currentUserId],
       totalAmount: [{ value: '', disabled: true }],
       paid: [false, Validators.required],
-      allMethods: [false],
+      allMethods: [true],
       rentalRecordIds: this.fb.array([]),
     });
   }
@@ -42,7 +43,6 @@ export class BillCustomerComponent implements OnInit {
     this.searchTerms
       .pipe(
         debounceTime(500),
-        distinctUntilChanged(),
         switchMap((term) =>
           this.apiService.searchCustomersByOwnerId(this.ownerId, term)
         )
@@ -61,6 +61,7 @@ export class BillCustomerComponent implements OnInit {
   selectCustomer(customer: any): void {
     this.selectedCustomer = customer;
     this.billForm.patchValue({ customerId: customer.id });
+    this.billForm.patchValue({ customerName: customer.name });
     const customerInput = document.getElementById(
       'customer'
     ) as HTMLInputElement;
@@ -73,6 +74,7 @@ export class BillCustomerComponent implements OnInit {
 
   changeCustomer(): void {
     this.billForm.patchValue({ customerId: '' });
+    this.billForm.patchValue({ totalAmount: '' });
     const customerInput = document.getElementById(
       'customer'
     ) as HTMLInputElement;
@@ -105,6 +107,7 @@ export class BillCustomerComponent implements OnInit {
           ) as HTMLInputElement;
           customerInput.disabled = false;
           this.billForm.patchValue({ paid: false });
+          this.billForm.patchValue({ allMethods: true });
         }
       });
   }
@@ -114,11 +117,11 @@ export class BillCustomerComponent implements OnInit {
       const billData = this.billForm.getRawValue();
 
       console.log(billData);
-      // this.apiService.postBill(billData, this.selectedCustomer, billData.paid);
+      this.apiService.postBill(billData, this.selectedCustomer, billData.paid);
 
-      this.paymentService.createPaymentLink(this.selectedCustomer.email, billData.totalAmount, billData.allMethods).subscribe(() => {
-        console.log('Payment link created ✔️');
-      });
+      // this.paymentService.createPaymentLink(this.selectedCustomer.email, billData.totalAmount, billData.allMethods).subscribe(() => {
+      //   console.log('Payment link created ✔️');
+      // });
 
       // Reset form
       this.changeCustomerDisplay = false;
@@ -130,7 +133,7 @@ export class BillCustomerComponent implements OnInit {
       this.billForm.patchValue({ totalAmount: '' });
       this.billForm.patchValue({ ownerId: this.authService.currentUserId });
       this.billForm.patchValue({ paid: false });
-      this.billForm.patchValue({ allMethods: false });
+      this.billForm.patchValue({ allMethods: true }); 
     }
   }
 }

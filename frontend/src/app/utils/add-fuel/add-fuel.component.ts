@@ -14,6 +14,7 @@ import { ApiService } from '../../services/api/api.service';
 export class AddFuelComponent {
   fuelForm: FormGroup;
   vehicles!: any;
+  currentUser!: any;
   driver: any;
 
   constructor(private formBuilder: FormBuilder, private auth: AuthService, private api: ApiService) {
@@ -21,16 +22,23 @@ export class AddFuelComponent {
       vehicleId: ["", Validators.required],
       fuelAmount: ["", Validators.required],
     });
+    this.currentUser = this.auth.currentUser;
   }
 
   ngOnInit() {
-    this.api.getDriverById(this.auth.currentUserId).subscribe((driver) => {
-      this.driver = driver.data;
-
-      this.api.getVehiclesByOwnerId(this.driver.ownerId).subscribe((vehicles) => {
+    if(this.currentUser.role === 'driver') {
+      this.api.getDriverById(this.auth.currentUserId).subscribe((driver) => {
+        this.driver = driver.data;
+  
+        this.api.getVehiclesByOwnerId(this.driver.ownerId).subscribe((vehicles) => {
+          this.vehicles = vehicles.data;
+        });
+      });
+    } else {
+      this.api.getVehiclesByOwnerId(this.auth.currentUserId).subscribe((vehicles) => {
         this.vehicles = vehicles.data;
       });
-    });
+    }
   }
 
   onSubmit() {

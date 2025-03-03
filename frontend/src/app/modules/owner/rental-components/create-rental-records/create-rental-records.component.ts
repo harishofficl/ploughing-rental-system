@@ -4,6 +4,7 @@ import { AuthService } from '../../../../services/auth/auth.service';
 import { ApiService } from '../../../../services/api/api.service';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { DistancePricingService } from '../../../../services/distance-pricing/distance-pricing.service';
 
 @Component({
   selector: 'app-create-rental-records',
@@ -23,7 +24,8 @@ export class CreateRentalRecordsComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private auth: AuthService,
-    private api: ApiService
+    private api: ApiService,
+    private distancePricing: DistancePricingService
   ) {
     this.ownerId = this.auth.currentUserId;
     const today = new Date().toISOString().split('T')[0];
@@ -34,7 +36,10 @@ export class CreateRentalRecordsComponent implements OnInit {
       equipment: ['', Validators.required],
       date: [today, Validators.required],
       hoursUsed: ['', [Validators.required, Validators.min(0)]],
+      distance: ['', Validators.min(0)],
       ratePerHour: [{ value: '', disabled: true }],
+      rentalPrice: [{ value: '', disabled: true }],
+      distancePrice: [{ value: '', disabled: true }],
       totalCost: [{ value: '', disabled: true }],
       paid: [false, Validators.required],
     });
@@ -62,22 +67,39 @@ export class CreateRentalRecordsComponent implements OnInit {
     const equipmentId = (event.target as HTMLSelectElement).value;
     this.api.getEquipmentById(equipmentId).subscribe((equipment) => {
       this.rentalForm.patchValue({ ratePerHour: equipment.data.price });
-      this.calculateTotalCost();
+      this.calculateRentalCost();
     });
   }
 
-  calculateTotalCost() {
+  calculateRentalCost() {
     const hoursUsed = this.rentalForm.get('hoursUsed')?.value;
     const ratePerHour = this.rentalForm.get('ratePerHour')?.value;
     if (hoursUsed && ratePerHour) {
-      const totalCost = hoursUsed * ratePerHour;
-      this.rentalForm.patchValue({ totalCost });
+      const rentalPrice = hoursUsed * ratePerHour;
+      this.rentalForm.patchValue({ rentalPrice });
     }
+    this.calculateDistanceCost();
+  }
+
+  calculateDistanceCost() {
+    const hoursUsed = this.rentalForm.get('hoursUsed')?.value;
+    const distance = this.rentalForm.get('distance')?.value;
+    const distancePrice = this.distancePricing.calculateTotalDistanceCost(hoursUsed, distance);
+    this.rentalForm.patchValue({ distancePrice });
+    this.calculateTotalCost();
+  }
+
+  calculateTotalCost() {
+    const rentalPrice = this.rentalForm.get('rentalPrice')?.value;
+    const distancePrice = this.rentalForm.get('distancePrice')?.value;
+    const totalCost = distancePrice + rentalPrice;
+    this.rentalForm.patchValue({ totalCost });
   }
 
   onSubmit() {
       if (this.rentalForm.valid) {
       const rentalData = this.rentalForm.getRawValue();
+
       this.api.postRentalRecord(rentalData);
 
       this.changeCustomerDisplay = false;
