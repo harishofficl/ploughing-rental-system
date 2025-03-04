@@ -6,8 +6,7 @@ import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { NavBarComponent } from "../../utils/nav-bar/nav-bar.component";
-
+import { NavBarComponent } from '../../utils/nav-bar/nav-bar.component';
 
 @NgModule({
   declarations: [HomeComponent, DashboardComponent, SidebarComponent],
@@ -16,7 +15,7 @@ import { NavBarComponent } from "../../utils/nav-bar/nav-bar.component";
     DriverRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NavBarComponent
-]
+    NavBarComponent,
+  ],
 })
-export class DriverModule { }
+export class DriverModule {}

@@ -21,7 +21,7 @@ public class GpsDao {
     private MongoTemplate mongoTemplate;
 
     public Gps save(Gps gps) {
-        logger.info("Saving GPS data: {}", gps);
+        logger.info("Saving GPS: Driver - {}, latitude: {}, longitude: {}", gps.getDriverId(), gps.getLatitude(), gps.getLongitude());
         return mongoTemplate.save(gps);
     }
 

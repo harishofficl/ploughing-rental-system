@@ -142,7 +142,7 @@ export class ApiService {
         })
       )
       .subscribe(() => {
-        console.log('GPS location submitted successfully!');
+        console.log('GPS location posted successfully!');
       });
   }
 
