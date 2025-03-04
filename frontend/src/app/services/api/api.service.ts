@@ -164,7 +164,7 @@ export class ApiService {
         this.showSuccessMessage(response.message);
         // Call payment service to create payment link
         if(!paid){
-          this.paymentService.createPaymentLink(selectedCustomer.email, billData.totalAmount, billData.allMethods).subscribe(() => {
+          this.paymentService.createPaymentLink(selectedCustomer.email, billData.totalAmount, billData.allMethods, response.data.id).subscribe(() => {
             console.log('Payment link created ✔️');
           });
         }
@@ -425,4 +425,7 @@ export class ApiService {
       })
     );
   }
+
+
+
 }

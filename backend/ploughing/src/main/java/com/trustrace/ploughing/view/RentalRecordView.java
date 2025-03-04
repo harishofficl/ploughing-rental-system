@@ -16,4 +16,6 @@ public class RentalRecordView {
     private String equipment;
     private double hoursUsed;
     private double totalCost;
+    private boolean paid;
+    private boolean billed;
 }

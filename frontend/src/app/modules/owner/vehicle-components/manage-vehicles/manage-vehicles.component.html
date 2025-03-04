@@ -33,12 +33,12 @@
           <td>{{ i + 1 + page.number * page.size }}</td>
           <td>{{ vehicle.name }}</td>
           <td>{{ vehicle.currFuelLevel }} Litres</td>
-          <td>
+          <td class="flex">
             <button class="edit-button" (click)="editVehicle(vehicle.id)">
-              Edit
+              <img src="edit.png" alt="Edit" />
             </button>
             <button class="delete-button" (click)="deleteVehicle(vehicle.id)">
-              Delete
+              <img src="delete.png" alt="Delete" />
             </button>
           </td>
         </tr>

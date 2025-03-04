@@ -33,4 +33,16 @@ public class BillService {
     public List<Bill> getBillsByCustomerId(String customerId, boolean onlyUnpaid) {
         return billDao.findByCustomerId(customerId, onlyUnpaid);
     }
+
+    public Bill updatePaymentId( String id, String paymentId) {
+        return billDao.updatePaymentId(id, paymentId);
+    }
+
+    public Bill findByPaymentId(String paymentId) {
+        return billDao.findByPaymentId(paymentId);
+    }
+
+    public Bill setBillRentalPaid(String id) {
+        return billDao.setBillRentalPaid(id);
+    }
 }

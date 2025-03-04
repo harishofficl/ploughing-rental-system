@@ -88,7 +88,9 @@ public class RentalRecordService {
                 rentalRecord.getDate().toString(),
                 rentalRecord.getEquipment(),
                 rentalRecord.getHoursUsed(),
-                rentalRecord.getTotalCost()
+                rentalRecord.getTotalCost(),
+                rentalRecord.isPaid(),
+                rentalRecord.isBilled()
         );
     }
 }

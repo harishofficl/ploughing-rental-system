@@ -35,12 +35,12 @@
           <td>{{ customer.name }}</td>
           <td>{{ customer.phoneNumber }}</td>
           <td>{{ customer.email }}</td>
-          <td>
+          <td class="flex">
             <button class="edit-button" (click)="editCustomer(customer.id)">
-              Edit
+              <img src="edit.png" alt="Edit" />
             </button>
             <button class="delete-button" (click)="deleteCustomer(customer.id)">
-              Delete
+              <img src="delete.png" alt="Delete" />
             </button>
           </td>
         </tr>

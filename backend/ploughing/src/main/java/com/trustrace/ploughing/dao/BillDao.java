@@ -69,5 +69,37 @@ public class BillDao {
         return mongoTemplate.find(query, Bill.class);
     }
 
+    // update payment id
+    public Bill updatePaymentId(String id, String paymentId) {
+        logger.info("Updating payment ID for bill with ID: {}", id);
+        Bill bill = mongoTemplate.findById(id, Bill.class);
+        assert bill != null;
+        bill.setPaymentId(paymentId);
+        return mongoTemplate.save(bill);
+    }
+
+    public Bill setBillRentalPaid(String id) {
+        logger.info("Setting bill as paid with ID: {}", id);
+        Bill bill = mongoTemplate.findById(id, Bill.class);
+        assert bill != null;
+        bill.setPaid(true);
+        List<String> rentalRecordIds= bill.getRentalRecordIds();
+        rentalRecordIds.forEach(rentalRecordId -> {
+            logger.info("Updating rental record to paid with ID: {}", rentalRecordId);
+            RentalRecord rentalRecord = mongoTemplate.findById(rentalRecordId, RentalRecord.class);
+            assert rentalRecord != null;
+            rentalRecord.setPaid(true);
+            mongoTemplate.save(rentalRecord);
+        });
+        return mongoTemplate.save(bill);
+    }
+
+    // Find by paymentId
+    public Bill findByPaymentId(String paymentId) {
+        logger.info("Fetching bill by payment ID: {}", paymentId);
+        Query query = new Query(Criteria.where("paymentId").is(paymentId));
+        return mongoTemplate.findOne(query, Bill.class);
+    }
+
 
 }

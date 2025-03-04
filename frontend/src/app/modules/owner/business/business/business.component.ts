@@ -7,17 +7,21 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-business',
   templateUrl: './business.component.html',
-  styleUrls: ['./business.component.css']
+  styleUrls: ['./business.component.css'],
 })
 export class BusinessComponent {
   pricingForm: FormGroup;
   pricingRules: any[] = [];
 
-  constructor(private formBuilder: FormBuilder, private api: ApiService, private authService: AuthService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private api: ApiService,
+    private authService: AuthService
+  ) {
     this.pricingForm = this.formBuilder.group({
       hours: ['', [Validators.required, Validators.min(0)]],
       freeDistance: ['', [Validators.required, Validators.min(0)]],
-      pricePerKm: ['', [Validators.required, Validators.min(0)]]
+      pricePerKm: ['', [Validators.required, Validators.min(0)]],
     });
   }
 
@@ -26,20 +30,36 @@ export class BusinessComponent {
   }
 
   updateRulesDisplay() {
-    this.api.getPricingRules(this.authService.currentUserId).subscribe((rules) => {
-      this.pricingRules = rules.data;
-    });
+    this.api
+      .getPricingRules(this.authService.currentUserId)
+      .subscribe((rules) => {
+        this.pricingRules = rules.data;
+        this.pricingRules.sort((a, b) => a.hours - b.hours);
+      });
+  }
+
+  deleteRule(index: number) {
+    this.pricingRules.splice(index, 1);
+    this.api
+      .setPricingRules(this.pricingRules, this.authService.currentUserId)
+      .subscribe(() => {
+        Swal.fire('Success', 'Pricing rules updated successfully', 'success');
+        this.updateRulesDisplay();
+      });
   }
 
   onSubmit() {
     if (this.pricingForm.valid) {
-      const { hours, freeDistance, pricePerKm } = this.pricingForm.getRawValue();
+      const { hours, freeDistance, pricePerKm } =
+        this.pricingForm.getRawValue();
       this.pricingRules.push({ hours, freeDistance, pricePerKm });
       this.pricingForm.reset();
     }
-    this.api.setPricingRules(this.pricingRules, this.authService.currentUserId).subscribe(() => {
-      Swal.fire('Success', 'Pricing rules updated successfully', 'success');
-      this.updateRulesDisplay();
-    });
+    this.api
+      .setPricingRules(this.pricingRules, this.authService.currentUserId)
+      .subscribe(() => {
+        Swal.fire('Success', 'Pricing rules updated successfully', 'success');
+        this.updateRulesDisplay();
+      });
   }
 }

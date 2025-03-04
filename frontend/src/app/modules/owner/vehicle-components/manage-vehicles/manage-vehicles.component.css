@@ -58,19 +58,24 @@
 
 .edit-button,
 .delete-button {
-  background-color: rgb(14, 165, 233);
   color: white;
+  background-color: white;
   border: none;
   border-radius: 0.25rem;
-  padding: 0.5rem 1rem;
   cursor: pointer;
-  font-size: 0.875rem;
   margin-right: 0.5rem;
 }
 
-.edit-button:hover,
-.delete-button:hover {
-  background-color: rgb(10, 132, 255);
+.edit-button > img {
+  width: 1.3rem;
+  height: 1.3rem;
+  opacity: 0.9;
+}
+
+.delete-button > img {
+  width: 1.5rem;
+  height: 1.5rem;
+  opacity: 0.9;
 }
 
 .pagination-controls {

@@ -1,5 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { catchError } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +11,13 @@ export class PaymentService {
 
   constructor(private http: HttpClient) {}
 
-  createPaymentLink(email: string, amount: number, allMethods: boolean) {
-    const payload = { email, amount, allMethods };
-    return this.http.post(`${this.url}/api/payment/link`, payload, { responseType: 'text' });
+  createPaymentLink(email: string, amount: number, allMethods: boolean, billId: string) {
+    const payload = { email, amount, allMethods, billId };
+    return this.http.post(`${this.url}/api/payments/link`, payload, { responseType: 'text' });
+  }
+
+  paymentWebHookCallBack(paymentbody: any) {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(`${this.url}/api/payment/webhook`, paymentbody, { headers });
   }
 }

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthModule } from './modules/auth/auth.module';
+import { PaymentCallbackComponent } from './utils/payment-callback/payment-callback.component';
 
 export const routes: Routes = [
     {
@@ -18,4 +19,8 @@ export const routes: Routes = [
         path: 'owner',
         loadChildren: () => import('./modules/owner/owner.module').then((m) => m.OwnerModule),
       },
+      {
+        path: 'payment/callback',
+        component: PaymentCallbackComponent,
+      }
 ];

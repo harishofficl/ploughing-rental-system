@@ -116,7 +116,6 @@ export class BillCustomerComponent implements OnInit {
     if (this.billForm.valid) {
       const billData = this.billForm.getRawValue();
 
-      console.log(billData);
       this.apiService.postBill(billData, this.selectedCustomer, billData.paid);
 
       // this.paymentService.createPaymentLink(this.selectedCustomer.email, billData.totalAmount, billData.allMethods).subscribe(() => {

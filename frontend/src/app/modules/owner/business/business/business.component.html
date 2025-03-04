@@ -1,28 +1,74 @@
 <div class="main-header">
-    <h1 class="main-heading">Set Custom Distance Pricing</h1>
+  <h1 class="main-heading">Set Custom Distance Pricing</h1>
 </div>
-  
-<form [formGroup]="pricingForm" (ngSubmit)="onSubmit()" class="add-customer-form">
-    <div class="form-group">
-      <label for="hours" class="form-label">Minimum Hours of Work <span class="required-asterisk">*</span></label>
-      <input id="hours" formControlName="hours" type="number" class="form-control" placeholder="Enter hours">
-    </div>
-    <div class="form-group">
-      <label for="freeDistance" class="form-label">Free Distance (km) <span class="required-asterisk">*</span></label>
-      <input id="freeDistance" formControlName="freeDistance" type="number" class="form-control" placeholder="Enter distance">
-    </div>
-    <div class="form-group">
-      <label for="pricePerKm" class="form-label">Extra Distance Charge (Price/KM) <span class="required-asterisk">*</span></label>
-      <input id="pricePerKm" formControlName="pricePerKm" type="number" class="form-control" placeholder="Enter Price/KM for extra distance">
-    </div>
-    <button type="submit" class="submit-button" [disabled]="pricingForm.invalid">Add Pricing Rule</button>
+
+<form
+  [formGroup]="pricingForm"
+  (ngSubmit)="onSubmit()"
+  class="add-customer-form"
+>
+  <div class="form-group">
+    <label for="hours" class="form-label"
+      >Minimum Hours of Work <span class="required-asterisk">*</span></label
+    >
+    <input
+      id="hours"
+      formControlName="hours"
+      type="number"
+      class="form-control"
+      placeholder="Enter hours"
+    />
+  </div>
+  <div class="form-group">
+    <label for="freeDistance" class="form-label"
+      >Free Distance (km) <span class="required-asterisk">*</span></label
+    >
+    <input
+      id="freeDistance"
+      formControlName="freeDistance"
+      type="number"
+      class="form-control"
+      placeholder="Enter distance"
+    />
+  </div>
+  <div class="form-group">
+    <label for="pricePerKm" class="form-label"
+      >Extra Distance Charge (Price/KM)
+      <span class="required-asterisk">*</span></label
+    >
+    <input
+      id="pricePerKm"
+      formControlName="pricePerKm"
+      type="number"
+      class="form-control"
+      placeholder="Enter Price/KM for extra distance"
+    />
+  </div>
+  <button type="submit" class="submit-button" [disabled]="pricingForm.invalid">
+    Add Pricing Rule
+  </button>
 </form>
-  
+
 <div class="pricing-rules">
-    <h2 class="pricing-rules-heading">Pricing Rules</h2>
-    <ul>
-      <li *ngFor="let rule of pricingRules">
-        If work is {{ rule.hours }} hour(s) or more, no distance price for {{ rule.freeDistance }} km. Extra distance price is Rs.{{ rule.pricePerKm }} per km.
-      </li>
-    </ul>
+  <h2 class="pricing-rules-heading">Pricing Rules</h2>
+  <h4 *ngIf="pricingRules.length === 0">
+    No distance pricing rules to display...
+  </h4>
+  <ul>
+    <li *ngFor="let rule of pricingRules; let i = index">
+      <div class="pricing-rule">
+        <div class="pricing-rule-text" *ngIf="rule.pricePerKm > 0">
+          If the job is {{ rule.hours }} hour(s) or more, Free distance is
+          {{ rule.freeDistance }} km and further distance cost is
+          {{ rule.pricePerKm | currency : "INR" }}/KM
+        </div>
+        <div class="pricing-rule-text" *ngIf="rule.pricePerKm === 0">
+          If the job is {{ rule.hours }} hour(s) or more, Distance cost is free...
+        </div>
+        <button class="delete-button" (click)="deleteRule(i)">
+          <img src="delete.png" alt="Delete Icon" />
+        </button>
+      </div>
+    </li>
+  </ul>
 </div>

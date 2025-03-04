@@ -20,6 +20,7 @@ public class Bill {
     private String customerId;
     private String customerName;
     private double totalAmount;
+    private String paymentId = "";
     private LocalDateTime createdAt;
     private List<String> rentalRecordIds;
     private boolean paid;

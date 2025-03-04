@@ -33,12 +33,12 @@
         <td>{{ i + 1 + page.number * page.size }}</td>
         <td>{{ equipment.name }}</td>
         <td>{{ equipment.price | currency:"INR" }}</td>
-        <td>
+        <td class="flex">
           <button class="edit-button" (click)="editEquipment(equipment.id)">
-            Edit
+            <img src="edit.png" alt="Edit" />
           </button>
           <button class="delete-button" (click)="deleteEquipment(equipment.id)">
-            Delete
+            <img src="delete.png" alt="Delete" />
           </button>
         </td>
       </tr>

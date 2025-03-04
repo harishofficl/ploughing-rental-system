@@ -26,27 +26,31 @@
         <th>Equipment</th>
         <th>Hours Used</th>
         <th>Total Cost</th>
+        <th>Paid</th>
+        <th>Billed</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngIf="rentalRecords.length === 0">
-        <td colspan="8" class="no-records">No records found...</td>
+        <td colspan="10" class="no-records">No records found...</td>
       </tr>
       <tr *ngFor="let record of rentalRecords; let i = index">
         <td>{{ i + 1 + page.number * page.size }}</td>
         <td>{{ record.customerName }}</td>
         <td>{{ record.driverName }}</td>
-        <td>{{ record.date }}</td>
+        <td>{{ record.date.split(' ')[0] +" "+ record.date.split(' ')[1] +" "+ record.date.split(' ')[2] +" "+ record.date.split(' ')[5]}}</td>
         <td>{{ record.equipment }}</td>
         <td>{{ record.hoursUsed }}</td>
         <td>{{ record.totalCost | currency : "INR" }}</td>
-        <td>
+        <td [className]="record.paid ? 'bigger-font' :''">{{ record.paid ? "✅" : "❌" }}</td>
+        <td [className]="record.billed ? 'bigger-font' :''">{{ record.billed ? "✅" : "❌" }}</td>
+        <td class="flex">
           <button class="edit-button" (click)="editRecord(record.id)">
-            Edit
+            <img src="edit.png" alt="Edit" />
           </button>
           <button class="delete-button" (click)="deleteRecord(record.id)">
-            Delete
+            <img src="delete.png" alt="Delete" />
           </button>
         </td>
       </tr>
