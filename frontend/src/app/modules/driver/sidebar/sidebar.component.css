@@ -93,3 +93,6 @@
   font-size: 1rem;
   text-align: left;
 }
+.vehicle-svg {
+  fill: rgb(71, 85, 105);
+}

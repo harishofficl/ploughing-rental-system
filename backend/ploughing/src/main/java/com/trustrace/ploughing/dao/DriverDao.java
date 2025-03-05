@@ -37,6 +37,7 @@ public class DriverDao {
             driver.setRoles(List.of("ROLE_DRIVER"));
         }
         driver.setActive(true);
+        driver.setCurrentJobId("idle");
         Driver createdDriver = mongoTemplate.save(driver);
         ownerDao.addDriverId(createdDriver.getOwnerId(), createdDriver.getId());
         return createdDriver;
@@ -93,5 +94,12 @@ public class DriverDao {
         query.with(pageable);
         List<Driver> drivers = mongoTemplate.find(query, Driver.class);
         return new PageImpl<>(drivers, pageable, total);
+    }
+
+    public Driver updateCurrentJobId(String id, String jobId) {
+        logger.info("Updating driver job ID: {}", id);
+        Driver driver = findById(id).orElseThrow(() -> new RuntimeException("Driver not found"));
+        driver.setCurrentJobId(jobId);
+        return mongoTemplate.save(driver);
     }
 }

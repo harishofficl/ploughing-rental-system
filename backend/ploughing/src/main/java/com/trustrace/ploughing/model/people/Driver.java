@@ -21,6 +21,7 @@ public class Driver {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<String> roles;
+    private String currentJobId;
     private boolean active;
     private String ownerId;
 }

@@ -30,9 +30,6 @@ export class ManageCustomersComponent implements OnInit {
     this.api.getCustomersByOwnerIdPaginated(ownerId, pageNumber, size, searchTerm).subscribe((response: any) => {
       this.page = response.data;
       this.customers = this.page.content;
-      console.log(this.page);
-      console.log(this.customers);
-
     });
   }
 

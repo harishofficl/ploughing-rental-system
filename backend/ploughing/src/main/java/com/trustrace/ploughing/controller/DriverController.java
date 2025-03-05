@@ -82,4 +82,10 @@ public class DriverController {
         Page<Driver> drivers = driverService.getDriversByOwnerIdPaginatedContainingName(ownerId, page, size, search);
         return ResponseEntity.ok(new ApiResponse<>(true, "Drivers retrieved successfully", drivers));
     }
+
+    @PutMapping("/{driverId}/job/{jobId}")
+    public ResponseEntity<ApiResponse<Driver>> updateDriverCurrentJobId(@PathVariable String driverId, @PathVariable String jobId) {
+        Driver updatedDriver = driverService.updateDriverCurrentJobId(driverId, jobId);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Driver updated successfully", updatedDriver));
+    }
 }

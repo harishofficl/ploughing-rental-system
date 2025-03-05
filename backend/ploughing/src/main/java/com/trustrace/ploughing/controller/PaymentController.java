@@ -35,10 +35,6 @@ public class PaymentController {
             boolean allMethods = (boolean) requestBody.get("allMethods");
             String billId = (String) requestBody.get("billId");
 
-            System.out.println("Email: " + email);
-            System.out.println("Amount: " + amount);
-            System.out.println("All methods: " + allMethods);
-
             String paymentLink = razorpayService.createPaymentLink(email, amount, allMethods, billId);
             //emailService.sendPaymentLink(email, paymentLink);
 

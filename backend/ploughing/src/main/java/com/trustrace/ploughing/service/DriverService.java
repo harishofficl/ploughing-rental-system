@@ -53,4 +53,8 @@ public class DriverService {
     public Page<Driver> getDriversByOwnerIdPaginatedContainingName(String ownerId, int page, int size, String search) {
         return driverDao.getDriversByOwnerIdPaginatedContainingName(ownerId, page, size, search);
     }
+
+    public Driver updateDriverCurrentJobId(String driverId, String jobId) {
+        return driverDao.updateCurrentJobId(driverId, jobId);
+    }
 }

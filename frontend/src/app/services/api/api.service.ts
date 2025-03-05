@@ -140,10 +140,8 @@ export class ApiService {
           );
           throw error;
         })
-      )
-      .subscribe(() => {
-        console.log('GPS location posted successfully!');
-      });
+      );
+      
   }
 
   // POST /api/bills
@@ -252,7 +250,7 @@ export class ApiService {
       });
   }
 
-  // GET /api/customers
+  // GET /api/customers/owner/{ownerId}?search={term}
   searchCustomersByOwnerId(ownerId: string, term: string): Observable<any> {
     const url = `${this.url}/api/customers/owner/${ownerId}?search=${term}`;
     return this.http.get(url).pipe(

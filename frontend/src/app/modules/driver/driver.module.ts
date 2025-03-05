@@ -7,9 +7,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { NavBarComponent } from '../../utils/nav-bar/nav-bar.component';
+import { JobComponent } from './job/job.component';
 
 @NgModule({
-  declarations: [HomeComponent, DashboardComponent, SidebarComponent],
+  declarations: [HomeComponent, DashboardComponent, SidebarComponent, JobComponent],
   imports: [
     CommonModule,
     DriverRoutingModule,

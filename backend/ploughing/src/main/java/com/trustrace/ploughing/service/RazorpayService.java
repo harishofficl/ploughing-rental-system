@@ -2,14 +2,18 @@ package com.trustrace.ploughing.service;
 
 import com.razorpay.*;
 import com.trustrace.ploughing.dao.BillDao;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class RazorpayService {
 
@@ -38,22 +42,36 @@ public class RazorpayService {
         paymentLinkRequest.put("callback_method", "get");
 
         if (!allMethods) {
-            // only UPI implemented
-            System.out.println("Only UPI implemented");
+            JSONObject instruments = new JSONObject();
+            instruments.put("method", "upi");
 
-//            paymentLinkRequest.put("options", new JSONObject()
-//                    .put("payment_methods", new JSONObject()
-//                            .put("upi", true)
-//                            .put("card", false)
-//                            .put("netbanking", false)
-//                            .put("wallet", false)));
+            JSONObject banks = new JSONObject();
+            banks.put("name", "Pay using UPI");
+            banks.put("instruments", new JSONArray().put(instruments));
+
+            JSONObject blocks = new JSONObject();
+            blocks.put("banks", banks);
+
+            JSONObject display = new JSONObject();
+            display.put("blocks", blocks);
+            display.put("sequence", new JSONArray().put("block.banks"));
+            display.put("preferences", new JSONObject().put("show_default_blocks", false));
+
+            JSONObject config = new JSONObject();
+            config.put("display", display);
+
+            JSONObject checkout = new JSONObject();
+            checkout.put("config", config);
+
+            JSONObject options = new JSONObject();
+            options.put("checkout", checkout);
+
+            paymentLinkRequest.put("options", options);
         }
-
         PaymentLink payment;
         try {
             payment = razorpay.paymentLink.create(paymentLinkRequest);
             String paymentId = payment.get("id");
-            System.out.println("Payment ID: " + paymentId);
             billDao.updatePaymentId(billId, paymentId);
             return payment.get("short_url");
         } catch (RazorpayException e) {
