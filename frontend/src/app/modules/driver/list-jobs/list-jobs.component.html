@@ -1,0 +1,20 @@
+<div class="main-header">
+  <h2 class="main-heading">Today Jobs</h2>
+</div>
+
+<div class="job-list-container">
+  <div class="job-list">
+    <div class="job" *ngFor="let job of jobs">
+      <div class="job-details">
+        <div class="job-detail">
+          <span class="job-detail-label">Customer Name: </span>
+          <span class="job-detail-value">{{ job.customerName }}</span>
+        </div>
+        <div class="job-detail">
+          <span class="job-detail-label">Duration: </span>
+          <span class="job-detail-value">{{ (job.totalTimeInSeconds / 3600) | number:'1.2-2' }} hours</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

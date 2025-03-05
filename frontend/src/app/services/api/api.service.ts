@@ -12,7 +12,10 @@ import { PaymentService } from '../payment/payment.service';
 export class ApiService {
   private url = 'http://localhost:8080/v1';
 
-  constructor(private http: HttpClient, private paymentService: PaymentService) {}
+  constructor(
+    private http: HttpClient,
+    private paymentService: PaymentService
+  ) {}
 
   // Success alert
   private showSuccessMessage(message: string) {
@@ -83,6 +86,23 @@ export class ApiService {
       });
   }
 
+  // POST /api/jobs
+  postJob(jobJson: any): Observable<any> {
+    const url = `${this.url}/api/jobs`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.http
+      .post(url, jobJson, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error occurred while submitting job:', error);
+          this.showErrorMessage('Failed to submit the job. Please try again.');
+          throw error;
+        })
+      );
+ 
+  }
+
   // POST /api/equipment
   postEquipment(equipmentJson: any) {
     const url = `${this.url}/api/equipments`;
@@ -130,18 +150,15 @@ export class ApiService {
     const url = `${this.url}/api/gps`;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    this.http
-      .post(url, gpsObject, { headers })
-      .pipe(
-        catchError((error) => {
-          console.error('Error occurred while submitting GPS location:', error);
-          this.showErrorMessage(
-            'Failed to submit the GPS location. Please try again.'
-          );
-          throw error;
-        })
-      );
-      
+    this.http.post(url, gpsObject, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error occurred while submitting GPS location:', error);
+        this.showErrorMessage(
+          'Failed to submit the GPS location. Please try again.'
+        );
+        throw error;
+      })
+    );
   }
 
   // POST /api/bills
@@ -153,7 +170,9 @@ export class ApiService {
       .post(url, billData, { headers })
       .pipe(
         catchError((error) => {
-          this.showErrorMessage('Failed to submit the bill record. Please try again.');
+          this.showErrorMessage(
+            'Failed to submit the bill record. Please try again.'
+          );
           throw error;
         })
       )
@@ -161,10 +180,17 @@ export class ApiService {
         console.log('Bill created ✔️');
         this.showSuccessMessage(response.message);
         // Call payment service to create payment link
-        if(!paid){
-          this.paymentService.createPaymentLink(selectedCustomer.email, billData.totalAmount, billData.allMethods, response.data.id).subscribe(() => {
-            console.log('Payment link created ✔️');
-          });
+        if (!paid) {
+          this.paymentService
+            .createPaymentLink(
+              selectedCustomer.email,
+              billData.totalAmount,
+              billData.allMethods,
+              response.data.id
+            )
+            .subscribe(() => {
+              console.log('Payment link created ✔️');
+            });
         }
       });
   }
@@ -318,11 +344,11 @@ export class ApiService {
   }
 
   // getUnpaidRecordsByCustomerId -> GET /api/rental-records/customer/{customerId}/unpaid-records
-  getUnpaidRecordsByCustomerId(customerId: string): Observable<any>{
+  getUnpaidRecordsByCustomerId(customerId: string): Observable<any> {
     const url = `${this.url}/api/rental-records/customer/${customerId}/unpaid-records`;
     const response = this.http.get(url);
     response.subscribe((data: any) => {
-      if(data.success === false){
+      if (data.success === false) {
         this.showWarningMessage(data.message);
         return null;
       }
@@ -337,7 +363,9 @@ export class ApiService {
     return this.http.get(url).pipe(
       catchError((error) => {
         console.error('Error occurred while fetching pricing rules:', error);
-        this.showErrorMessage('Failed to fetch pricing rules. Please try again.');
+        this.showErrorMessage(
+          'Failed to fetch pricing rules. Please try again.'
+        );
         throw error;
       })
     );
@@ -348,35 +376,43 @@ export class ApiService {
     const url = `${this.url}/api/owners/${ownerId}/distance-pricing-rules`;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    return this.http
-      .put(url, pricingRules, { headers })
-      .pipe(
-        catchError((error) => {
-          console.error('Error occurred while setting pricing rules:', error);
-          this.showErrorMessage('Failed to set pricing rules. Please try again.');
-          throw error;
-        })
-      );
+    return this.http.put(url, pricingRules, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error occurred while setting pricing rules:', error);
+        this.showErrorMessage('Failed to set pricing rules. Please try again.');
+        throw error;
+      })
+    );
   }
 
   // GET /api/rental-records/owner/{ownerId}/paginated?page={page}&size={size}&search={searchTerm}
-  getRentalRecordsByOwnerIdPaginated(ownerId: string, page: number, size: number, searchTerm: string): Observable<any> {
+  getRentalRecordsByOwnerIdPaginated(
+    ownerId: string,
+    page: number,
+    size: number,
+    searchTerm: string
+  ): Observable<any> {
     const url = `${this.url}/api/rental-records/owner/${ownerId}/paginated?page=${page}&size=${size}&search=${searchTerm}`;
-    return this.http.get(url)
-    .pipe(
+    return this.http.get(url).pipe(
       catchError((error) => {
         console.error('Error occurred while fetching rental records:', error);
-        this.showErrorMessage('Failed to fetch rental records. Please try again.');
+        this.showErrorMessage(
+          'Failed to fetch rental records. Please try again.'
+        );
         throw error;
       })
     );
   }
 
   // GET /api/customers/owner/{ownerId}/paginated?page={page}&size={size}&search={searchTerm}
-  getCustomersByOwnerIdPaginated(ownerId: string, page: number, size: number, searchTerm: string): Observable<any> {
+  getCustomersByOwnerIdPaginated(
+    ownerId: string,
+    page: number,
+    size: number,
+    searchTerm: string
+  ): Observable<any> {
     const url = `${this.url}/api/customers/owner/${ownerId}/paginated?page=${page}&size=${size}&search=${searchTerm}`;
-    return this.http.get(url)
-    .pipe(
+    return this.http.get(url).pipe(
       catchError((error) => {
         console.error('Error occurred while fetching customers:', error);
         this.showErrorMessage('Failed to fetch customers. Please try again.');
@@ -386,10 +422,14 @@ export class ApiService {
   }
 
   // GET /api/drivers/owner/{ownerId}/paginated?page={page}&size={size}&search={searchTerm}
-  getDriversByOwnerIdPaginated(ownerId: string, page: number, size: number, searchTerm: string): Observable<any> {
+  getDriversByOwnerIdPaginated(
+    ownerId: string,
+    page: number,
+    size: number,
+    searchTerm: string
+  ): Observable<any> {
     const url = `${this.url}/api/drivers/owner/${ownerId}/paginated?page=${page}&size=${size}&search=${searchTerm}`;
-    return this.http.get(url)
-    .pipe(
+    return this.http.get(url).pipe(
       catchError((error) => {
         console.error('Error occurred while fetching drivers:', error);
         this.showErrorMessage('Failed to fetch drivers. Please try again.');
@@ -399,10 +439,14 @@ export class ApiService {
   }
 
   // GET /api/equipments/owner/{ownerId}/paginated?page={page}&size={size}&search={searchTerm}
-  getEquipmentsByOwnerIdPaginated(ownerId: string, page: number, size: number, searchTerm: string): Observable<any> {
+  getEquipmentsByOwnerIdPaginated(
+    ownerId: string,
+    page: number,
+    size: number,
+    searchTerm: string
+  ): Observable<any> {
     const url = `${this.url}/api/equipments/owner/${ownerId}/paginated?page=${page}&size=${size}&search=${searchTerm}`;
-    return this.http.get(url)
-    .pipe(
+    return this.http.get(url).pipe(
       catchError((error) => {
         console.error('Error occurred while fetching equipments:', error);
         this.showErrorMessage('Failed to fetch equipments. Please try again.');
@@ -412,10 +456,14 @@ export class ApiService {
   }
 
   // GET /api/vehicles/owner/{ownerId}/paginated?page={page}&size={size}&search={searchTerm}
-  getVehiclesByOwnerIdPaginated(ownerId: string, page: number, size: number, searchTerm: string): Observable<any> {
+  getVehiclesByOwnerIdPaginated(
+    ownerId: string,
+    page: number,
+    size: number,
+    searchTerm: string
+  ): Observable<any> {
     const url = `${this.url}/api/vehicles/owner/${ownerId}/paginated?page=${page}&size=${size}&search=${searchTerm}`;
-    return this.http.get(url)
-    .pipe(
+    return this.http.get(url).pipe(
       catchError((error) => {
         console.error('Error occurred while fetching vehicles:', error);
         this.showErrorMessage('Failed to fetch vehicles. Please try again.');
@@ -424,6 +472,43 @@ export class ApiService {
     );
   }
 
+  // GET /api/jobs/{id}
+  getJobById(jobId: string): Observable<any> {
+    const url = `${this.url}/api/jobs/${jobId}`;
+    return this.http.get(url).pipe(
+      catchError((error) => {
+        console.error('Error occurred while fetching job:', error);
+        this.showErrorMessage('Failed to fetch job. Please try again.');
+        throw error;
+      })
+    );
+  }
 
+  // PUT /api/jobs/{id}/end-job?endImagePath={endImagePath}&dieselUsed={dieselUsed}
+  endJob(jobId: string, endImagePath: string, dieselUsed: number) {
+    const url = `${this.url}/api/jobs/${jobId}/end-job?endImagePath=${endImagePath}&dieselUsed=${dieselUsed}`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
+    return this.http
+      .put(url, null, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error occurred while ending job:', error);
+          this.showErrorMessage('Failed to end job. Please try again.');
+          throw error;
+        })
+      );
+  }
+
+  // GET /api/jobs/driver/{driverId}/today-completed
+  getTodayJobsByDriverId(driverId: string): Observable<any> {
+    const url = `${this.url}/api/jobs/driver/${driverId}/today-completed`;
+    return this.http.get(url).pipe(
+      catchError((error) => {
+        console.error('Error occurred while fetching today jobs:', error);
+        this.showErrorMessage('Failed to fetch today jobs. Please try again.');
+        throw error;
+      })
+    );
+  }
 }

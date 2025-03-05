@@ -1,7 +1,163 @@
 <div class="main-header">
-    <h1 class="main-heading">Current Job</h1>
+  <h1 class="main-heading">Current Job</h1>
 </div>
 
 <div class="current-job-container">
-    
+  <div class="body-container">
+    <div class="start-job" *ngIf="!jobStarted">
+      <h2 class="start-job-heading">Start Job</h2>
+      <form [formGroup]="startJobForm" class="create-job-form">
+        <div class="form-group">
+          <label for="vehicleId" class="form-label"
+            >Select Vehicle <span class="required-asterisk">*</span></label
+          >
+          <select
+            id="vehicleId"
+            formControlName="vehicleId"
+            class="form-control"
+          >
+            <option value="" disabled>Select a vehicle</option>
+            <option *ngFor="let vehicle of vehicles" [value]="vehicle.id">
+              {{ vehicle.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="customerName" class="form-label"
+            >Customer Name <span class="required-asterisk">*</span></label
+          >
+          <input
+            id="customerName"
+            formControlName="customerName"
+            type="text"
+            class="form-control"
+            placeholder="Enter customer name"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="webcam" class="form-label"
+            >Capture Photo <span class="required-asterisk">*</span>
+          </label>
+          <div class="webcam-button-container flex">
+            <button class="open-web-cam" type="button" (click)="openWebcam()">
+              Open Webcam
+            </button>
+            <div class="file-name">
+              <span
+                id="fileName"
+                *ngIf="webcamImage?.imageAsDataUrl; else noImage"
+              >
+              </span>
+              <ng-template #noImage>
+                <span>Please capture an image</span>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="submit-button"
+          (click)="startJob()"
+          [disabled]="startJobForm.invalid"
+        >
+          Start Job
+        </button>
+      </form>
+    </div>    
+
+    <div class="end-job" *ngIf="jobStarted">
+      <h2 class="end-job-heading">End Job</h2>
+
+      <!-- timer -->
+      <div class="job-timer-container">
+        <span class="job-started">Active Job: </span>
+        <span id="jobTimer" class="job-timer" *ngIf="jobStarted">0 hours 0 minutes</span>
+      </div>
+
+      <form [formGroup]="endJobForm" class="end-job-form">
+        <div class="form-group">
+          <label for="endImagePath" class="form-label"
+            >Capture End Photo <span class="required-asterisk">*</span>
+          </label>
+          <div class="webcam-button-container flex">
+            <button class="open-web-cam" type="button" (click)="openWebcam()">
+              Open Webcam
+            </button>
+            <div class="file-name">
+              <span
+                id="fileName"
+                *ngIf="webcamImage?.imageAsDataUrl; else noImage"
+              >
+              </span>
+              <ng-template #noImage>
+                <span>Please capture an image</span>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="dieselUsed" class="form-label"
+            >Diesel Used <span class="required-asterisk">*</span></label
+          >
+          <input
+            id="dieselUsed"
+            formControlName="dieselUsed"
+            type="text"
+            class="form-control"
+            placeholder="Enter diesel used"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="submit-button"
+          (click)="endJob()"
+          [disabled]="endJobForm.invalid"
+        >
+          End Job
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Webcam -->
+  <div class="webcam-main-container" *ngIf="isWebcamOpen">
+    <div class="webcam-content">
+      <div class="close-button-container">
+        <span class="close" (click)="closeWebcam()">&times;</span>
+      </div>
+      <div class="webcam-container" *ngIf="!isPhotoCaptured">
+        <webcam
+          [trigger]="triggerObservable"
+          [allowCameraSwitch]="true"
+          [width]="500"
+          [height]="500"
+          (imageCapture)="handleImage($event)"
+        ></webcam>
+        <button type="button" (click)="triggerSnapshot()">Capture Photo</button>
+      </div>
+      <div class="photo-preview" *ngIf="isPhotoCaptured">
+        <img
+          [width]="500"
+          [height]="375"
+          [src]="webcamImage?.imageAsDataUrl"
+          alt="Captured photo"
+        />
+        <div class="photo-preview-buttons flex">
+          <button type="button" (click)="confirmPhoto()">Confirm</button>
+          <button type="button" (click)="retakePhoto()">Retake</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- List today jobs -->
+  <app-list-jobs *ngIf="driverId" [driverId]="driverId"></app-list-jobs>
+  
 </div>
+
+

@@ -9,4 +9,132 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
   padding: 2rem;
   width: 100%;
+  height: 100vh;
+}
+
+.webcam-main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+
+.webcam-content {
+  display: flex;
+  flex-direction: column;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  height: 500px;
+  max-width: 600px;
+  text-align: center;
+}
+
+.close-button-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.close {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: rgb(var(--colors-gray-600));
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: rgb(14 165 233);
+}
+
+.required-asterisk {
+  color: red;
+}
+
+.submit-button {
+  background-color: rgb(14 165 233);
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.submit-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+button {
+  background-color: rgb(14 165 233);
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  margin: 0.5rem;
+}
+
+.open-web-cam {
+  margin: 0 0.5rem 0 0;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.photo-preview-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.file-name {
+  font-size: small;
+  display: flex;
+  align-items: center;
+}
+
+.start-job-heading, .end-job-heading {
+  margin-bottom: 1rem;
+}
+
+.job-timer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
 }
