@@ -1,5 +1,5 @@
 <div class="main-header">
-  <h1 class="main-heading">Current Job</h1>
+  <h1 class="main-heading">Jobs</h1>
 </div>
 
 <div class="current-job-container">
@@ -154,10 +154,7 @@
       </div>
     </div>
   </div>
-
-  <!-- List today jobs -->
-  <app-list-jobs *ngIf="driverId" [driverId]="driverId"></app-list-jobs>
-  
 </div>
 
-
+<!-- List today jobs -->
+<app-list-jobs *ngIf="driverId" [driverId]="driverId"></app-list-jobs>

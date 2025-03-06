@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { ApiService } from '../../../services/api/api.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { Subject, Observable } from 'rxjs';
 import { saveAs } from 'file-saver';
+import { ListJobsComponent } from '../list-jobs/list-jobs.component';
 
 @Component({
   selector: 'app-job',
@@ -25,6 +26,8 @@ export class JobComponent implements OnInit {
   jobStarted: boolean = false;
   jobStartTime: Date | null = null;
   timerInterval: any;
+
+  @ViewChild(ListJobsComponent) listJob!:ListJobsComponent;
 
   // Webcam trigger
   private trigger: Subject<void> = new Subject<void>();
@@ -190,6 +193,9 @@ export class JobComponent implements OnInit {
       clearInterval(this.timerInterval);
       this.endJobForm.reset();
       console.log(job.data);
+
+      // refresh jobs list
+      this.listJob.refreshJobs();
     });
   }
 

@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { WebcamModule } from 'ngx-webcam';
 import { ListJobsComponent } from './list-jobs/list-jobs.component';
+import { DurationPipe } from '../../pipes/duration.pipe';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { ListJobsComponent } from './list-jobs/list-jobs.component';
     SidebarComponent,
     JobComponent,
     ListJobsComponent,
+    DurationPipe
   ],
   imports: [
     CommonModule,
