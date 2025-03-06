@@ -20,6 +20,7 @@ public class Job {
     private String customerName;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private int totalTimeInSeconds = 0;
     private String startImagePath;
     private String endImagePath;
     private double dieselUsed = 0.0;

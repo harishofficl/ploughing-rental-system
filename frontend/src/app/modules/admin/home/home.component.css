@@ -1,0 +1,12 @@
+.body-container {
+    display: flex;
+  }
+  
+  .main-container {
+    margin-left: 16rem;
+    padding: 25px 30px;
+    flex-grow: 1;
+    min-height: 100vh;
+    color: rgb(var(--colors-gray-600));
+  }
+  

@@ -15,6 +15,6 @@ public class Vehicle {
     @Id
     private String id;
     private String name;
-    private float currFuelLevel;
+    private double currFuelLevel;
     private String ownerId;
 }

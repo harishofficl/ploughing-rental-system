@@ -3,13 +3,14 @@ import { AuthService } from '../../../services/auth/auth.service';
 import { GpsService } from '../../../services/gps/gps.service';
 import { ApiService } from '../../../services/api/api.service';
 
-
 @Component({
   selector: 'app-home-driver',
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
 })
 export class HomeComponent {
+  locationTrigger!: any;
+
   constructor(
     private auth: AuthService,
     private gps: GpsService,
@@ -17,10 +18,7 @@ export class HomeComponent {
   ) {}
 
   ngOnInit() {
-    
-    // this.getLocation();
-
-    setInterval(() => {
+    this.locationTrigger = setInterval(() => {
       this.getLocation();
     }, 600000); // 10 minutes
   }
@@ -49,5 +47,9 @@ export class HomeComponent {
     } catch (error) {
       throw error;
     }
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.locationTrigger);
   }
 }

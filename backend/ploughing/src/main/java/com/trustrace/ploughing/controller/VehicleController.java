@@ -49,7 +49,7 @@ public class VehicleController {
     }
 
     @PutMapping("/{id}/update-fuel")
-    public ResponseEntity<ApiResponse<Vehicle>> updateFuelLevel(@PathVariable String id, @RequestParam float updateFuel) {
+    public ResponseEntity<ApiResponse<Vehicle>> updateFuelLevel(@PathVariable String id, @RequestParam double updateFuel) {
         Vehicle updatedVehicle = vehicleService.updateFuelLevel(id, updateFuel, false);
         if (updatedVehicle == null) {
             return ResponseEntity.status(404).body(new ApiResponse<>(false, "Vehicle not found", null));

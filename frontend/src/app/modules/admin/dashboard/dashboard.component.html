@@ -1,8 +1,11 @@
-<app-nav-bar></app-nav-bar>
+<div class="main-header">
+  <h1 class="main-heading">Admin Dashboard</h1>
+</div>
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <h1>Dashboard</h1>
-    </div>
+<div class="dashboard-card welcome-card">
+  <div class="welcome-avatar">{{ userLetters }}</div>
+  <div class="welcome-text-container">
+    <p class="welcome-message">Welcome back,</p>
+    <p class="welcome-name">{{ userName.toUpperCase() }}</p>
+  </div>
 </div>

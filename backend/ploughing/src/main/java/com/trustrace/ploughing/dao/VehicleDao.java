@@ -52,7 +52,7 @@ public class VehicleDao {
     }
 
     // update fuel level
-    public Vehicle updateFuelLevel(String id, float fuelLevel, boolean add) {
+    public Vehicle updateFuelLevel(String id, double fuelLevel, boolean add) {
         logger.info("Updating Fuel Level for Vehicle ID: {}", id);
         Vehicle vehicle = mongoTemplate.findById(id, Vehicle.class);
         if (vehicle == null) {
