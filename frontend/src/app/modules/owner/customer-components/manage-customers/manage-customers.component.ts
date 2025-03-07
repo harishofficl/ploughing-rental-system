@@ -38,11 +38,11 @@ export class ManageCustomersComponent implements OnInit {
   }
 
   editCustomer(id: string) {
-    // Logic to edit a customer
+    //...
   }
 
   deleteCustomer(id: string) {
-    // Logic to delete a customer
+    //...
   }
 
   previousPage() {
