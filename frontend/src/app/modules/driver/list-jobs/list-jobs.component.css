@@ -22,7 +22,6 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
   gap: 1%;
 }
 
@@ -32,7 +31,6 @@
   padding: 1rem;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
-  width: 19%;
   margin-bottom: 1rem;
 }
 
