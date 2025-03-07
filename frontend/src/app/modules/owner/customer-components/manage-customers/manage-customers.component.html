@@ -27,7 +27,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngIf="customers.length === 0">
+      <app-content-loading></app-content-loading>
+
+        <tr *ngIf="!(loadingService.loading$ | async) && customers.length === 0">
           <td colspan="5" class="no-records">No records found...</td>
         </tr>
         <tr *ngFor="let customer of customers; let i = index">

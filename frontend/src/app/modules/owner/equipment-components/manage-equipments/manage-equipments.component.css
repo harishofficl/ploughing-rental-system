@@ -54,6 +54,10 @@
   margin-bottom: 1.5rem;
 }
 
+tbody {
+  position: relative;
+}
+
 .equipments-table th,
 .equipments-table td {
   border-bottom: 1px solid rgb(var(--colors-gray-200));

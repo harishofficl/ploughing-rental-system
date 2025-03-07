@@ -113,3 +113,7 @@
   color: rgb(var(--colors-gray-300));
   cursor: not-allowed;
 }
+
+tbody {
+  position: relative;
+}

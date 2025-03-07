@@ -26,7 +26,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngIf="equipments.length === 0">
+
+      <app-content-loading></app-content-loading>
+
+      <tr *ngIf="!(loadingService.loading$ | async) && equipments.length === 0">
         <td colspan="4" class="no-records">No records found...</td>
       </tr>
       <tr *ngFor="let equipment of equipments; let i = index">

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthService } from '../../../../services/auth/auth.service';
+import { LoadingService } from '../../../../services/loading/loading.service';
 
 @Component({
   selector: 'app-manage-drivers',
@@ -20,17 +21,22 @@ export class ManageDriversComponent implements OnInit {
     last: true
   };
 
-  constructor(private api: ApiService, private auth: AuthService) {}
+  constructor(private api: ApiService, private auth: AuthService, public loadingService:LoadingService) {}
 
   ngOnInit(): void {
     this.fetchDrivers(this.auth.currentUserId);
   }
 
   fetchDrivers(ownerId: string, searchTerm: string = "", pageNumber: number = 0, size: number = 5): void {
+    this.drivers = [];
+    this.loadingService.show();
     this.api.getDriversByOwnerIdPaginated(ownerId, pageNumber, size, searchTerm).subscribe((response: any) => {
       this.page = response.data;
       this.drivers = this.page.content;
-    });
+      this.loadingService.hide();
+    }), () => {
+      this.loadingService.hide();
+    };
   }
 
   searchDrivers() {

@@ -1,53 +1,55 @@
 <div class="main-header">
-    <h1 class="main-heading">Manage Vehicles</h1>
+  <h1 class="main-heading">Manage Vehicles</h1>
+</div>
+
+<div class="header-actions">
+  <input
+    type="text"
+    placeholder="Search by Name..."
+    [(ngModel)]="searchTerm"
+    (input)="searchVehicles()"
+    class="search-bar"
+  />
+  <button class="create-button" [routerLink]="['../add-vehicle']">
+    Create Vehicle
+  </button>
+</div>
+
+<div class="vehicles-container">
+  <table class="vehicles-table">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Name</th>
+        <th>Fuel Level</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <app-content-loading></app-content-loading>
+
+      <tr *ngIf="!(loadingService.loading$ | async) && vehicles.length === 0">
+        <td colspan="4" class="no-records">No records found...</td>
+      </tr>
+      <tr *ngFor="let vehicle of vehicles; let i = index">
+        <td>{{ i + 1 + page.number * page.size }}</td>
+        <td>{{ vehicle.name }}</td>
+        <td>{{ vehicle.currFuelLevel }} Litres</td>
+        <td class="flex">
+          <button class="edit-button" (click)="editVehicle(vehicle.id)">
+            <img src="edit.png" alt="Edit" />
+          </button>
+          <button class="delete-button" (click)="deleteVehicle(vehicle.id)">
+            <img src="delete.png" alt="Delete" />
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination-controls" *ngIf="vehicles.length > 0">
+    <button (click)="previousPage()" [disabled]="page.first">Previous</button>
+    <span>Page {{ page.number + 1 }} of {{ page.totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="page.last">Next</button>
   </div>
-  
-  <div class="header-actions">
-    <input
-      type="text"
-      placeholder="Search by Name..."
-      [(ngModel)]="searchTerm"
-      (input)="searchVehicles()"
-      class="search-bar"
-    />
-    <button class="create-button" [routerLink]="['../add-vehicle']">
-      Create Vehicle
-    </button>
-  </div>
-  
-  <div class="vehicles-container">
-    <table class="vehicles-table">
-      <thead>
-        <tr>
-          <th>S.No</th>
-          <th>Name</th>
-          <th>Fuel Level</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngIf="vehicles.length === 0">
-          <td colspan="4" class="no-records">No records found...</td>
-        </tr>
-        <tr *ngFor="let vehicle of vehicles; let i = index">
-          <td>{{ i + 1 + page.number * page.size }}</td>
-          <td>{{ vehicle.name }}</td>
-          <td>{{ vehicle.currFuelLevel }} Litres</td>
-          <td class="flex">
-            <button class="edit-button" (click)="editVehicle(vehicle.id)">
-              <img src="edit.png" alt="Edit" />
-            </button>
-            <button class="delete-button" (click)="deleteVehicle(vehicle.id)">
-              <img src="delete.png" alt="Delete" />
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <div class="pagination-controls" *ngIf="vehicles.length > 0">
-      <button (click)="previousPage()" [disabled]="page.first">Previous</button>
-      <span>Page {{ page.number + 1 }} of {{ page.totalPages }}</span>
-      <button (click)="nextPage()" [disabled]="page.last">Next</button>
-    </div>
-  </div>
+</div>

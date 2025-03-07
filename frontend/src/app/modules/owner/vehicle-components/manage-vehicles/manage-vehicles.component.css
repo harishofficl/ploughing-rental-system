@@ -12,6 +12,10 @@
   margin-bottom: 1rem;
 }
 
+tbody {
+  position: relative;
+}
+
 .search-bar {
   padding: 0.5rem;
   border: 1px solid rgb(var(--colors-gray-300));
