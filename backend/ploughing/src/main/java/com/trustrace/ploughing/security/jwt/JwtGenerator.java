@@ -1,20 +1,24 @@
 package com.trustrace.ploughing.security.jwt;
 
 import com.trustrace.ploughing.security.SecurityConstants;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 
 import java.security.Key;
+import java.security.SignatureException;
 import java.util.Date;
 
 
 @Configuration
 public class JwtGenerator {
+
+    private static final Logger log = LoggerFactory.getLogger(JwtGenerator.class);
     private final Key key = getSignInKey();
     public String generateToken(Authentication authentication){
         String email = authentication.getName();
@@ -46,16 +50,18 @@ public class JwtGenerator {
         try{
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        }
-        catch (io.jsonwebtoken.ExpiredJwtException e) {
-            System.out.println("Token validation failed: " + e.getMessage());
-            throw new AuthenticationCredentialsNotFoundException("Expired JWT token");
-        } catch (io.jsonwebtoken.UnsupportedJwtException e) {
-            throw new AuthenticationCredentialsNotFoundException("Unsupported JWT token");
-        } catch (io.jsonwebtoken.MalformedJwtException e) {
-            throw new AuthenticationCredentialsNotFoundException("Malformed JWT token");
+        }catch (ExpiredJwtException e) {
+            log.warn("JWT token expired: {}", e.getMessage());
+            throw new AuthenticationCredentialsNotFoundException("Expired JWT token.");
+        } catch (UnsupportedJwtException e) {
+            log.warn("Unsupported JWT token: {}", e.getMessage());
+            throw new AuthenticationCredentialsNotFoundException("Unsupported JWT token.");
+        } catch (MalformedJwtException e) {
+            log.warn("Malformed JWT token: {}", e.getMessage());
+            throw new AuthenticationCredentialsNotFoundException("Malformed JWT token.");
         } catch (IllegalArgumentException e) {
-            throw new AuthenticationCredentialsNotFoundException("JWT token compact of handler are invalid");
+            log.warn("Invalid JWT token: {}", e.getMessage());
+            throw new AuthenticationCredentialsNotFoundException("JWT token compact of handler are invalid.");
         }
     }
 }

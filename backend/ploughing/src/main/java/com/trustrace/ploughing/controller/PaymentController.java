@@ -8,6 +8,7 @@ import com.trustrace.ploughing.service.RazorpayService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("${ploughing.build.version}/api/payments")
+@PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_ADMIN')")
 public class PaymentController {
 
     @Autowired

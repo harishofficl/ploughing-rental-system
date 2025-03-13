@@ -5,12 +5,14 @@ import com.trustrace.ploughing.model.Job;
 import com.trustrace.ploughing.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("${ploughing.build.version}/api/jobs")
+@PreAuthorize("hasAnyRole('ROLE_DRIVER', 'ROLE_ADMIN')")
 public class JobController {
 
     @Autowired

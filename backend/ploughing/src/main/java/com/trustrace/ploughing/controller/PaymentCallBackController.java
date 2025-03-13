@@ -83,7 +83,6 @@ public class PaymentCallBackController {
             String status = (String) paymentEntity.get("status");
             double totalAmount = ((Number) paymentEntity.get("amount")).doubleValue() / 100;
 
-            // Fetch the bill using payment link ID
             Bill bill = billService.findByPaymentId(paymentLinkId);
             if (bill != null && "captured".equals(status)) {
                 billService.setBillRentalPaid(bill.getId());
@@ -95,7 +94,7 @@ public class PaymentCallBackController {
                         bill.getCustomerName(),
                         bill.getId(),
                         totalAmount,
-                        status,
+                        "paid",
                         "" // Signature not provided in webhook
                 );
 
