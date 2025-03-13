@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/v1/auth/**").permitAll()
+                        .requestMatchers("/v1/api/payment/webhook").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults());

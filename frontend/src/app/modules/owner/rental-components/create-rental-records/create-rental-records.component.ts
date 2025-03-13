@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { ApiService } from '../../../../services/api/api.service';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
@@ -105,12 +105,14 @@ export class CreateRentalRecordsComponent implements OnInit {
       this.changeCustomerDisplay = false;
       const customerInput = document.getElementById('customer') as HTMLInputElement;
       customerInput.disabled = false;
-
+      
       // Reset form
       this.rentalForm.reset();
       this.rentalForm.patchValue({ ownerId: this.auth.currentUserId });
       this.rentalForm.patchValue({ date: new Date().toISOString().split('T')[0] });
       this.rentalForm.patchValue({ paid: false });
+
+      customerInput.focus();
     }
   }
 

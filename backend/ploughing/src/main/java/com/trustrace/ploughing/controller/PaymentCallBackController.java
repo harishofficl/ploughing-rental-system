@@ -23,20 +23,90 @@ public class PaymentCallBackController {
     @Autowired
     private PaymentService paymentService;
 
-    @PostMapping("/webhook")
-    public String handleWebhook(@RequestBody Map<String, String> paymentBody) {
-        String paymentId = paymentBody.get("razorpayPaymentId");
-        String paymentLinkId = paymentBody.get("razorpayPaymentLinkId");
-        String status = paymentBody.get("razorpayStatus");
-        String signature = paymentBody.get("razorpaySignature");
-
-        Bill bill = billService.findByPaymentId(paymentLinkId);
-        Payment payment = null;
-        if(bill != null && status.equals("paid")) {
-            billService.setBillRentalPaid(bill.getId());
-            payment = paymentService.savePayment(new Payment(paymentId, paymentLinkId, bill.getOwnerId(), bill.getCustomerName(), bill.getId(), bill.getTotalAmount(), status, signature));
-        }
-        assert payment != null;
+    @PostMapping("/redirect")
+    public String handlePaymentRedirect(@RequestBody Map<String, String> paymentBody) {
+//        String paymentId = paymentBody.get("razorpayPaymentId");
+//        String paymentLinkId = paymentBody.get("razorpayPaymentLinkId");
+//        String status = paymentBody.get("razorpayStatus");
+//        String signature = paymentBody.get("razorpaySignature");
+//
+//        Bill bill = billService.findByPaymentId(paymentLinkId);
+//        Payment payment = null;
+//        if(bill != null && status.equals("paid")) {
+//            billService.setBillRentalPaid(bill.getId());
+//            payment = paymentService.savePayment(new Payment(paymentId, paymentLinkId, bill.getOwnerId(), bill.getCustomerName(), bill.getId(), bill.getTotalAmount(), status, signature));
+//        }
+//        assert payment != null;
         return new JSONObject().put("Payment Status", "Success").toString();
     }
+
+    @PostMapping("/webhook")
+    public void handleRazorPayWebhook(@RequestBody Map<String, Object> requestBody) {
+        log.info("Received Webhook: {}", requestBody);
+
+        try {
+            // Extract the "payload" object
+            Map<String, Object> payload = (Map<String, Object>) requestBody.get("payload");
+            if (payload == null) {
+                log.error("Invalid payload in webhook");
+                return;
+            }
+
+            // Extract payment entity
+            Map<String, Object> paymentData = (Map<String, Object>) payload.get("payment");
+            if (paymentData == null) {
+                log.error("Payment data missing in payload");
+                return;
+            }
+
+            Map<String, Object> paymentEntity = (Map<String, Object>) paymentData.get("entity");
+            if (paymentEntity == null) {
+                log.error("Payment entity missing in webhook payload");
+                return;
+            }
+
+            // Extract payment_link entity
+            Map<String, Object> paymentLinkData = (Map<String, Object>) payload.get("payment_link");
+            if (paymentLinkData == null) {
+                log.error("Payment link data missing in payload");
+                return;
+            }
+
+            Map<String, Object> paymentLinkEntity = (Map<String, Object>) paymentLinkData.get("entity");
+            if (paymentLinkEntity == null) {
+                log.error("Payment link entity missing in payload");
+                return;
+            }
+
+            String paymentId = (String) paymentEntity.get("id");
+            String paymentLinkId = (String) paymentLinkEntity.get("id");
+            String status = (String) paymentEntity.get("status");
+            double totalAmount = ((Number) paymentEntity.get("amount")).doubleValue() / 100;
+
+            // Fetch the bill using payment link ID
+            Bill bill = billService.findByPaymentId(paymentLinkId);
+            if (bill != null && "captured".equals(status)) {
+                billService.setBillRentalPaid(bill.getId());
+
+                Payment payment = new Payment(
+                        paymentId,
+                        paymentLinkId,
+                        bill.getOwnerId(),
+                        bill.getCustomerName(),
+                        bill.getId(),
+                        totalAmount,
+                        status,
+                        "" // Signature not provided in webhook
+                );
+
+                paymentService.savePayment(payment);
+                log.info("Payment saved successfully: {}", payment);
+            } else {
+                log.error("Bill not found or payment status is not 'captured'");
+            }
+        } catch (Exception e) {
+            log.error("Error processing webhook: {}", e.getMessage(), e);
+        }
+    }
+
 }
