@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("${survey.build.version}/api/equipments")
+@RequestMapping("${ploughing.build.version}/api/equipments")
 public class EquipmentController {
 
     @Autowired

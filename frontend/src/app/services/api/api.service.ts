@@ -100,7 +100,6 @@ export class ApiService {
           throw error;
         })
       );
- 
   }
 
   // POST /api/equipment
@@ -158,7 +157,9 @@ export class ApiService {
         );
         throw error;
       })
-    );
+    ).subscribe(() => {
+      console.log("Gps saved!")
+    });
   }
 
   // POST /api/bills

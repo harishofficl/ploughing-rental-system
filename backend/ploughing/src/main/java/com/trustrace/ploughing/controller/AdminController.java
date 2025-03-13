@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("${survey.build.version}/api/admins")
+@RequestMapping("${ploughing.build.version}/api/admins")
 public class AdminController {
 
     @Autowired

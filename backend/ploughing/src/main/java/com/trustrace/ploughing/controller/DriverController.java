@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("${survey.build.version}/api/drivers")
+@RequestMapping("${ploughing.build.version}/api/drivers")
 public class DriverController {
 
     @Autowired

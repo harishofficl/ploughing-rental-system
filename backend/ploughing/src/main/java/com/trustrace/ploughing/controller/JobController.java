@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("${survey.build.version}/api/jobs")
+@RequestMapping("${ploughing.build.version}/api/jobs")
 public class JobController {
 
     @Autowired

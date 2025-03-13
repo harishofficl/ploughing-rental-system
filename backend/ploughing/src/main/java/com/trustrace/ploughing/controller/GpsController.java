@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("${survey.build.version}/api/gps")
+@RequestMapping("${ploughing.build.version}/api/gps")
 public class GpsController {
 
     @Autowired

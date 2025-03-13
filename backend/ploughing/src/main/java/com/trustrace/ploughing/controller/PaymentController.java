@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("${survey.build.version}/api/payments")
+@RequestMapping("${ploughing.build.version}/api/payments")
 public class PaymentController {
 
     @Autowired

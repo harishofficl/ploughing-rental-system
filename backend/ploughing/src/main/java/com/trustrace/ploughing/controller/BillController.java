@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("${survey.build.version}/api/bills")
+@RequestMapping("${ploughing.build.version}/api/bills")
 public class BillController {
 
     @Autowired
