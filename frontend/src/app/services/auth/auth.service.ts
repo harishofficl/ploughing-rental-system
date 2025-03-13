@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root',
@@ -39,11 +38,11 @@ export class AuthService {
     localStorage.setItem('currentUser', JSON.stringify(this.admin));
     localStorage.setItem(
       'authToken',
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWVuaXZhc2FuQGdtYWlsLmNvbSIsImlhdCI6MTc0MTg0MzI4MywiZXhwIjoxNzQxOTI5NjgzfQ.C9kxoKd0J047NGsmppmWbFttVyyj3Sf-PPuTSFsJJM8'
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0MTg0Mjc4MywiZXhwIjoxNzQxOTI5MTgzfQ.PokBRWgzRp0GrgpTTdSsRT1xlFXTxpeTELri95dk9_8'
     );
     this.currentUser = this.admin;
     const token = localStorage.getItem('authToken');
-    if (token){
+    if (token) {
       this.authToken = token;
     }
     this.isAuthenticated = true;
@@ -58,7 +57,7 @@ export class AuthService {
     );
     this.currentUser = this.owner;
     const token = localStorage.getItem('authToken');
-    if (token){
+    if (token) {
       this.authToken = token;
     }
     this.isAuthenticated = true;
@@ -69,11 +68,11 @@ export class AuthService {
     localStorage.setItem('currentUser', JSON.stringify(this.driver));
     localStorage.setItem(
       'authToken',
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWVuaXZhc2FuQGdtYWlsLmNvbSIsImlhdCI6MTc0MTg0MzI4MywiZXhwIjoxNzQxOTI5NjgzfQ.C9kxoKd0J047NGsmppmWbFttVyyj3Sf-PPuTSFsJJM8'
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYWplc2hAZ21haWwuY29tIiwiaWF0IjoxNzQxODU2MDEzLCJleHAiOjE3NDE5NDI0MTN9.JbU8TSiJcafvD4c739Zi9RKi2B9KMy5RETI-ArIk7fM'
     );
     this.currentUser = this.driver;
     const token = localStorage.getItem('authToken');
-    if (token){
+    if (token) {
       this.authToken = token;
     }
     this.isAuthenticated = true;

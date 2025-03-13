@@ -33,6 +33,7 @@ public class VehicleController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_ADMIN', 'ROLE_DRIVER')")
     public ResponseEntity<ApiResponse<Vehicle>> getVehicleById(@PathVariable String id) {
         Optional<Vehicle> vehicle = vehicleService.getVehicleById(id);
         if (vehicle.isEmpty()) {
@@ -42,6 +43,7 @@ public class VehicleController {
     }
 
     @GetMapping("/owner/{ownerId}")
+    @PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_ADMIN', 'ROLE_DRIVER')")
     public ResponseEntity<ApiResponse<List<Vehicle>>> getVehiclesByOwnerId(@PathVariable String ownerId) {
         List<Vehicle> vehicles = vehicleService.getVehiclesByOwnerId(ownerId);
         if (vehicles.isEmpty()) {
@@ -51,6 +53,7 @@ public class VehicleController {
     }
 
     @PutMapping("/{id}/update-fuel")
+    @PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_ADMIN', 'ROLE_DRIVER')")
     public ResponseEntity<ApiResponse<Vehicle>> updateFuelLevel(@PathVariable String id, @RequestParam double updateFuel) {
         Vehicle updatedVehicle = vehicleService.updateFuelLevel(id, updateFuel, false);
         if (updatedVehicle == null) {
@@ -60,6 +63,7 @@ public class VehicleController {
     }
 
     @PutMapping("/{id}/add-fuel")
+    @PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_ADMIN', 'ROLE_DRIVER')")
     public ResponseEntity<ApiResponse<Vehicle>> addFuelLevel(@PathVariable String id, @RequestParam float addFuel) {
         Vehicle updatedVehicle = vehicleService.updateFuelLevel(id, addFuel, true);
         if (updatedVehicle == null) {
