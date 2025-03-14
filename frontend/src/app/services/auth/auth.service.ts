@@ -53,7 +53,7 @@ export class AuthService {
     localStorage.setItem('currentUser', JSON.stringify(this.owner));
     localStorage.setItem(
       'authToken',
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWVuaXZhc2FuQGdtYWlsLmNvbSIsImlhdCI6MTc0MTg0MzI4MywiZXhwIjoxNzQxOTI5NjgzfQ.C9kxoKd0J047NGsmppmWbFttVyyj3Sf-PPuTSFsJJM8'
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWVuaXZhc2FuQGdtYWlsLmNvbSIsImlhdCI6MTc0MTk0NzQ5OCwiZXhwIjoxNzQyMDMzODk4fQ.K_i8RJI5BFP6ROLld1mK5dA_I-TQl6ktG6LB5W54Rew'
     );
     this.currentUser = this.owner;
     const token = localStorage.getItem('authToken');

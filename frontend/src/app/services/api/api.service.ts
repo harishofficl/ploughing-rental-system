@@ -91,15 +91,13 @@ export class ApiService {
     const url = `${this.url}/api/jobs`;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    return this.http
-      .post(url, jobJson, { headers })
-      .pipe(
-        catchError((error) => {
-          console.error('Error occurred while submitting job:', error);
-          this.showErrorMessage('Failed to submit the job. Please try again.');
-          throw error;
-        })
-      );
+    return this.http.post(url, jobJson, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error occurred while submitting job:', error);
+        this.showErrorMessage('Failed to submit the job. Please try again.');
+        throw error;
+      })
+    );
   }
 
   // POST /api/equipment
@@ -149,17 +147,20 @@ export class ApiService {
     const url = `${this.url}/api/gps`;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    this.http.post(url, gpsObject, { headers }).pipe(
-      catchError((error) => {
-        console.error('Error occurred while submitting GPS location:', error);
-        this.showErrorMessage(
-          'Failed to submit the GPS location. Please try again.'
-        );
-        throw error;
-      })
-    ).subscribe(() => {
-      console.log("Gps saved!")
-    });
+    this.http
+      .post(url, gpsObject, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error occurred while submitting GPS location:', error);
+          this.showErrorMessage(
+            'Failed to submit the GPS location. Please try again.'
+          );
+          throw error;
+        })
+      )
+      .subscribe(() => {
+        console.log('Gps saved!');
+      });
   }
 
   // POST /api/bills
@@ -318,13 +319,6 @@ export class ApiService {
     const url = `${this.url}/api/rental-records/owner/${ownerId}/total-outstanding-amount`;
     return this.http.get(url).pipe(
       catchError((error) => {
-        console.error(
-          'Error occurred while fetching outstanding bill amount:',
-          error
-        );
-        this.showErrorMessage(
-          'Failed to fetch outstanding bill amount. Please try again.'
-        );
         throw error;
       })
     );
@@ -335,10 +329,6 @@ export class ApiService {
     const url = `${this.url}/api/customers/owner/${ownerId}/customers-count`;
     return this.http.get(url).pipe(
       catchError((error) => {
-        console.error('Error occurred while fetching customers count:', error);
-        this.showErrorMessage(
-          'Failed to fetch customers count. Please try again.'
-        );
         throw error;
       })
     );
@@ -490,15 +480,13 @@ export class ApiService {
     const url = `${this.url}/api/jobs/${jobId}/end-job?endImagePath=${endImagePath}&dieselUsed=${dieselUsed}`;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    return this.http
-      .put(url, null, { headers })
-      .pipe(
-        catchError((error) => {
-          console.error('Error occurred while ending job:', error);
-          this.showErrorMessage('Failed to end job. Please try again.');
-          throw error;
-        })
-      );
+    return this.http.put(url, null, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error occurred while ending job:', error);
+        this.showErrorMessage('Failed to end job. Please try again.');
+        throw error;
+      })
+    );
   }
 
   // GET /api/jobs/driver/{driverId}/today-completed

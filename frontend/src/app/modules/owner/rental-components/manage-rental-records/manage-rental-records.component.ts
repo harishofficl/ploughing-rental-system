@@ -28,7 +28,7 @@ export class ManageRentalRecordsComponent implements OnInit {
     this.fetchRentalRecords(this.auth.currentUserId);
   }
 
-  fetchRentalRecords(ownerId: string, searchTerm: string = "", pageNumber: number = 0, size: number = 3): void {
+  fetchRentalRecords(ownerId: string, searchTerm: string = "", pageNumber: number = 0, size: number = 5): void {
     this.rentalRecords = [];
     this.loadingService.show();
     this.api.getRentalRecordsByOwnerIdPaginated(ownerId, pageNumber, size, searchTerm).subscribe((response: any) => {

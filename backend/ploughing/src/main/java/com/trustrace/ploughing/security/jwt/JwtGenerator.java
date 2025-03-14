@@ -7,23 +7,27 @@ import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 
 import java.security.Key;
 import java.security.SignatureException;
 import java.util.Date;
 
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import io.jsonwebtoken.*;
 
 @Configuration
 public class JwtGenerator {
 
     private static final Logger log = LoggerFactory.getLogger(JwtGenerator.class);
     private final Key key = getSignInKey();
-    public String generateToken(Authentication authentication){
+
+    public String generateToken(Authentication authentication) {
         String email = authentication.getName();
         Date currDate = new Date(System.currentTimeMillis());
-        Date expiryDate =  new Date(currDate.getTime() + SecurityConstants.getJwtExpiration());
+        Date expiryDate = new Date(currDate.getTime() + SecurityConstants.getJwtExpiration());
 
 
         return Jwts.builder()
@@ -34,7 +38,7 @@ public class JwtGenerator {
                 .compact();
     }
 
-    public String getUserNameFromJWT(String token){
+    public String getUserNameFromJWT(String token) {
         return Jwts
                 .parserBuilder().setSigningKey(key).build()
                 .parseClaimsJws(token)
@@ -46,22 +50,24 @@ public class JwtGenerator {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public boolean validateToken(String token){
-        try{
+
+    public boolean validateToken(String token) {
+        try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        }catch (ExpiredJwtException e) {
+        } catch (ExpiredJwtException e) {
             log.warn("JWT token expired: {}", e.getMessage());
-            throw new AuthenticationCredentialsNotFoundException("Expired JWT token.");
+            throw new CredentialsExpiredException("JWT token has expired - " + e.getMessage());
         } catch (UnsupportedJwtException e) {
             log.warn("Unsupported JWT token: {}", e.getMessage());
-            throw new AuthenticationCredentialsNotFoundException("Unsupported JWT token.");
+            throw new AuthenticationServiceException("Unsupported JWT token - " + e.getMessage());
         } catch (MalformedJwtException e) {
             log.warn("Malformed JWT token: {}", e.getMessage());
-            throw new AuthenticationCredentialsNotFoundException("Malformed JWT token.");
+            throw new AuthenticationServiceException("Malformed JWT token - " + e.getMessage());
         } catch (IllegalArgumentException e) {
             log.warn("Invalid JWT token: {}", e.getMessage());
-            throw new AuthenticationCredentialsNotFoundException("JWT token compact of handler are invalid.");
+            throw new BadCredentialsException("JWT token is invalid or empty - " + e.getMessage());
         }
     }
+
 }
