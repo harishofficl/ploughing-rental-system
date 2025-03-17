@@ -44,6 +44,28 @@ export class ApiService {
     });
   }
 
+  // POST auth/login
+  postLogin(userCredentials: any): Observable<any> {
+    const url = `${this.url}/auth/login`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.http.post(url, userCredentials, { headers }).pipe(
+      catchError((error) => {
+        throw error;
+      })
+    );
+  }
+
+  // GET auth/user/{email}
+  getUserByEmail(email: string): Observable<any> {
+    const url = `${this.url}/auth/user/${email}`;
+    return this.http.get(url).pipe(
+      catchError((error) => {
+        throw error;
+      })
+    );
+  }
+
   // POST /api/drivers
   postDriver(driverJson: any) {
     const url = `${this.url}/api/drivers`;
@@ -295,8 +317,6 @@ export class ApiService {
     const url = `${this.url}/api/drivers/${driverId}`;
     return this.http.get(url).pipe(
       catchError((error) => {
-        console.error('Error occurred while fetching driver:', error);
-        this.showErrorMessage('Failed to fetch driver. Please try again.');
         throw error;
       })
     );

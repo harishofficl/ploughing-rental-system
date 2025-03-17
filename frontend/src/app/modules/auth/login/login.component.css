@@ -1,0 +1,74 @@
+.main-container {
+  background-image: url("../../../../../public/login-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+.nav-bar {
+  width: 100%;
+}
+
+.main-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(var(--colors-gray-700));
+}
+
+.body-container {
+  width: 38%;
+  margin: 2rem auto 0 auto;
+}
+
+.add-customer-form {
+  color: rgb(var(--colors-gray-600));
+  padding: 2rem;
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  font-weight: 600;
+  margin-right: 1rem;
+  width: 20%;
+}
+
+.required-asterisk {
+  color: red;
+}
+
+.form-control {
+  width: 70%;
+  padding: 0.5rem;
+  border: 2px solid rgb(var(--colors-gray-300));
+  border-radius: 0.25rem;
+  font-weight: 700;
+  color: rgb(var(--colors-gray-600));
+}
+
+.form-control:focus {
+  outline: none;
+  border: 2px solid rgb(var(--colors-blue-300));
+}
+
+.submit-button {
+  background-color: rgb(14, 165, 233);
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.submit-button:hover {
+  background-color: rgb(10, 132, 255);
+}

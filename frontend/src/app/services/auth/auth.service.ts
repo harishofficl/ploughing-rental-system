@@ -1,27 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { ApiService } from '../api/api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  admin = {
-    id: '67bd4a6b4eb4a03303ce1624',
-    name: 'Super Admin',
-    role: 'admin',
-  };
-  owner = {
-    id: '67bd4a974eb4a03303ce1625',
-    name: 'Seenivasan R',
-    role: 'owner',
-  };
-  driver = { id: '67bd53c04874837ebcce0a36', name: 'Rajesh', role: 'driver' };
-
   currentUser;
   authToken: string;
   isAuthenticated: boolean = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private api: ApiService) {
     const user = localStorage.getItem('currentUser');
     const token = localStorage.getItem('authToken');
     if (user && token) {
@@ -34,49 +23,18 @@ export class AuthService {
     }
   }
 
-  adminLogin() {
-    localStorage.setItem('currentUser', JSON.stringify(this.admin));
-    localStorage.setItem(
-      'authToken',
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0MTg0Mjc4MywiZXhwIjoxNzQxOTI5MTgzfQ.PokBRWgzRp0GrgpTTdSsRT1xlFXTxpeTELri95dk9_8'
-    );
-    this.currentUser = this.admin;
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      this.authToken = token;
+  login(authToken: string, email: string) {
+    this.authToken = authToken;
+    if (this.authToken) {
+      localStorage.setItem('authToken', this.authToken);
+      this.api.getUserByEmail(email).subscribe((response) => {
+        this.currentUser = response;
+        localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+        const route = this.currentUser.role;
+        this.router.navigate([`./${route}`]);
+        this.isAuthenticated = true;
+      });
     }
-    this.isAuthenticated = true;
-    this.router.navigate(['./admin']);
-  }
-
-  ownerLogin() {
-    localStorage.setItem('currentUser', JSON.stringify(this.owner));
-    localStorage.setItem(
-      'authToken',
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZWVuaXZhc2FuQGdtYWlsLmNvbSIsImlhdCI6MTc0MTk0NzQ5OCwiZXhwIjoxNzQyMDMzODk4fQ.K_i8RJI5BFP6ROLld1mK5dA_I-TQl6ktG6LB5W54Rew'
-    );
-    this.currentUser = this.owner;
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      this.authToken = token;
-    }
-    this.isAuthenticated = true;
-    this.router.navigate(['./owner']);
-  }
-
-  driverLogin() {
-    localStorage.setItem('currentUser', JSON.stringify(this.driver));
-    localStorage.setItem(
-      'authToken',
-      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYWplc2hAZ21haWwuY29tIiwiaWF0IjoxNzQxODU2MDEzLCJleHAiOjE3NDE5NDI0MTN9.JbU8TSiJcafvD4c739Zi9RKi2B9KMy5RETI-ArIk7fM'
-    );
-    this.currentUser = this.driver;
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      this.authToken = token;
-    }
-    this.isAuthenticated = true;
-    this.router.navigate(['./driver']);
   }
 
   logout() {

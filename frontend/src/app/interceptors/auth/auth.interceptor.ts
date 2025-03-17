@@ -18,8 +18,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error) => {
-      if(error.error.errorCode === "JWT_EXPIRED"){
-        Swal.fire("Error", "JWT Token expired. Please login again.", "error");
+      if (error.error.errorCode === 'JWT_EXPIRED') {
+        Swal.fire('Error', 'Session expired. Please login again.', 'error');
+        authService.logout();
+      } else {
+        console.error(error);
+        Swal.fire('Error', error.error.message, 'error');
       }
       throw error.error;
     })
