@@ -2,6 +2,7 @@ package com.trustrace.ploughing.service;
 
 import com.razorpay.*;
 import com.trustrace.ploughing.dao.BillDao;
+import com.trustrace.ploughing.model.Bill;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -72,11 +73,28 @@ public class RazorpayService {
         try {
             payment = razorpay.paymentLink.create(paymentLinkRequest);
             String paymentId = payment.get("id");
-            billDao.updatePaymentId(billId, paymentId);
+            if(billDao.findById(billId).isPresent()){
+                Bill bill = billDao.findById(billId).get();
+                if(!bill.getPaymentId().isEmpty()) {
+                    log.info("Cancel existing payment link: {}", bill.getPaymentId());
+                    cancelPaymentLink(bill.getPaymentId());
+                }
+                billDao.updatePaymentId(billId, paymentId);
+            }
             return payment.get("short_url");
         } catch (RazorpayException e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
+        }
+    }
+
+    public void cancelPaymentLink(String paymentLinkId) {
+        try {
+            RazorpayClient razorpay = new RazorpayClient(razorpayKey, razorpaySecret);
+            PaymentLink paymentLink = razorpay.paymentLink.cancel(paymentLinkId);
+            log.info("Payment link: {} canceled successfully.", paymentLinkId);
+        } catch (RazorpayException e) {
+            log.error("Error canceling payment link {}: {}", paymentLinkId, e.getMessage());
         }
     }
 }

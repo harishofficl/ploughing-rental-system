@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { ApiService } from '../../../../services/api/api.service';
@@ -15,13 +15,15 @@ export class CreateDriverComponent {
     this.driverForm = this.formBuilder.group({
       name: ['', Validators.required],
       phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
       ownerId: [this.auth.currentUserId],
     });
   }
 
   onSubmit() {
     if (this.driverForm.valid) {
-      const driverData = this.driverForm.value;
+      const driverData = this.driverForm.getRawValue();
       this.api.postDriver(driverData);
     }
   }

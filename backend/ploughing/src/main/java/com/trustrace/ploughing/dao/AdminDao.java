@@ -51,7 +51,6 @@ public class AdminDao {
 
     // Find Admin by Email
     public Optional<Admin> findByEmail(String email) {
-        logger.info("Fetching admin by email: {}", email);
         Query query = new Query(Criteria.where("email").is(email));
         return Optional.ofNullable(mongoTemplate.findOne(query, Admin.class));
     }

@@ -49,7 +49,7 @@ select:hover {
 select.form-control,
 .search-customer-input {
   appearance: none;
-  background: url("../../../../../public/arrow-down.png") no-repeat right
+  background: url("../../../../../../public/arrow-down.png") no-repeat right
     0.75rem center;
   background-repeat: no-repeat;
   background-position: right 0.5rem center;

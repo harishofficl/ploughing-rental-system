@@ -44,7 +44,6 @@ public class CustomerDao {
 
     // Find Customer by ID
     public Optional<Customer> findById(String id) {
-        logger.info("Fetching customer by ID: {}", id);
         return Optional.ofNullable(mongoTemplate.findById(id, Customer.class));
     }
 

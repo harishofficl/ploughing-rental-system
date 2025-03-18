@@ -77,8 +77,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         errorResponse.put("error", HttpStatus.valueOf(status).getReasonPhrase());
         errorResponse.put("message", message);
 
+
         if (message.contains("JWT token has expired")) {
             errorResponse.put("errorCode", "JWT_EXPIRED");
+        } else {
+            errorResponse.put("errorCode", "");
         }
         response.getWriter().write(new ObjectMapper().writeValueAsString(errorResponse));
     }

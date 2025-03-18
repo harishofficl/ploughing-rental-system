@@ -21,6 +21,7 @@
         <tr>
           <th>S.No</th>
           <th>Name</th>
+          <th>Email</th>
           <th>Phone</th>
           <th>Actions</th>
         </tr>
@@ -33,6 +34,7 @@
         <tr *ngFor="let driver of drivers; let i = index">
           <td>{{ i + 1 + page.number * page.size }}</td>
           <td>{{ driver.name }}</td>
+          <td>{{ driver.email }}</td>
           <td>{{ driver.phoneNumber }}</td>
           <td class="flex">
             <button class="edit-button" (click)="editDriver(driver.id)">

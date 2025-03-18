@@ -42,7 +42,6 @@ public class PaymentCallBackController {
 
     @PostMapping("/webhook")
     public void handleRazorPayWebhook(@RequestBody Map<String, Object> requestBody) {
-        log.info("Received Webhook: {}", requestBody);
 
         try {
             // Extract the "payload" object
@@ -83,6 +82,8 @@ public class PaymentCallBackController {
             String status = (String) paymentEntity.get("status");
             double totalAmount = ((Number) paymentEntity.get("amount")).doubleValue() / 100;
 
+            log.info("WebHook Received for payment link ID: {}", paymentLinkId);
+
             Bill bill = billService.findByPaymentId(paymentLinkId);
             if (bill != null && "captured".equals(status)) {
                 billService.setBillRentalPaid(bill.getId());
@@ -99,7 +100,6 @@ public class PaymentCallBackController {
                 );
 
                 paymentService.savePayment(payment);
-                log.info("Payment saved successfully: {}", payment);
             } else {
                 log.error("Bill not found or payment status is not 'captured'");
             }

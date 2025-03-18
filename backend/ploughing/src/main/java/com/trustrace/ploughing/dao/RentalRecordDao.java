@@ -74,6 +74,16 @@ public class RentalRecordDao {
         return mongoTemplate.save(rentalRecord);
     }
 
+    // Set billed status
+    public void updateBilledStatus(String id, Boolean billed) {
+        logger.info("Setting record: {} to Unbilled", id);
+        if(findById(id).isPresent()){
+            RentalRecord rental = findById(id).get();
+            rental.setBilled(billed);
+            mongoTemplate.save(rental);
+        }
+    }
+
     public void deleteById(String id) {
         logger.info("Deleting RentalRecord by ID: {}", id);
         Query query = new Query(Criteria.where("id").is(id));

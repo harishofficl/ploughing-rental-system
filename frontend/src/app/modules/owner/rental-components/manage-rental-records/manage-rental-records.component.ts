@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthService } from '../../../../services/auth/auth.service';
-import { BehaviorSubject, first, Subject } from 'rxjs';
 import { LoadingService } from '../../../../services/loading/loading.service';
 
 @Component({

@@ -60,7 +60,6 @@ public class OwnerDao {
 
     // Find Owner by Email
     public Optional<Owner> findByEmail(String email) {
-        logger.info("Fetching owner by email: {}", email);
         Query query = new Query(Criteria.where("email").is(email));
         return Optional.ofNullable(mongoTemplate.findOne(query, Owner.class));
     }

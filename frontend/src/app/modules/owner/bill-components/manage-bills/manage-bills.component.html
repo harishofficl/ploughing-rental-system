@@ -1,0 +1,67 @@
+<div class="main-header">
+  <h1 class="main-heading">Manage Bills</h1>
+</div>
+
+<div class="header-actions">
+  <input
+    type="text"
+    placeholder="Search..."
+    [(ngModel)]="searchTerm"
+    (input)="searchBills()"
+    class="search-bar"
+  />
+  <button class="create-button" [routerLink]="['../bill-customer']">
+    Create Bill
+  </button>
+</div>
+
+<div class="bills-container">
+  <table class="bills-table">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Customer</th>
+        <th>Date</th>
+        <th>Total Rentals</th>
+        <th>Amount</th>
+        <th>Paid</th>
+        <th>Payment</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <app-content-loading></app-content-loading>
+
+      <tr *ngIf="!(loadingService.loading$ | async) && bills.length === 0">
+        <td colspan="6" class="no-records">No bills found...</td>
+      </tr>
+      <tr *ngFor="let bill of bills; let i = index">
+        <td>{{ i + 1 + page.number * page.size }}</td>
+        <td>{{ bill.customerName }}</td>
+        <td>{{ bill.date | date }}</td>
+        <td>{{ bill.totalRentalRecords }}</td>
+        <td>{{ bill.amount | currency : "INR" }}</td>
+        <td [className]="bill.paid ? 'bigger-font' : ''">
+          {{ bill.paid ? "✅" : "❌" }}
+        </td>
+        <td>
+          <button class="payment-button" (click)="createPayment(i)">Generate Link</button>
+        </td>
+        <td class="flex">
+          <button class="edit-button" (click)="editBill(bill.id)">
+            <img src="edit.png" alt="Edit" />
+          </button>
+          <button class="delete-button" (click)="deleteBill(bill.id)">
+            <img src="delete.png" alt="Delete" />
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination-controls" *ngIf="bills.length > 0">
+    <button (click)="previousPage()" [disabled]="page.first">Previous</button>
+    <span>Page {{ page.number + 1 }} of {{ page.totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="page.last">Next</button>
+  </div>
+</div>
