@@ -6,13 +6,15 @@ import com.trustrace.ploughing.dto.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("${survey.build.version}/api/vehicles")
+@RequestMapping("${ploughing.build.version}/api/vehicles")
+@PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_ADMIN')")
 public class VehicleController {
 
     @Autowired
@@ -31,6 +33,7 @@ public class VehicleController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_ADMIN', 'ROLE_DRIVER')")
     public ResponseEntity<ApiResponse<Vehicle>> getVehicleById(@PathVariable String id) {
         Optional<Vehicle> vehicle = vehicleService.getVehicleById(id);
         if (vehicle.isEmpty()) {
@@ -40,6 +43,7 @@ public class VehicleController {
     }
 
     @GetMapping("/owner/{ownerId}")
+    @PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_ADMIN', 'ROLE_DRIVER')")
     public ResponseEntity<ApiResponse<List<Vehicle>>> getVehiclesByOwnerId(@PathVariable String ownerId) {
         List<Vehicle> vehicles = vehicleService.getVehiclesByOwnerId(ownerId);
         if (vehicles.isEmpty()) {
@@ -49,7 +53,8 @@ public class VehicleController {
     }
 
     @PutMapping("/{id}/update-fuel")
-    public ResponseEntity<ApiResponse<Vehicle>> updateFuelLevel(@PathVariable String id, @RequestParam float updateFuel) {
+    @PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_ADMIN', 'ROLE_DRIVER')")
+    public ResponseEntity<ApiResponse<Vehicle>> updateFuelLevel(@PathVariable String id, @RequestParam double updateFuel) {
         Vehicle updatedVehicle = vehicleService.updateFuelLevel(id, updateFuel, false);
         if (updatedVehicle == null) {
             return ResponseEntity.status(404).body(new ApiResponse<>(false, "Vehicle not found", null));
@@ -58,6 +63,7 @@ public class VehicleController {
     }
 
     @PutMapping("/{id}/add-fuel")
+    @PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_ADMIN', 'ROLE_DRIVER')")
     public ResponseEntity<ApiResponse<Vehicle>> addFuelLevel(@PathVariable String id, @RequestParam float addFuel) {
         Vehicle updatedVehicle = vehicleService.updateFuelLevel(id, addFuel, true);
         if (updatedVehicle == null) {

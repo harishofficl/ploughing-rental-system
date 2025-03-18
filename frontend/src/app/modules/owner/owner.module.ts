@@ -13,7 +13,6 @@ import { AddEquipmentComponent } from './equipment-components/add-equipment/add-
 import { ManageEquipmentsComponent } from './equipment-components/manage-equipments/manage-equipments.component';
 import { CreateRentalRecordsComponent } from './rental-components/create-rental-records/create-rental-records.component';
 import { ManageRentalRecordsComponent } from './rental-components/manage-rental-records/manage-rental-records.component';
-import { LoadingComponent } from '../../utils/loading/loading.component';
 import { CreateVehicleComponent } from '../owner/vehicle-components/create-vehicle/create-vehicle.component';
 import { ManageVehiclesComponent } from '../owner/vehicle-components/manage-vehicles/manage-vehicles.component';
 import { BillCustomerComponent } from './bill-customer/bill-customer.component';
@@ -21,6 +20,7 @@ import { AddCustomerComponent } from './customer-components/add-customer/add-cus
 import { ManageCustomersComponent } from './customer-components/manage-customers/manage-customers.component';
 import { BusinessComponent } from './business/business/business.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ContentLoadingComponent } from "../../utils/content-loading/content-loading.component";
 
 
 @NgModule({
@@ -47,8 +47,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     FormsModule,
     ReactiveFormsModule,
     NavBarComponent,
-    LoadingComponent,
     NgxPaginationModule,
-  ],
+    ContentLoadingComponent
+],
 })
 export class OwnerModule {}

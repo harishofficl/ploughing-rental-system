@@ -1,41 +1,52 @@
-<app-nav-bar></app-nav-bar>
+<div class="main-container">
+  <div class="nav-bar">
+    <app-nav-bar></app-nav-bar>
+  </div>
+  <div class="body-container">
+    <div class="login-container">
+      <div class="main-header">
+        <h1 class="main-heading">LOGIN</h1>
+      </div>
 
-<!-- <div class="login-container">
-  <div class="login-form-container">
-    <div class="login-form">
-      <h1 class="login-title">Login</h1>
-      <div class="login-input-container">
-        <label class="login-label" for="email">Email</label>
-        <input class="login-input" type="email" id="email" [(ngModel)]="username"/>
-      </div>
-      <div class="login-input-container">
-        <label class="login-label" for="password">Password</label>
-        <input class="login-input" type="password" id="password" [(ngModel)]="password"/>
-      </div>
-      <button type="submit" class="login-button" (click)="login()">Login</button>
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="login()"
+        class="add-customer-form"
+      >
+        <div class="form-group">
+          <label for="email" class="form-label">
+            Email <span class="required-asterisk">*</span>
+          </label>
+          <input
+            id="email"
+            formControlName="email"
+            type="email"
+            class="form-control"
+            placeholder="Enter your email"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">
+            Password <span class="required-asterisk">*</span>
+          </label>
+          <input
+            id="password"
+            formControlName="password"
+            type="password"
+            class="form-control"
+            placeholder="Enter your password"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="submit-button"
+          [disabled]="loginForm.invalid"
+        >
+          Login
+        </button>
+      </form>
     </div>
   </div>
-</div>  -->
-
-<div class="button-container theme-bg">
-  <button class="theme-button" (click)="adminLogin()">Admin</button>
-  <button class="theme-button" (click)="ownerLogin()">Owner</button>
-  <button class="theme-button" (click)="driverLogin()">Driver</button>
 </div>
-
-<style>
-  .button-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    flex-direction: column;
-  }
-
-  .theme-button {
-    margin: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-</style>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthService } from '../../../../services/auth/auth.service';
+import { LoadingService } from '../../../../services/loading/loading.service';
 
 @Component({
   selector: 'app-manage-vehicles',
@@ -20,17 +21,22 @@ export class ManageVehiclesComponent implements OnInit {
     last: true
   };
 
-  constructor(private api: ApiService, private auth: AuthService) {}
+  constructor(private api: ApiService, private auth: AuthService, public loadingService: LoadingService) {}
 
   ngOnInit(): void {
     this.fetchVehicles(this.auth.currentUserId);
   }
 
   fetchVehicles(ownerId: string, searchTerm: string = "", pageNumber: number = 0, size: number = 5): void {
+    this.vehicles = [];
+    this.loadingService.show();
     this.api.getVehiclesByOwnerIdPaginated(ownerId, pageNumber, size, searchTerm).subscribe((response: any) => {
       this.page = response.data;
       this.vehicles = this.page.content;
-    });
+      this.loadingService.hide();
+    }), () => {
+      this.loadingService.hide();
+    };
   }
 
   searchVehicles() {

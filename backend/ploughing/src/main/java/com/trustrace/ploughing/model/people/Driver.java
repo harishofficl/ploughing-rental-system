@@ -18,6 +18,8 @@ public class Driver {
     private String id;
     private String name;
     private String phoneNumber;
+    private String email;
+    private String password;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<String> roles;

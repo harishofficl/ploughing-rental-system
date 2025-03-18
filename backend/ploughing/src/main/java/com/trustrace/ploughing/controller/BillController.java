@@ -5,13 +5,15 @@ import com.trustrace.ploughing.service.BillService;
 import com.trustrace.ploughing.dto.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("${survey.build.version}/api/bills")
+@RequestMapping("${ploughing.build.version}/api/bills")
+@PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_ADMIN')")
 public class BillController {
 
     @Autowired

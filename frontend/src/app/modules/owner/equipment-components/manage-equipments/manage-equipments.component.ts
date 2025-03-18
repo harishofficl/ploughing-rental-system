@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthService } from '../../../../services/auth/auth.service';
+import { LoadingService } from '../../../../services/loading/loading.service';
 
 @Component({
   selector: 'app-manage-equipments',
@@ -20,17 +21,22 @@ export class ManageEquipmentsComponent implements OnInit {
     last: true
   };
 
-  constructor(private api: ApiService, private auth: AuthService) {}
+  constructor(private api: ApiService, private auth: AuthService, public loadingService: LoadingService) {}
 
   ngOnInit(): void {
     this.fetchEquipments(this.auth.currentUserId);
   }
 
   fetchEquipments(ownerId: string, searchTerm: string = "", pageNumber: number = 0, size: number = 5): void {
+    this.equipments = [];
+    this.loadingService.show();
     this.api.getEquipmentsByOwnerIdPaginated(ownerId, pageNumber, size, searchTerm).subscribe((response: any) => {
       this.page = response.data;
       this.equipments = this.page.content;
-    });
+      this.loadingService.hide();
+    }), () => {
+      this.loadingService.hide();
+    };
   }
 
   searchEquipments() {

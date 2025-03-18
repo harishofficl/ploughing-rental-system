@@ -1,7 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError } from 'rxjs';
-import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +16,6 @@ export class PaymentService {
 
   paymentWebHookCallBack(paymentbody: any) {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post(`${this.url}/api/payment/webhook`, paymentbody, { headers });
+    return this.http.post(`${this.url}/api/payment/redirect`, paymentbody, { headers });
   }
 }

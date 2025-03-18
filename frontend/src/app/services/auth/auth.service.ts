@@ -1,52 +1,46 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
+import { ApiService } from '../api/api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  admin = { id: '67bd4a6b4eb4a03303ce1624', name: 'Super Admin', role: 'admin' };
-  owner = { id: '67bd4a974eb4a03303ce1625', name: 'Seenivasan R', role: 'owner' };
-  driver = { id: '67bd53c04874837ebcce0a36', name: 'Ramesh', role: 'driver' };
-
   currentUser;
+  authToken: string;
   isAuthenticated: boolean = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private api: ApiService) {
     const user = localStorage.getItem('currentUser');
-    if (user) {
+    const token = localStorage.getItem('authToken');
+    if (user && token) {
       this.currentUser = JSON.parse(user);
       this.isAuthenticated = true;
+      this.authToken = token;
     } else {
       this.currentUser = { id: '', name: '', role: '' };
+      this.authToken = '';
     }
   }
 
-  adminLogin() {
-    localStorage.setItem('currentUser', JSON.stringify(this.admin));
-    this.currentUser = this.admin;
-    this.isAuthenticated = true;
-    this.router.navigate(['./admin']);
-  }
-
-  ownerLogin() {
-    localStorage.setItem('currentUser', JSON.stringify(this.owner));
-    this.currentUser = this.owner;
-    this.isAuthenticated = true;
-    this.router.navigate(['./owner']);
-  }
-
-  driverLogin() {
-    localStorage.setItem('currentUser', JSON.stringify(this.driver));
-    this.currentUser = this.driver;
-    this.isAuthenticated = true;
-    this.router.navigate(['./driver']);
+  login(authToken: string, email: string) {
+    this.authToken = authToken;
+    if (this.authToken) {
+      localStorage.setItem('authToken', this.authToken);
+      this.api.getUserByEmail(email).subscribe((response) => {
+        this.currentUser = response;
+        localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+        const route = this.currentUser.role;
+        this.router.navigate([`./${route}`]);
+        this.isAuthenticated = true;
+      });
+    }
   }
 
   logout() {
-    localStorage.removeItem('currentUser');
+    localStorage.clear();
     this.currentUser = { id: '', name: '', role: '' };
+    this.authToken = '';
     this.isAuthenticated = false;
     this.router.navigate(['./']);
   }
@@ -61,5 +55,9 @@ export class AuthService {
 
   get currentUserRole() {
     return this.currentUser.role;
+  }
+
+  get getToken() {
+    return this.authToken;
   }
 }

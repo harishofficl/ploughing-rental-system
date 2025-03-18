@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -21,12 +22,16 @@ public class AdminDao {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     // Save or Update Admin
     public Admin save(Admin admin) {
         logger.info("Saving admin with email: {}", admin.getEmail());
         admin.setCreatedAt(LocalDateTime.now());
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         if (admin.getRoles() == null || admin.getRoles().isEmpty()) {
-            admin.setRoles(List.of("ROLE_ADMIN"));
+            admin.setRoles(List.of("ADMIN"));
         }
         admin.setActive(true);
         return mongoTemplate.save(admin);

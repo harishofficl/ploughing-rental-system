@@ -1,14 +1,14 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { LoadingService } from '../../services/loading/loading.service';
-import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-loading',
+  selector: 'app-content-loading',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './loading.component.html',
-  styleUrls: ['./loading.component.css']
+  templateUrl: './content-loading.component.html',
+  styleUrl: './content-loading.component.css',
 })
-export class LoadingComponent {
+export class ContentLoadingComponent {
   constructor(public loadingService: LoadingService) {}
 }

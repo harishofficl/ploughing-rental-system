@@ -32,7 +32,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngIf="rentalRecords.length === 0">
+
+      <app-content-loading></app-content-loading>
+
+      <tr *ngIf="!(loadingService.loading$ | async) && rentalRecords.length === 0">
         <td colspan="10" class="no-records">No records found...</td>
       </tr>
       <tr *ngFor="let record of rentalRecords; let i = index">

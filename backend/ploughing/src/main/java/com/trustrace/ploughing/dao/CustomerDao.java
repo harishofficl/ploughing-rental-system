@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -31,7 +30,7 @@ public class CustomerDao {
         logger.info("Saving customer with email: {}", customer.getEmail());
         customer.setCreatedAt(LocalDateTime.now());
         if (customer.getRoles() == null || customer.getRoles().isEmpty()) {
-            customer.setRoles(List.of("ROLE_CUSTOMER"));
+            customer.setRoles(List.of("CUSTOMER"));
         }
         customer.setActive(true);
         return mongoTemplate.save(customer);

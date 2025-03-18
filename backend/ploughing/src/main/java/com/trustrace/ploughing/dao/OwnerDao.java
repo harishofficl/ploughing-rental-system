@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -26,12 +27,16 @@ public class OwnerDao {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     // Save Owner
     public Owner save(Owner owner) {
         logger.info("Saving owner with email: {}", owner.getEmail());
         owner.setCreatedAt(LocalDateTime.now());
+        owner.setPassword(passwordEncoder.encode(owner.getPassword()));
         if (owner.getRoles() == null || owner.getRoles().isEmpty()) {
-            owner.setRoles(List.of("ROLE_OWNER"));
+            owner.setRoles(List.of("OWNER"));
         }
         owner.setActive(true);
         owner.setVehicleIds(List.of());

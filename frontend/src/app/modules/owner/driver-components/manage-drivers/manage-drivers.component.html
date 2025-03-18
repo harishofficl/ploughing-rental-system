@@ -26,7 +26,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngIf="drivers.length === 0">
+        <app-content-loading></app-content-loading>
+        <tr *ngIf="!(loadingService.loading$ | async) && drivers.length === 0">
           <td colspan="4" class="no-records">No records found...</td>
         </tr>
         <tr *ngFor="let driver of drivers; let i = index">

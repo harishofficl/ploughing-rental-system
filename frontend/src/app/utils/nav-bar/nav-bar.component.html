@@ -1,7 +1,7 @@
-<header class="nav-bar-container">
+<header [ngClass]="{'bg-white': auth.isAuthenticated, 'nav-bar-container': true}">
   <div class="nav-bar">
     <div class="nav-bar-title-container">
-      <a class="nav-bar-title" [routerLink]="['/']">
+      <a class="nav-bar-title" [routerLink]="['./']">
         <p>PLOUGHING RENTAL SYSTEM</p>
       </a>
     </div>

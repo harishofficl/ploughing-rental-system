@@ -12,11 +12,20 @@
   margin-bottom: 1rem;
 }
 
+tbody {
+  position: relative;
+}
+
 .search-bar {
   padding: 0.5rem;
   border: 1px solid rgb(var(--colors-gray-300));
   border-radius: 0.25rem;
   width: 250px;
+}
+
+.search-bar:focus {
+  border: 2px solid rgb(var(--colors-blue-400));
+  outline: none;
 }
 
 .create-button {
@@ -51,9 +60,19 @@
 
 .vehicles-table th,
 .vehicles-table td {
-  border: 1px solid rgb(var(--colors-gray-300));
-  padding: 0.75rem;
+  border-bottom: 1px solid rgb(var(--colors-gray-200));
+  padding: 0.5rem;
   text-align: left;
+}
+
+.vehicles-table th {
+  background-color: rgb(var(--colors-gray-100));
+  font-weight: 600;
+}
+
+.no-records {
+  text-align: center;
+  color: rgb(var(--colors-gray-500));
 }
 
 .edit-button,

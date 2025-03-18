@@ -4,7 +4,6 @@ import { ApiService } from '../../../services/api/api.service';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AuthService } from '../../../services/auth/auth.service';
-import { PaymentService } from '../../../services/payment/payment.service';
 
 @Component({
   selector: 'app-bill-customer',

@@ -19,6 +19,11 @@
   width: 250px;
 }
 
+.search-bar:focus {
+  border: 2px solid rgb(var(--colors-blue-400));
+  outline: none;
+}
+
 .create-button {
   background-color: rgb(14, 165, 233);
   color: white;
@@ -49,11 +54,25 @@
   margin-bottom: 1.5rem;
 }
 
+tbody {
+  position: relative;
+}
+
 .equipments-table th,
 .equipments-table td {
-  border: 1px solid rgb(var(--colors-gray-300));
-  padding: 0.75rem;
+  border-bottom: 1px solid rgb(var(--colors-gray-200));
+  padding: 0.5rem;
   text-align: left;
+}
+
+.equipments-table th {
+  background-color: rgb(var(--colors-gray-100));
+  font-weight: 600;
+}
+
+.no-records {
+  text-align: center;
+  color: rgb(var(--colors-gray-500));
 }
 
 .edit-button,

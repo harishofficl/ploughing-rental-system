@@ -32,7 +32,7 @@ public class VehicleService {
     }
 
     //update fuel level
-    public Vehicle updateFuelLevel(String id, float fuelLevel, boolean add) {
+    public Vehicle updateFuelLevel(String id, double fuelLevel, boolean add) {
         return vehicleDao.updateFuelLevel(id, fuelLevel, add);
     }
 
