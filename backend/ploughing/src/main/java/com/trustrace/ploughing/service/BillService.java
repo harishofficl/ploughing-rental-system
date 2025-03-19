@@ -22,6 +22,9 @@ public class BillService {
     @Autowired
     private RentalRecordDao rentalRecordDao;
 
+    @Autowired
+    private RazorpayService razorpayService;
+
     public Bill saveBill(Bill bill) {
         return billDao.save(bill);
     }
@@ -35,6 +38,10 @@ public class BillService {
             Bill bill = getBillById(id).get();
             List<String> rentalRecordIds = bill.getRentalRecordIds();
             rentalRecordIds.forEach(rentalRecordId -> rentalRecordDao.updateBilledStatus(rentalRecordId, false));
+            String paymentLinkId = bill.getPaymentId();
+            if(!paymentLinkId.isEmpty()) {
+                razorpayService.cancelPaymentLink(paymentLinkId);
+            }
         }
         billDao.deleteById(id);
     }

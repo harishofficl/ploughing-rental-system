@@ -90,7 +90,7 @@ public class RentalRecordDao {
         mongoTemplate.remove(query, RentalRecord.class);
     }
 
-    // Get total rental amount for a given owner
+    // Get total pending rental amount for a given owner
     public double getTotalRentalAmountByOwnerId(String ownerId) {
         logger.info("Fetching total pending rental amount for Owner ID: {}", ownerId);
         Query query = new Query(Criteria.where("ownerId").is(ownerId).and("paid").is(false));

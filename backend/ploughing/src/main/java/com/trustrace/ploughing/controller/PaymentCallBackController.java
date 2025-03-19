@@ -25,22 +25,22 @@ public class PaymentCallBackController {
 
     @PostMapping("/redirect")
     public String handlePaymentRedirect(@RequestBody Map<String, String> paymentBody) {
-//        String paymentId = paymentBody.get("razorpayPaymentId");
-//        String paymentLinkId = paymentBody.get("razorpayPaymentLinkId");
-//        String status = paymentBody.get("razorpayStatus");
-//        String signature = paymentBody.get("razorpaySignature");
-//
-//        Bill bill = billService.findByPaymentId(paymentLinkId);
-//        Payment payment = null;
-//        if(bill != null && status.equals("paid")) {
-//            billService.setBillRentalPaid(bill.getId());
-//            payment = paymentService.savePayment(new Payment(paymentId, paymentLinkId, bill.getOwnerId(), bill.getCustomerName(), bill.getId(), bill.getTotalAmount(), status, signature));
-//        }
-//        assert payment != null;
+        String paymentId = paymentBody.get("razorpayPaymentId");
+        String paymentLinkId = paymentBody.get("razorpayPaymentLinkId");
+        String status = paymentBody.get("razorpayStatus");
+        String signature = paymentBody.get("razorpaySignature");
+
+        Bill bill = billService.findByPaymentId(paymentLinkId);
+        Payment payment = null;
+        if(bill != null && status.equals("paid")) {
+            billService.setBillRentalPaid(bill.getId());
+            payment = paymentService.savePayment(new Payment(paymentId, paymentLinkId, bill.getOwnerId(), bill.getCustomerName(), bill.getId(), bill.getTotalAmount(), status, signature));
+        }
+        assert payment != null;
         return new JSONObject().put("Payment Status", "Success").toString();
     }
 
-    @PostMapping("/webhook")
+//    @PostMapping("/webhook")
     public void handleRazorPayWebhook(@RequestBody Map<String, Object> requestBody) {
 
         try {

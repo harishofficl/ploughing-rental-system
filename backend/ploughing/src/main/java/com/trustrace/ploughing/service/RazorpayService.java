@@ -10,10 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 @Slf4j
 @Service
 public class RazorpayService {
@@ -91,7 +87,7 @@ public class RazorpayService {
     public void cancelPaymentLink(String paymentLinkId) {
         try {
             RazorpayClient razorpay = new RazorpayClient(razorpayKey, razorpaySecret);
-            PaymentLink paymentLink = razorpay.paymentLink.cancel(paymentLinkId);
+            razorpay.paymentLink.cancel(paymentLinkId);
             log.info("Payment link: {} canceled successfully.", paymentLinkId);
         } catch (RazorpayException e) {
             log.error("Error canceling payment link {}: {}", paymentLinkId, e.getMessage());
