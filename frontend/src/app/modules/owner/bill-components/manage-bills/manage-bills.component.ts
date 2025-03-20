@@ -90,7 +90,6 @@ export class ManageBillsComponent implements OnInit {
       }
     });
   }
-  
 
   previousPage() {
     if (!this.page.first) {

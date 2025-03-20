@@ -29,11 +29,8 @@ public class BillController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Bill>> getBillById(@PathVariable String id) {
-        Optional<Bill> bill = billService.getBillById(id);
-        if (bill.isEmpty()) {
-            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Bill not found", null));
-        }
-        return ResponseEntity.ok(new ApiResponse<>(true, "Bill retrieved successfully", bill.get()));
+        Bill bill = billService.getBillById(id).orElseThrow(() -> new IllegalArgumentException("Bill not found"));
+        return ResponseEntity.ok(new ApiResponse<>(true, "Bill retrieved successfully", bill));
     }
 
     @GetMapping
