@@ -22,7 +22,13 @@ import { BusinessComponent } from './business/business/business.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ContentLoadingComponent } from "../../utils/content-loading/content-loading.component";
 import { ManageBillsComponent } from './bill-components/manage-bills/manage-bills.component';
-
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -50,7 +56,14 @@ import { ManageBillsComponent } from './bill-components/manage-bills/manage-bill
     ReactiveFormsModule,
     NavBarComponent,
     NgxPaginationModule,
-    ContentLoadingComponent
+    ContentLoadingComponent,
+    MatTableModule,
+    MatSortModule,
+    MatInputModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatPaginatorModule,
+    MatIconModule,
 ],
 })
 export class OwnerModule {}

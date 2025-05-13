@@ -55,7 +55,6 @@ export class CreateRentalRecordsComponent implements OnInit {
 
     this.searchTerms.pipe(
       debounceTime(500),
-      distinctUntilChanged(),
       switchMap(term => this.api.searchCustomersByOwnerId(this.ownerId, term))
     ).subscribe((customers) => {
       this.customers = customers.data;

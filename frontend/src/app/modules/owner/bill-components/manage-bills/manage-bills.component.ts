@@ -8,7 +8,7 @@ import { PaymentService } from '../../../../services/payment/payment.service';
 @Component({
   selector: 'app-manage-bills',
   templateUrl: './manage-bills.component.html',
-  styleUrls: ['./manage-bills.component.css']
+  styleUrls: ['./manage-bills.component.css'],
 })
 export class ManageBillsComponent implements OnInit {
   bills: any[] = [];
@@ -20,46 +20,72 @@ export class ManageBillsComponent implements OnInit {
     size: 10,
     number: 0,
     first: true,
-    last: true
+    last: true,
   };
 
-  constructor(private api: ApiService, private auth: AuthService, public loadingService: LoadingService, private paymentService: PaymentService) {}
+  constructor(
+    private api: ApiService,
+    private auth: AuthService,
+    public loadingService: LoadingService,
+    private paymentService: PaymentService
+  ) {}
 
   ngOnInit(): void {
     this.fetchBills(this.auth.currentUserId);
   }
 
-  fetchBills(ownerId: string, searchTerm: string = "", pageNumber: number = 0, size: number = 5): void {
+  fetchBills(
+    ownerId: string,
+    searchTerm: string = '',
+    pageNumber: number = 0,
+    size: number = 5
+  ): void {
     this.bills = [];
     this.loadingService.show();
-    this.api.getBillsByOwnerIdPaginated(ownerId, pageNumber, size, searchTerm).subscribe((response: any) => {
-      this.page = response.data;
-      this.bills = this.page.content;
-      this.loadingService.hide();
-    }), () => {
-      this.loadingService.hide();
-    };
+    this.api
+      .getBillsByOwnerIdPaginated(ownerId, pageNumber, size, searchTerm)
+      .subscribe((response: any) => {
+        this.page = response.data;
+        this.bills = this.page.content;
+        this.loadingService.hide();
+      }),
+      () => {
+        this.loadingService.hide();
+      };
   }
 
   createPayment(index: number) {
     const bill = this.bills[index];
-    if(bill.paid) {
-      Swal.fire("Warning", "Bill already paid!", "warning");
+    if (bill.paid) {
+      Swal.fire('Warning', 'Bill already paid!', 'warning');
     } else {
-      let customerEmail;
-      this.api.getCustomerById(bill.customerId).subscribe((response: any) => {
-        customerEmail = response.data.email;
-        this.paymentService
-            .createPaymentLink(
-              customerEmail,
-              bill.amount,
-              true, // all payment methods enabled...
-              bill.id
-            )
-            .subscribe((response) => {
-              console.log(response);
-              Swal.fire("Success", "Payment Link Sent!", "success");
+      Swal.fire({
+        title: 'Create a new payment link?',
+        text: 'Note: Old payment link will be cancelled',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let customerEmail;
+          this.api
+            .getCustomerById(bill.customerId)
+            .subscribe((response: any) => {
+              customerEmail = response.data.email;
+              this.paymentService
+                .createPaymentLink(
+                  customerEmail,
+                  bill.amount,
+                  true, // all payment methods enabled...
+                  bill.id
+                )
+                .subscribe((response) => {
+                  console.log(response);
+                  Swal.fire('Success', 'Payment Link Sent!', 'success');
+                });
             });
+        }
       });
     }
   }
@@ -74,17 +100,17 @@ export class ManageBillsComponent implements OnInit {
 
   deleteBill(id: string) {
     Swal.fire({
-      title: "Are you sure?",
-      text: "Do you want to delete the bill?",
-      icon: "warning",
+      title: 'Are you sure?',
+      text: 'Do you want to delete the bill?',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
         this.api.deleteBillById(id).subscribe(() => {
-          Swal.fire("Success", "Bill deleted successfully!", "success");
+          Swal.fire('Success', 'Bill deleted successfully!', 'success');
           this.fetchBills(this.auth.currentUserId);
         });
       }
@@ -93,13 +119,21 @@ export class ManageBillsComponent implements OnInit {
 
   previousPage() {
     if (!this.page.first) {
-      this.fetchBills(this.auth.currentUserId, this.searchTerm, this.page.number - 1);
+      this.fetchBills(
+        this.auth.currentUserId,
+        this.searchTerm,
+        this.page.number - 1
+      );
     }
   }
 
   nextPage() {
     if (!this.page.last) {
-      this.fetchBills(this.auth.currentUserId, this.searchTerm, this.page.number + 1);
+      this.fetchBills(
+        this.auth.currentUserId,
+        this.searchTerm,
+        this.page.number + 1
+      );
     }
   }
 }

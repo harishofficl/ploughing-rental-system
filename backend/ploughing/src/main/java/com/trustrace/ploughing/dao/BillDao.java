@@ -25,7 +25,7 @@ public class BillDao {
 
     // Save Bill
     public Bill save(Bill bill) {
-        logger.info("Saving bill with id: {}", bill.getId());
+        logger.info("Saving bill");
         bill.setCreatedAt(LocalDateTime.now());
         List<String> rentalRecordIds= bill.getRentalRecordIds();
         rentalRecordIds.forEach(rentalRecordId -> {
@@ -86,7 +86,7 @@ public class BillDao {
         bill.setPaid(true);
         List<String> rentalRecordIds= bill.getRentalRecordIds();
         rentalRecordIds.forEach(rentalRecordId -> {
-            logger.info("Updating rental record to paid with ID: {}", rentalRecordId);
+            logger.info("Updating rental record as paid with ID: {}", rentalRecordId);
             RentalRecord rentalRecord = mongoTemplate.findById(rentalRecordId, RentalRecord.class);
             assert rentalRecord != null;
             rentalRecord.setPaid(true);

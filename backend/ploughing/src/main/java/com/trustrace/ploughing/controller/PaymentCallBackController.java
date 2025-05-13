@@ -23,7 +23,7 @@ public class PaymentCallBackController {
     @Autowired
     private PaymentService paymentService;
 
-    @PostMapping("/redirect")
+//    @PostMapping("/redirect")
     public String handlePaymentRedirect(@RequestBody Map<String, String> paymentBody) {
         String paymentId = paymentBody.get("razorpayPaymentId");
         String paymentLinkId = paymentBody.get("razorpayPaymentLinkId");
@@ -40,7 +40,7 @@ public class PaymentCallBackController {
         return new JSONObject().put("Payment Status", "Success").toString();
     }
 
-//    @PostMapping("/webhook")
+    @PostMapping("/webhook")
     public void handleRazorPayWebhook(@RequestBody Map<String, Object> requestBody) {
 
         try {

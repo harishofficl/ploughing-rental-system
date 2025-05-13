@@ -75,6 +75,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
 }
 
+.form-label-message {
+  color: red;
+  font-size: 0.89rem;
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
+}
+
 .submit-button {
   background-color: rgb(14, 165, 233);
   color: white;
@@ -148,4 +155,53 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: rgb(var(--colors-blue-500));
   cursor: pointer;
   font-size: 0.875rem;
+}
+
+/* Material Table Custom Styling */
+
+.list-rental-records {
+  margin: 1rem 0;
+}
+
+.custom-mat-table {
+  width: 100%;
+  background-color: white;
+  border: 1px solid rgb(var(--colors-gray-200));
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.custom-mat-table th, .custom-mat-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 500;
+  color: rgb(var(--colors-gray-600));
+  vertical-align: middle;
+}
+
+.custom-mat-table .mat-header-row {
+  background-color: rgb(var(--colors-gray-100));
+}
+
+/* Checkbox and Icon Buttons */
+.mat-checkbox {
+  padding: 0.25rem;
+  margin: auto;
+}
+
+.mat-header-cell .mat-checkbox,
+.mat-cell .mat-checkbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mat-icon-button {
+  margin-right: 0.25rem;
+  transition: background-color 0.2s;
+}
+
+.mat-icon-button:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: 50%;
 }

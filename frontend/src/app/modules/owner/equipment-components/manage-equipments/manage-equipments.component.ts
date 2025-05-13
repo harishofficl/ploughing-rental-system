@@ -44,7 +44,7 @@ export class ManageEquipmentsComponent implements OnInit {
   }
 
   editEquipment(id: string) {
-    // Logic to edit an equipment
+    
   }
 
   deleteEquipment(id: string) {

@@ -100,7 +100,7 @@ public class RentalRecordDao {
 
     // Get rental records for customer id that are unpaid and un-billed
     public List<RentalRecord> getUnpaidRentalRecordsByCustomerId(String customerId) {
-        logger.info("Fetching total pending rental amount for Customer ID: {}", customerId);
+        logger.info("Fetching unpaid rental records for Customer ID: {}", customerId);
         Query query = new Query(Criteria.where("customerId").is(customerId).and("paid").is(false).and("billed").is(false));
         return mongoTemplate.find(query, RentalRecord.class);
     }
