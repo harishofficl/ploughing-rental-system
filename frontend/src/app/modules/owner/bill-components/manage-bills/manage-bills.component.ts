@@ -4,6 +4,9 @@ import { AuthService } from '../../../../services/auth/auth.service';
 import { LoadingService } from '../../../../services/loading/loading.service';
 import Swal from 'sweetalert2';
 import { PaymentService } from '../../../../services/payment/payment.service';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-manage-bills',
@@ -23,6 +26,9 @@ export class ManageBillsComponent implements OnInit {
     last: true,
   };
 
+  searchSubscription!: Subscription;
+  searchSubject: Subject<string> = new Subject<string>();
+
   constructor(
     private api: ApiService,
     private auth: AuthService,
@@ -31,6 +37,12 @@ export class ManageBillsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.searchSubscription = this.searchSubject
+      .pipe(debounceTime(500))
+      .subscribe((term: string) => {
+        this.fetchBills(this.auth.currentUserId, term);
+      });
+
     this.fetchBills(this.auth.currentUserId);
   }
 
@@ -64,8 +76,8 @@ export class ManageBillsComponent implements OnInit {
         text: 'Note: Old payment link will be cancelled',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
       }).then((result) => {
         if (result.isConfirmed) {
           let customerEmail;
@@ -91,7 +103,7 @@ export class ManageBillsComponent implements OnInit {
   }
 
   searchBills() {
-    this.fetchBills(this.auth.currentUserId, this.searchTerm);
+    this.searchSubject.next(this.searchTerm);
   }
 
   editBill(id: string) {
@@ -135,5 +147,9 @@ export class ManageBillsComponent implements OnInit {
         this.page.number + 1
       );
     }
+  }
+
+  ngOnDestroy(): void {
+    this.searchSubscription?.unsubscribe();
   }
 }

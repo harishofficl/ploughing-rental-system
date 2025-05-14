@@ -29,7 +29,7 @@ public class RazorpayService {
         JSONObject paymentLinkRequest = new JSONObject();
         paymentLinkRequest.put("amount", amount * 100);
         paymentLinkRequest.put("currency", "INR");
-        paymentLinkRequest.put("description", "Payment for ploughing service");
+        paymentLinkRequest.put("description", "Ploughing Bill");
 
         JSONObject customer = new JSONObject();
         customer.put("email", customerEmail);
