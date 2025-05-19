@@ -181,6 +181,8 @@ export class BillCustomerComponent implements OnInit, AfterViewInit {
 
       billData.rentalRecordIds = selectedRentalRecordIds;
 
+      console.log(billData);
+
       this.apiService.postBill(billData, this.selectedCustomer, billData.paid);
 
       // Reset form

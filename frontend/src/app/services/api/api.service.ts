@@ -260,7 +260,7 @@ export class ApiService {
     const url = `${this.url}/api/rental-records`;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    this.http
+    return this.http
       .post(url, rentalData, { headers })
       .pipe(
         catchError((error) => {
@@ -273,10 +273,7 @@ export class ApiService {
           );
           throw error;
         })
-      )
-      .subscribe(() => {
-        this.showSuccessMessage('Rental record submitted successfully!');
-      });
+      );
   }
 
   // PUT /api/vehicles/{vehicleId}/add-fuel?addFuel={fuelAmount}

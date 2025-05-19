@@ -1,10 +1,11 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { ApiService } from '../../../../services/api/api.service';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { debounceTime, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { DistancePricingService } from '../../../../services/distance-pricing/distance-pricing.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-create-rental-records',
@@ -13,10 +14,12 @@ import { DistancePricingService } from '../../../../services/distance-pricing/di
 })
 export class CreateRentalRecordsComponent implements OnInit {
   rentalForm: FormGroup;
+  rentalRecord!: any;
   ownerId!: string;
   drivers: any[] = [];
   equipment: any[] = [];
   customers: any[] = [];
+  selectedCustomerName: string = '';
   noCustomerDisplay: boolean = false;
   changeCustomerDisplay: boolean = false;
   public searchTerms = new Subject<string>();
@@ -29,6 +32,7 @@ export class CreateRentalRecordsComponent implements OnInit {
   ) {
     this.ownerId = this.auth.currentUserId;
     const today = new Date().toISOString().split('T')[0];
+
     this.rentalForm = this.formBuilder.group({
       customerId: ['', Validators.required],
       ownerId: [this.auth.currentUserId],
@@ -53,13 +57,17 @@ export class CreateRentalRecordsComponent implements OnInit {
       this.equipment = equipment.data;
     });
 
-    this.searchTerms.pipe(
-      debounceTime(500),
-      switchMap(term => this.api.searchCustomersByOwnerId(this.ownerId, term))
-    ).subscribe((customers) => {
-      this.customers = customers.data;
-      this.noCustomerDisplay = customers.data.length === 0;
-    });
+    this.searchTerms
+      .pipe(
+        debounceTime(500),
+        switchMap((term) =>
+          this.api.searchCustomersByOwnerId(this.ownerId, term)
+        )
+      )
+      .subscribe((customers) => {
+        this.customers = customers.data;
+        this.noCustomerDisplay = customers.data.length === 0;
+      });
   }
 
   onEquipmentChange(event: Event) {
@@ -83,7 +91,10 @@ export class CreateRentalRecordsComponent implements OnInit {
   calculateDistanceCost() {
     const hoursUsed = this.rentalForm.get('hoursUsed')?.value;
     const distance = this.rentalForm.get('distance')?.value;
-    const distancePrice = this.distancePricing.calculateTotalDistanceCost(hoursUsed, distance);
+    const distancePrice = this.distancePricing.calculateTotalDistanceCost(
+      hoursUsed,
+      distance
+    );
     this.rentalForm.patchValue({ distancePrice });
     this.calculateTotalCost();
   }
@@ -96,19 +107,44 @@ export class CreateRentalRecordsComponent implements OnInit {
   }
 
   onSubmit() {
-      if (this.rentalForm.valid) {
+    if (this.rentalForm.valid) {
       const rentalData = this.rentalForm.getRawValue();
 
-      this.api.postRentalRecord(rentalData);
+      this.api.postRentalRecord(rentalData).subscribe((rentalRecord: any) => {
+        if (rentalRecord.success) {
+          this.rentalRecord = rentalRecord.data;
+          Swal.fire('Success', 'Rental record created successfully', 'success');
+
+          // Create a bill if record is paid
+          let billData;
+          if (this.rentalRecord.paid) {
+            billData = {
+              customerId: this.rentalRecord.customerId,
+              customerName: this.selectedCustomerName,
+              ownerId: this.rentalRecord.ownerId,
+              totalAmount: this.rentalRecord.totalCost,
+              paid: true,
+              rentalRecordIds: [this.rentalRecord.id],
+            };
+            console.log(billData);
+            // post bill
+            this.api.postBill(billData, null, true);
+          }
+        }
+      });
 
       this.changeCustomerDisplay = false;
-      const customerInput = document.getElementById('customer') as HTMLInputElement;
+      const customerInput = document.getElementById(
+        'customer'
+      ) as HTMLInputElement;
       customerInput.disabled = false;
-      
+
       // Reset form
       this.rentalForm.reset();
       this.rentalForm.patchValue({ ownerId: this.auth.currentUserId });
-      this.rentalForm.patchValue({ date: new Date().toISOString().split('T')[0] });
+      this.rentalForm.patchValue({
+        date: new Date().toISOString().split('T')[0],
+      });
       this.rentalForm.patchValue({ paid: false });
 
       customerInput.focus();
@@ -122,8 +158,11 @@ export class CreateRentalRecordsComponent implements OnInit {
 
   selectCustomer(customer: any): void {
     this.rentalForm.patchValue({ customerId: customer.id });
-    const customerInput = document.getElementById('customer') as HTMLInputElement;
+    const customerInput = document.getElementById(
+      'customer'
+    ) as HTMLInputElement;
     customerInput.value = customer.name;
+    this.selectedCustomerName = customer.name;
     customerInput.disabled = true;
     this.changeCustomerDisplay = true;
     this.customers = [];
@@ -131,7 +170,9 @@ export class CreateRentalRecordsComponent implements OnInit {
 
   changeCustomer(): void {
     this.rentalForm.patchValue({ customerId: '' });
-    const customerInput = document.getElementById('customer') as HTMLInputElement;
+    const customerInput = document.getElementById(
+      'customer'
+    ) as HTMLInputElement;
     customerInput.disabled = false;
     customerInput.focus();
     this.changeCustomerDisplay = false;

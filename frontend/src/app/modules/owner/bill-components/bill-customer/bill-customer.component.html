@@ -53,7 +53,7 @@
     <div class="form-label-message" *ngIf="unpaidRecords.length === 0">
       Select customer to fetch their unpaid records...
     </div>
-    <div class="list-rental-records" [hidden]="unpaidRecords.length === 0">
+    <div class="form-control list-rental-records" [hidden]="unpaidRecords.length === 0">
       <!-- <mat-form-field appearance="fill" class="filter-field">
         <mat-label>Filter records</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Type to search" />
