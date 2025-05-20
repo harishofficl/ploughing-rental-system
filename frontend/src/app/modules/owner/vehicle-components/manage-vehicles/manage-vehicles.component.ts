@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { LoadingService } from '../../../../services/loading/loading.service';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-manage-vehicles',
@@ -21,9 +24,18 @@ export class ManageVehiclesComponent implements OnInit {
     last: true
   };
 
+  searchSubscription!: Subscription;
+  searchSubject: Subject<string> = new Subject<string>();
+
   constructor(private api: ApiService, private auth: AuthService, public loadingService: LoadingService) {}
 
   ngOnInit(): void {
+    this.searchSubscription = this.searchSubject
+      .pipe(debounceTime(500))
+      .subscribe((term: string) => {
+        this.fetchVehicles(this.auth.currentUserId, term);
+      });
+
     this.fetchVehicles(this.auth.currentUserId);
   }
 
@@ -40,7 +52,7 @@ export class ManageVehiclesComponent implements OnInit {
   }
 
   searchVehicles() {
-    this.fetchVehicles(this.auth.currentUserId, this.searchTerm);
+    this.searchSubject.next(this.searchTerm);
   }
 
   editVehicle(id: string) {
@@ -61,5 +73,9 @@ export class ManageVehiclesComponent implements OnInit {
     if (!this.page.last) {
       this.fetchVehicles(this.auth.currentUserId, this.searchTerm, this.page.number + 1);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.searchSubscription?.unsubscribe();
   }
 }

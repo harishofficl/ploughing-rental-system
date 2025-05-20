@@ -2,16 +2,13 @@ package com.trustrace.ploughing.service;
 
 import com.razorpay.*;
 import com.trustrace.ploughing.dao.BillDao;
+import com.trustrace.ploughing.model.Bill;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -32,7 +29,7 @@ public class RazorpayService {
         JSONObject paymentLinkRequest = new JSONObject();
         paymentLinkRequest.put("amount", amount * 100);
         paymentLinkRequest.put("currency", "INR");
-        paymentLinkRequest.put("description", "Payment for ploughing service");
+        paymentLinkRequest.put("description", "Ploughing Bill");
 
         JSONObject customer = new JSONObject();
         customer.put("email", customerEmail);
@@ -72,11 +69,28 @@ public class RazorpayService {
         try {
             payment = razorpay.paymentLink.create(paymentLinkRequest);
             String paymentId = payment.get("id");
-            billDao.updatePaymentId(billId, paymentId);
+            if(billDao.findById(billId).isPresent()){
+                Bill bill = billDao.findById(billId).get();
+                if(!bill.getPaymentId().isEmpty()) {
+                    log.info("Cancel existing payment link: {}", bill.getPaymentId());
+                    cancelPaymentLink(bill.getPaymentId());
+                }
+                billDao.updatePaymentId(billId, paymentId);
+            }
             return payment.get("short_url");
         } catch (RazorpayException e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
+        }
+    }
+
+    public void cancelPaymentLink(String paymentLinkId) {
+        try {
+            RazorpayClient razorpay = new RazorpayClient(razorpayKey, razorpaySecret);
+            razorpay.paymentLink.cancel(paymentLinkId);
+            log.info("Payment link: {} canceled successfully.", paymentLinkId);
+        } catch (RazorpayException e) {
+            log.error("Error canceling payment link {}: {}", paymentLinkId, e.getMessage());
         }
     }
 }

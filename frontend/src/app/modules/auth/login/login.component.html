@@ -42,7 +42,7 @@
         <button
           type="submit"
           class="submit-button"
-          [disabled]="loginForm.invalid"
+          [disabled]="loginForm.invalid || disableButton"
         >
           Login
         </button>

@@ -3,7 +3,9 @@ package com.trustrace.ploughing.controller;
 import com.trustrace.ploughing.model.Bill;
 import com.trustrace.ploughing.service.BillService;
 import com.trustrace.ploughing.dto.ApiResponse;
+import com.trustrace.ploughing.view.BillView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -27,11 +29,8 @@ public class BillController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Bill>> getBillById(@PathVariable String id) {
-        Optional<Bill> bill = billService.getBillById(id);
-        if (bill.isEmpty()) {
-            return ResponseEntity.status(404).body(new ApiResponse<>(false, "Bill not found", null));
-        }
-        return ResponseEntity.ok(new ApiResponse<>(true, "Bill retrieved successfully", bill.get()));
+        Bill bill = billService.getBillById(id).orElseThrow(() -> new IllegalArgumentException("Bill not found"));
+        return ResponseEntity.ok(new ApiResponse<>(true, "Bill retrieved successfully", bill));
     }
 
     @GetMapping
@@ -56,5 +55,11 @@ public class BillController {
     public ResponseEntity<ApiResponse<List<Bill>>> getUnpaidBillsByCustomerId(@PathVariable String customerId) {
         List<Bill> bills = billService.getBillsByCustomerId(customerId, true);
         return ResponseEntity.ok(new ApiResponse<>(true, "Unpaid bills retrieved successfully", bills));
+    }
+
+    @GetMapping("/owner/{ownerId}/paginated")
+    public ResponseEntity<ApiResponse<Page<BillView>>> getBillsByOwnerIdWithPagination(@PathVariable String ownerId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "") String search) {
+        Page<BillView> bills = billService.getBillsByOwnerIdWithPagination(ownerId, page, size, search);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Rental records retrieved successfully", bills));
     }
 }

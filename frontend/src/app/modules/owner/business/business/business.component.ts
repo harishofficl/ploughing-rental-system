@@ -39,13 +39,29 @@ export class BusinessComponent {
   }
 
   deleteRule(index: number) {
-    this.pricingRules.splice(index, 1);
-    this.api
-      .setPricingRules(this.pricingRules, this.authService.currentUserId)
-      .subscribe(() => {
-        Swal.fire('Success', 'Pricing rules updated successfully', 'success');
-        this.updateRulesDisplay();
-      });
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete the rule?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.pricingRules.splice(index, 1);
+        this.api
+          .setPricingRules(this.pricingRules, this.authService.currentUserId)
+          .subscribe(() => {
+            Swal.fire(
+              'Success',
+              'Pricing rules updated successfully',
+              'success'
+            );
+            this.updateRulesDisplay();
+          });
+      }
+    });
   }
 
   onSubmit() {

@@ -38,7 +38,7 @@ public class PaymentController {
             String billId = (String) requestBody.get("billId");
 
             String paymentLink = razorpayService.createPaymentLink(email, amount, allMethods, billId);
-            //emailService.sendPaymentLink(email, paymentLink);
+//            emailService.sendPaymentLink(email, paymentLink);
 
             System.out.println("Payment link: " + paymentLink);
 

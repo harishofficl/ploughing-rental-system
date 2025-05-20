@@ -201,9 +201,7 @@ export class ApiService {
         })
       )
       .subscribe((response: any) => {
-        console.log('Bill created ✔️');
         this.showSuccessMessage(response.message);
-        // Call payment service to create payment link
         if (!paid) {
           this.paymentService
             .createPaymentLink(
@@ -212,8 +210,8 @@ export class ApiService {
               billData.allMethods,
               response.data.id
             )
-            .subscribe(() => {
-              console.log('Payment link created ✔️');
+            .subscribe((response) => {
+              console.log(response);
             });
         }
       });
@@ -262,7 +260,7 @@ export class ApiService {
     const url = `${this.url}/api/rental-records`;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    this.http
+    return this.http
       .post(url, rentalData, { headers })
       .pipe(
         catchError((error) => {
@@ -275,10 +273,7 @@ export class ApiService {
           );
           throw error;
         })
-      )
-      .subscribe(() => {
-        this.showSuccessMessage('Rental record submitted successfully!');
-      });
+      );
   }
 
   // PUT /api/vehicles/{vehicleId}/add-fuel?addFuel={fuelAmount}
@@ -476,8 +471,23 @@ export class ApiService {
     const url = `${this.url}/api/vehicles/owner/${ownerId}/paginated?page=${page}&size=${size}&search=${searchTerm}`;
     return this.http.get(url).pipe(
       catchError((error) => {
-        console.error('Error occurred while fetching vehicles:', error);
         this.showErrorMessage('Failed to fetch vehicles. Please try again.');
+        throw error;
+      })
+    );
+  }
+
+  // GET api/bills/owner/{ownerId}/paginated?page={page}&size={size}&search={searchTerm}
+  getBillsByOwnerIdPaginated(
+    ownerId: string,
+    page: number,
+    size: number,
+    searchTerm: string
+  ): Observable<any> {
+    const url = `${this.url}/api/bills/owner/${ownerId}/paginated?page=${page}&size=${size}&search=${searchTerm}`;
+    return this.http.get(url).pipe(
+      catchError((error) => {
+        this.showErrorMessage('Failed to fetch Bills. Please try again.');
         throw error;
       })
     );
@@ -490,6 +500,17 @@ export class ApiService {
       catchError((error) => {
         console.error('Error occurred while fetching job:', error);
         this.showErrorMessage('Failed to fetch job. Please try again.');
+        throw error;
+      })
+    );
+  }
+
+  // GET /api/customers/{id}
+  getCustomerById(cusId: string): Observable<any> {
+    const url = `${this.url}/api/customers/${cusId}`;
+    return this.http.get(url).pipe(
+      catchError((error) => {
+        this.showErrorMessage('Failed to fetch Customer. Please try again.');
         throw error;
       })
     );
@@ -520,4 +541,16 @@ export class ApiService {
       })
     );
   }
+
+  // DELETE /api/bills/{id}
+  deleteBillById(billId: string) {
+    const url = `${this.url}/api/bills/${billId}`;
+    return this.http.delete(url).pipe(
+      catchError((error) => {
+        this.showErrorMessage('Failed to delete bill...');
+        throw error;
+      })
+    );
+  }
 }
+

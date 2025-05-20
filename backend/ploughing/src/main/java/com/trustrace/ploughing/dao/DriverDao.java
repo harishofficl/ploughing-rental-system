@@ -55,13 +55,11 @@ public class DriverDao {
 
     // Find Driver by ID
     public Optional<Driver> findById(String id) {
-        logger.info("Fetching driver by ID: {}", id);
         return Optional.ofNullable(mongoTemplate.findById(id, Driver.class));
     }
 
     // Find Driver by Email
     public Optional<Driver> findByEmail(String email) {
-        logger.info("Fetching owner by email: {}", email);
         Query query = new Query(Criteria.where("email").is(email));
         return Optional.ofNullable(mongoTemplate.findOne(query, Driver.class));
     }

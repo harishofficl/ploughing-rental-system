@@ -74,13 +74,23 @@ public class RentalRecordDao {
         return mongoTemplate.save(rentalRecord);
     }
 
+    // Set billed status
+    public void updateBilledStatus(String id, Boolean billed) {
+        logger.info("Setting record: {} to Unbilled", id);
+        if(findById(id).isPresent()){
+            RentalRecord rental = findById(id).get();
+            rental.setBilled(billed);
+            mongoTemplate.save(rental);
+        }
+    }
+
     public void deleteById(String id) {
         logger.info("Deleting RentalRecord by ID: {}", id);
         Query query = new Query(Criteria.where("id").is(id));
         mongoTemplate.remove(query, RentalRecord.class);
     }
 
-    // Get total rental amount for a given owner
+    // Get total pending rental amount for a given owner
     public double getTotalRentalAmountByOwnerId(String ownerId) {
         logger.info("Fetching total pending rental amount for Owner ID: {}", ownerId);
         Query query = new Query(Criteria.where("ownerId").is(ownerId).and("paid").is(false));
@@ -90,7 +100,7 @@ public class RentalRecordDao {
 
     // Get rental records for customer id that are unpaid and un-billed
     public List<RentalRecord> getUnpaidRentalRecordsByCustomerId(String customerId) {
-        logger.info("Fetching total pending rental amount for Customer ID: {}", customerId);
+        logger.info("Fetching unpaid rental records for Customer ID: {}", customerId);
         Query query = new Query(Criteria.where("customerId").is(customerId).and("paid").is(false).and("billed").is(false));
         return mongoTemplate.find(query, RentalRecord.class);
     }

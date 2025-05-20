@@ -23,26 +23,25 @@ public class PaymentCallBackController {
     @Autowired
     private PaymentService paymentService;
 
-    @PostMapping("/redirect")
+//    @PostMapping("/redirect")
     public String handlePaymentRedirect(@RequestBody Map<String, String> paymentBody) {
-//        String paymentId = paymentBody.get("razorpayPaymentId");
-//        String paymentLinkId = paymentBody.get("razorpayPaymentLinkId");
-//        String status = paymentBody.get("razorpayStatus");
-//        String signature = paymentBody.get("razorpaySignature");
-//
-//        Bill bill = billService.findByPaymentId(paymentLinkId);
-//        Payment payment = null;
-//        if(bill != null && status.equals("paid")) {
-//            billService.setBillRentalPaid(bill.getId());
-//            payment = paymentService.savePayment(new Payment(paymentId, paymentLinkId, bill.getOwnerId(), bill.getCustomerName(), bill.getId(), bill.getTotalAmount(), status, signature));
-//        }
-//        assert payment != null;
+        String paymentId = paymentBody.get("razorpayPaymentId");
+        String paymentLinkId = paymentBody.get("razorpayPaymentLinkId");
+        String status = paymentBody.get("razorpayStatus");
+        String signature = paymentBody.get("razorpaySignature");
+
+        Bill bill = billService.findByPaymentId(paymentLinkId);
+        Payment payment = null;
+        if(bill != null && status.equals("paid")) {
+            billService.setBillRentalPaid(bill.getId());
+            payment = paymentService.savePayment(new Payment(paymentId, paymentLinkId, bill.getOwnerId(), bill.getCustomerName(), bill.getId(), bill.getTotalAmount(), status, signature));
+        }
+        assert payment != null;
         return new JSONObject().put("Payment Status", "Success").toString();
     }
 
     @PostMapping("/webhook")
     public void handleRazorPayWebhook(@RequestBody Map<String, Object> requestBody) {
-        log.info("Received Webhook: {}", requestBody);
 
         try {
             // Extract the "payload" object
@@ -83,6 +82,8 @@ public class PaymentCallBackController {
             String status = (String) paymentEntity.get("status");
             double totalAmount = ((Number) paymentEntity.get("amount")).doubleValue() / 100;
 
+            log.info("WebHook Received for payment link ID: {}", paymentLinkId);
+
             Bill bill = billService.findByPaymentId(paymentLinkId);
             if (bill != null && "captured".equals(status)) {
                 billService.setBillRentalPaid(bill.getId());
@@ -99,7 +100,6 @@ public class PaymentCallBackController {
                 );
 
                 paymentService.savePayment(payment);
-                log.info("Payment saved successfully: {}", payment);
             } else {
                 log.error("Bill not found or payment status is not 'captured'");
             }

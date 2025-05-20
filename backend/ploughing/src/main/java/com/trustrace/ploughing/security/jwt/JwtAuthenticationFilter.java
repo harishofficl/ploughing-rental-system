@@ -1,5 +1,6 @@
 package com.trustrace.ploughing.security.jwt;
 
+import com.trustrace.ploughing.dto.ApiResponse;
 import com.trustrace.ploughing.security.service.CustomUserDetailsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -72,14 +73,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private void handleJwtException(HttpServletResponse response, int status, String message) throws IOException {
         response.setStatus(status);
         response.setContentType("application/json");
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("status", String.valueOf(status));
-        errorResponse.put("error", HttpStatus.valueOf(status).getReasonPhrase());
-        errorResponse.put("message", message);
-
-        if (message.contains("JWT token has expired")) {
-            errorResponse.put("errorCode", "JWT_EXPIRED");
-        }
+        ApiResponse<?> errorResponse = new ApiResponse<>(false, message, null);
         response.getWriter().write(new ObjectMapper().writeValueAsString(errorResponse));
     }
 }

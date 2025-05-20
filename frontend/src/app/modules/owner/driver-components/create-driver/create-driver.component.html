@@ -13,5 +13,15 @@
     <input id="phone" formControlName="phoneNumber" type="tel" class="form-control" placeholder="Enter phone number">
   </div>
 
+  <div class="form-group">
+    <label for="email" class="form-label">Email <span class="required-asterisk">*</span></label>
+    <input id="email" formControlName="email" type="email" class="form-control" placeholder="Enter Email">
+  </div>
+
+  <div class="form-group">
+    <label for="password" class="form-label">Password <span class="required-asterisk">*</span></label>
+    <input id="password" formControlName="password" type="text" class="form-control" placeholder="Enter Password">
+  </div>
+
   <button type="submit" class="submit-button" [disabled]="driverForm.invalid">Create Driver</button>
 </form>

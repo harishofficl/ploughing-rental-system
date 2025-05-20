@@ -12,6 +12,8 @@ export class LoginComponent {
   loginForm!: FormGroup;
   authToken!: string;
 
+  disableButton: boolean = false;
+
   constructor(
     private auth: AuthService,
     private fb: FormBuilder,
@@ -28,6 +30,8 @@ export class LoginComponent {
   }
 
   login() {
+    // disable after click
+    this.disableButton = true;
     this.api.postLogin(this.loginForm.getRawValue()).subscribe((response) => {
       if (response?.accessToken) {
         this.authToken = response.accessToken;
@@ -35,7 +39,11 @@ export class LoginComponent {
         this.auth.login(this.authToken, email);
       } else {
         console.error('Invalid login response:', response);
+        this.disableButton = false;
       }
+    }, (error) => {
+      console.error('Login error:', error);
+      this.disableButton = false;
     });
   }
 }

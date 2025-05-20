@@ -5,6 +5,7 @@ import com.trustrace.ploughing.model.RentalRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -24,7 +25,7 @@ public class BillDao {
 
     // Save Bill
     public Bill save(Bill bill) {
-        logger.info("Saving bill with id: {}", bill.getId());
+        logger.info("Saving bill");
         bill.setCreatedAt(LocalDateTime.now());
         List<String> rentalRecordIds= bill.getRentalRecordIds();
         rentalRecordIds.forEach(rentalRecordId -> {
@@ -78,20 +79,20 @@ public class BillDao {
         return mongoTemplate.save(bill);
     }
 
-    public Bill setBillRentalPaid(String id) {
+    public void setBillRentalPaid(String id) {
         logger.info("Setting bill as paid with ID: {}", id);
         Bill bill = mongoTemplate.findById(id, Bill.class);
         assert bill != null;
         bill.setPaid(true);
         List<String> rentalRecordIds= bill.getRentalRecordIds();
         rentalRecordIds.forEach(rentalRecordId -> {
-            logger.info("Updating rental record to paid with ID: {}", rentalRecordId);
+            logger.info("Updating rental record as paid with ID: {}", rentalRecordId);
             RentalRecord rentalRecord = mongoTemplate.findById(rentalRecordId, RentalRecord.class);
             assert rentalRecord != null;
             rentalRecord.setPaid(true);
             mongoTemplate.save(rentalRecord);
         });
-        return mongoTemplate.save(bill);
+        mongoTemplate.save(bill);
     }
 
     // Find by paymentId
@@ -101,5 +102,19 @@ public class BillDao {
         return mongoTemplate.findOne(query, Bill.class);
     }
 
+
+    public Page<Bill> getBillsByOwnerIdWithPagination(String ownerId, int page, int size, String search) {
+        logger.info("Fetching Bills for Owner ID: {} with pagination and search: {}", ownerId, search);
+        Criteria criteria = Criteria.where("ownerId").is(ownerId);
+        if (search != null && !search.isEmpty()) {
+            criteria.and("customerName").regex(search, "i");
+        }
+        Query query = new Query(criteria);
+        long total = mongoTemplate.count(query, Bill.class);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        query.with(pageable);
+        List<Bill> bills = mongoTemplate.find(query, Bill.class);
+        return new PageImpl<>(bills, pageable, total);
+    }
 
 }

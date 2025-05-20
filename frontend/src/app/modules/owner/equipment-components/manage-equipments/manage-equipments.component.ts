@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { LoadingService } from '../../../../services/loading/loading.service';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-manage-equipments',
@@ -21,9 +24,18 @@ export class ManageEquipmentsComponent implements OnInit {
     last: true
   };
 
+  searchSubscription!: Subscription;
+  searchSubject: Subject<string> = new Subject<string>();
+
   constructor(private api: ApiService, private auth: AuthService, public loadingService: LoadingService) {}
 
   ngOnInit(): void {
+    this.searchSubscription = this.searchSubject
+      .pipe(debounceTime(500))
+      .subscribe((term: string) => {
+        this.fetchEquipments(this.auth.currentUserId, term);
+      });
+
     this.fetchEquipments(this.auth.currentUserId);
   }
 
@@ -40,11 +52,11 @@ export class ManageEquipmentsComponent implements OnInit {
   }
 
   searchEquipments() {
-    this.fetchEquipments(this.auth.currentUserId, this.searchTerm);
+    this.searchSubject.next(this.searchTerm);
   }
 
   editEquipment(id: string) {
-    // Logic to edit an equipment
+    
   }
 
   deleteEquipment(id: string) {
@@ -61,5 +73,9 @@ export class ManageEquipmentsComponent implements OnInit {
     if (!this.page.last) {
       this.fetchEquipments(this.auth.currentUserId, this.searchTerm, this.page.number + 1);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.searchSubscription?.unsubscribe();
   }
 }
