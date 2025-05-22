@@ -186,7 +186,7 @@ export class ApiService {
   }
 
   // POST /api/bills
-  postBill(billData: any, selectedCustomer: any, paid: boolean) {
+  postBill(billData: any, selectedCustomer: any, paid: boolean, isPaymentLink: boolean) {
     const url = `${this.url}/api/bills`;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
@@ -202,7 +202,7 @@ export class ApiService {
       )
       .subscribe((response: any) => {
         this.showSuccessMessage(response.message);
-        if (!paid) {
+        if (!paid && isPaymentLink) {
           this.paymentService
             .createPaymentLink(
               selectedCustomer.email,

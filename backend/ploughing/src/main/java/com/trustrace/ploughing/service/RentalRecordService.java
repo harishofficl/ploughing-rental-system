@@ -4,6 +4,8 @@ import com.trustrace.ploughing.dao.CustomerDao;
 import com.trustrace.ploughing.dao.DriverDao;
 import com.trustrace.ploughing.dao.RentalRecordDao;
 import com.trustrace.ploughing.model.RentalRecord;
+import com.trustrace.ploughing.model.people.Customer;
+import com.trustrace.ploughing.model.people.Driver;
 import com.trustrace.ploughing.view.RentalRecordView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -80,11 +82,13 @@ public class RentalRecordService {
     }
 
     private RentalRecordView convertToView(RentalRecord rentalRecord) {
+        Optional<Driver> driver = driverDao.findById(rentalRecord.getDriverId());
+        Optional<Customer> customer = customerDao.findById(rentalRecord.getCustomerId());
         return new RentalRecordView(
                 rentalRecord.getId(),
                 rentalRecord.getOwnerId(),
-                customerDao.findById(rentalRecord.getCustomerId()).get().getName(),
-                driverDao.findById(rentalRecord.getDriverId()).get().getName(),
+                customer.isPresent() ? customer.get().getName() : "customer deleted",
+                driver.isPresent() ? driver.get().getName() : "driver deleted",
                 rentalRecord.getDate().toString(),
                 rentalRecord.getEquipment(),
                 rentalRecord.getHoursUsed(),

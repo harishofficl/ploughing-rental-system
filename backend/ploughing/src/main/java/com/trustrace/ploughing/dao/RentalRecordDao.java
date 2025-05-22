@@ -31,10 +31,11 @@ public class RentalRecordDao {
     private CustomerDao customerDao;
 
     public RentalRecord save(RentalRecord rentalRecord) {
-        logger.info("Saving RentalRecord: {}", rentalRecord);
         rentalRecord.setCreatedAt(LocalDateTime.now());
         rentalRecord.setEquipment(equipmentDao.findById(rentalRecord.getEquipment()).get().getName());
-        return mongoTemplate.save(rentalRecord);
+        RentalRecord createdRecord = mongoTemplate.save(rentalRecord);
+        logger.info("Saving RentalRecord with id: {}", createdRecord.getId());
+        return createdRecord;
     }
 
     public List<RentalRecord> findAll() {
