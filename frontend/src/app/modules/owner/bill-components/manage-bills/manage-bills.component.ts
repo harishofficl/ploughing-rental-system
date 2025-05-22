@@ -85,17 +85,25 @@ export class ManageBillsComponent implements OnInit {
             .getCustomerById(bill.customerId)
             .subscribe((response: any) => {
               customerEmail = response.data.email;
-              this.paymentService
-                .createPaymentLink(
-                  customerEmail,
-                  bill.amount,
-                  true, // all payment methods enabled...
-                  bill.id
-                )
-                .subscribe((response) => {
-                  console.log(response);
-                  Swal.fire('Success', 'Payment Link Sent!', 'success');
-                });
+              if (
+                customerEmail != null &&
+                customerEmail != undefined &&
+                customerEmail.length > 0
+              ) {
+                this.paymentService
+                  .createPaymentLink(
+                    customerEmail,
+                    bill.amount,
+                    true, // all payment methods enabled...
+                    bill.id
+                  )
+                  .subscribe((response) => {
+                    console.log(response);
+                    Swal.fire('Success', 'Payment Link Sent!', 'success');
+                  });
+              } else {
+                Swal.fire('Error', 'Customer email not found!', 'error');
+              }
             });
         }
       });

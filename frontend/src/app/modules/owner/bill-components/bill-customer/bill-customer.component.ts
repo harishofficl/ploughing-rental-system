@@ -26,8 +26,8 @@ export class BillCustomerComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = [
     'select',
-    'equipment',
     'date',
+    'equipment',
     'hoursUsed',
     'totalCost',
   ];
@@ -50,6 +50,7 @@ export class BillCustomerComponent implements OnInit, AfterViewInit {
       ownerId: [this.authService.currentUserId],
       totalAmount: [{ value: '', disabled: true }],
       paid: [false, Validators.required],
+      isPaymentLink: [false],
       allMethods: [false],
       rentalRecordIds: this.fb.array([]),
     });
@@ -181,9 +182,7 @@ export class BillCustomerComponent implements OnInit, AfterViewInit {
 
       billData.rentalRecordIds = selectedRentalRecordIds;
 
-      console.log(billData);
-
-      this.apiService.postBill(billData, this.selectedCustomer, billData.paid);
+      this.apiService.postBill(billData, this.selectedCustomer, billData.paid, billData.isPaymentLink);
 
       // Reset form
       this.changeCustomerDisplay = false;

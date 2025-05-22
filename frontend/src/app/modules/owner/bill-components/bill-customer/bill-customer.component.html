@@ -48,7 +48,7 @@
   </div>
 
   <!-- Rental Records Table -->
-  <div class="rental-records-container">
+  <div class="form-group rental-records-container">
     <label class="form-label">Rental Records</label>
     <div class="form-label-message" *ngIf="unpaidRecords.length === 0">
       Select customer to fetch their unpaid records...
@@ -115,8 +115,8 @@
       </table>
 
       <mat-paginator
-        [pageSize]="10"
-        [pageSizeOptions]="[2, 5, 10, 20]"
+        [pageSize]="5"
+        [pageSizeOptions]="[2, 5, 10, 15, 20, 50]"
         showFirstLastButtons
       ></mat-paginator>
     </div>
@@ -134,21 +134,30 @@
     />
   </div>
 
-  <!-- Payment Method -->
+  <!-- Payment Status -->
   <div class="form-group">
-    <label for="isPaid" class="form-label">Payment Method</label>
+    <label for="isPaid" class="form-label">Payment Status</label>
     <select id="isPaid" formControlName="paid" class="form-control">
-      <option [ngValue]="true">Cash</option>
-      <option [ngValue]="false">Online Payment</option>
+      <option [ngValue]="false">Unpaid</option>
+      <option [ngValue]="true">Paid</option>
+    </select>
+  </div>
+
+  <!-- Send Payment Link-->
+  <div class="form-group" *ngIf="billForm.get('paid')?.value === false">
+    <label for="isPaymentLink" class="form-label">Send Payment Link</label>
+    <select id="isPaymentLink" formControlName="isPaymentLink" class="form-control">
+      <option [ngValue]="false">No</option>
+      <option [ngValue]="true">Yes</option>
     </select>
   </div>
 
   <!-- Online Payment Type -->
-  <div class="form-group" *ngIf="billForm.get('paid')?.value === false">
-    <label for="allMethods" class="form-label">Online Payment Type</label>
+  <div class="form-group" *ngIf="billForm.get('paid')?.value === false && billForm.get('isPaymentLink')?.value === true">
+    <label for="allMethods" class="form-label">Payment Type</label>
     <select id="allMethods" formControlName="allMethods" class="form-control">
-      <option [ngValue]="true">All online payment methods</option>
       <option [ngValue]="false">UPI Only</option>
+      <option [ngValue]="true">All online payment methods</option>
     </select>
   </div>
 

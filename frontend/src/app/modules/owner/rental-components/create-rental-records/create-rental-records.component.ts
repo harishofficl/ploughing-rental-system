@@ -126,9 +126,8 @@ export class CreateRentalRecordsComponent implements OnInit {
               paid: true,
               rentalRecordIds: [this.rentalRecord.id],
             };
-            console.log(billData);
             // post bill
-            this.api.postBill(billData, null, true);
+            this.api.postBill(billData, null, true, false);
           }
         }
       });

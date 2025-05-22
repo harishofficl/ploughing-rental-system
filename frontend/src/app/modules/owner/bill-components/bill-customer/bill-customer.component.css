@@ -78,8 +78,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .form-label-message {
   color: red;
   font-size: 0.89rem;
-  margin-top: 0.25rem;
-  margin-bottom: 1rem;
 }
 
 .submit-button {
@@ -157,10 +155,17 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   font-size: 0.875rem;
 }
 
+.rental-records-container {
+  align-items: normal;
+}
+
 /* Material Table Custom Styling */
 
 .list-rental-records {
   margin: 1rem 0;
+  border: none;
+  margin: 0;
+  padding: 0;
 }
 
 .custom-mat-table {
